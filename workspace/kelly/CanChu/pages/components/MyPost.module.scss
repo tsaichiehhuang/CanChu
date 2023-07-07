@@ -1,0 +1,141 @@
+.outsideSquare {
+  /* 外框 */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  box-sizing: border-box;
+  position: absolute;
+  width: 700px;
+  height: 397px;
+  background: #ffffff;
+  border: 1px solid rgba(211, 211, 211, 0.56);
+  border-radius: 20px;
+
+  .row {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .firstRow {
+    margin-top: 20px;
+    width: 630px;
+    height: 75px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .text {
+      width: 74.37px;
+      margin-left: 12.03px;
+    }
+
+    > div {
+      font-family: "Outfit";
+      font-style: normal;
+      line-height: 24px;
+    }
+
+    .textOne {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .textTwo {
+      font-weight: 400;
+      font-size: 13px;
+      color: #919191;
+    }
+
+    .circle {
+      box-sizing: border-box;
+      border-radius: 50%;
+      width: 75.19px;
+      height: 75px;
+      background: #d3d3d3;
+      border: 1px solid #d3d3d3;
+    }
+  }
+
+  .secondRow {
+    margin-top: 17.19px;
+    width: 630px;
+    height: 100px;
+    font-family: "Outfit";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #000000;
+  }
+
+  .thirdRow {
+    width: 630px;
+    height: 50px;
+    border-top: 1px solid #bfbfbf;
+    border-bottom: 1px solid #bfbfbf;
+    flex-direction: row;
+    align-items: center;
+    .smallCircleOne {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #f85c53;
+    }
+
+    .smallCircleTwo {
+      margin-left: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #d3d3d3;
+    }
+  }
+
+  .fourRow {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    width: 630px;
+    height: 50px;
+    text-align: right;
+    color: #5c5c5c;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .fiveRow {
+    width: 100%;
+    height: 90px;
+    border-top: 1px solid #bfbfbf;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 15px;
+    .person {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+
+    .comment {
+      box-sizing: border-box;
+      width: 554.99px;
+      height: 50px;
+      background: rgba(217, 217, 217, 0.39);
+      border: 1px solid #f0f0f0;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Roboto";
+      font-style: normal;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 24px;
+      color: #777777;
+    }
+  }
+}

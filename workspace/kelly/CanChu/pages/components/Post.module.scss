@@ -1,141 +1,279 @@
-.outsideSquare {
-  /* 外框 */
+@import url(https://fonts.googleapis.com/css?family=Pattaya&display=swap);
+.body {
+  background: #f9f9f9;
+  width: 100%;
+  height: 100vh;
+}
+
+.header {
+  width: 100%;
+  height: 100px;
+  flex-shrink: 0;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.logo {
+  color: #7763fb;
+  font-family: "Pattaya";
+  font-size: 37px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+.search {
+  color: #566470;
+  padding: 0px 15px;
+  margin-left: 2%;
+  margin-right: 40%;
+  width: 330px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid #d9d9d9;
+  background: #f0f2f5;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.profile {
+  position: relative;
+}
+
+.profile:hover .profileOptions {
+  display: flex;
+}
+.profileOption {
+  padding: 18px;
+}
+.profileOption.profileName {
+  gap: 5%;
+  padding: 14px;
+  border-radius: 20px 20px 0px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.profileOptionPhoto {
+  width: 28px;
+  height: 28px;
+  // transform: scale(0.8);
+}
+.profileOption.profileLogOut {
+  padding: 15px;
+  border-radius: 0px 0px 20px 20px;
+}
+.profileOption:hover {
+  color: #fff;
+  background: #5458f7;
+}
+
+.profileOptions {
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 190px;
+  background: #f6f6f6;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: none;
+  flex-direction: column;
+  z-index: 999;
+}
+.person {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.post {
+  padding: 10px 0px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
-  box-sizing: border-box;
-  position: absolute;
-  width: 700px;
-  height: 397px;
-  background: #ffffff;
-  border: 1px solid rgba(211, 211, 211, 0.56);
+  width: 769px;
+  flex-shrink: 0;
   border-radius: 20px;
-
-  .row {
-    display: flex;
-    flex-direction: row;
+  border: 1px solid rgba(211, 211, 211, 0.56);
+  background: #fff;
+  margin-top: 56px;
+}
+.firstRow {
+  margin-top: 20px;
+  width: 700px;
+  height: 75px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  .text {
+    margin-left: 12.03px;
   }
 
-  .firstRow {
-    margin-top: 20px;
-    width: 630px;
-    height: 75px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    .text {
-      width: 74.37px;
-      margin-left: 12.03px;
-    }
-
-    > div {
-      font-family: "Outfit";
-      font-style: normal;
-      line-height: 24px;
-    }
-
-    .textOne {
-      font-weight: 700;
-      font-size: 16px;
-    }
-
-    .textTwo {
-      font-weight: 400;
-      font-size: 13px;
-      color: #919191;
-    }
-
-    .circle {
-      box-sizing: border-box;
-      border-radius: 50%;
-      width: 75.19px;
-      height: 75px;
-      background: #d3d3d3;
-      border: 1px solid #d3d3d3;
-    }
-  }
-
-  .secondRow {
-    margin-top: 17.19px;
-    width: 630px;
-    height: 100px;
+  > div {
     font-family: "Outfit";
     font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
     line-height: 24px;
-    color: #000000;
   }
 
-  .thirdRow {
-    width: 630px;
+  .textOne {
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .textTwo {
+    font-weight: 400;
+    font-size: 13px;
+    color: #919191;
+  }
+
+  .circle {
+    width: 76.444px;
+    height: 74px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    border-radius: 50%;
+    background: #d3d3d3;
+  }
+}
+.secondRow {
+  margin-top: 17.19px;
+  width: 700px;
+  height: 100px;
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #000000;
+}
+.thirdRow {
+  width: 700px;
+  height: 50px;
+  border-top: 1px solid #bfbfbf;
+  border-bottom: 1px solid #bfbfbf;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.fourRow {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  width: 700px;
+  height: 50px;
+  text-align: right;
+  color: #5c5c5c;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fiveRow {
+  width: 700px;
+  height: 90px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 15px;
+  .person {
+    width: 50px;
     height: 50px;
-    border-top: 1px solid #bfbfbf;
-    border-bottom: 1px solid #bfbfbf;
-    flex-direction: row;
-    align-items: center;
-    .smallCircleOne {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: #f85c53;
-    }
-
-    .smallCircleTwo {
-      margin-left: 10px;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: #d3d3d3;
-    }
+    border-radius: 50%;
   }
 
-  .fourRow {
+  .selfComment {
+    padding: 0px 20px;
+    box-sizing: border-box;
+    width: 640px;
+    height: 50px;
+    background: #f0f2f5;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     font-family: "Roboto";
     font-style: normal;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 24px;
-    width: 630px;
-    height: 50px;
-    text-align: right;
-    color: #5c5c5c;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    color: #777777;
   }
+}
 
-  .fiveRow {
-    width: 100%;
-    height: 90px;
-    border-top: 1px solid #bfbfbf;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    gap: 15px;
-    .person {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-    }
-
-    .comment {
-      box-sizing: border-box;
-      width: 554.99px;
-      height: 50px;
-      background: rgba(217, 217, 217, 0.39);
-      border: 1px solid #f0f0f0;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: "Roboto";
+// 網友留言
+.comments {
+  display: flex;
+  flex-direction: column;
+  gap: 5%;
+  margin-top: 2%;
+}
+.commentContainer {
+  padding: 15px 0px;
+  gap: 2%;
+  width: 700px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  .commentContent {
+    flex-direction: column;
+    flex-direction: column;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1%;
+    .commentTime {
+      margin-top: 3%;
+      color: #525252;
+      font-family: Roboto;
+      font-size: 14px;
       font-style: normal;
       font-weight: 400;
-      font-size: 20px;
       line-height: 24px;
-      color: #777777;
     }
+    .commentContentSquare {
+      border-radius: 20px;
+      background: rgba(217, 217, 217, 0.32);
+      padding: 5px 15px;
+      .commentUserName {
+        color: #525252;
+        font-family: Roboto;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px;
+      }
+      .commentText {
+        color: #525252;
+        font-family: Roboto;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+      }
+    }
+  }
+  .commentUserImage {
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
   }
 }
