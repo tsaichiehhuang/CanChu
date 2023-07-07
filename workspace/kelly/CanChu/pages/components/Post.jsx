@@ -10,6 +10,8 @@ function getTimeDiff(date) {
 
   if (diffInDays > 0) {
     return `${diffInDays}天前`;
+  } else if (diffInDays > 5) {
+    return date;
   } else {
     return `${diffInHours}小時前`;
   }
