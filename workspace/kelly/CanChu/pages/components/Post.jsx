@@ -2,7 +2,6 @@ import styles from "./Post.module.scss";
 import MockData from "./mockData";
 import React, { useState } from "react";
 import Header from "./Header";
-import { useRouter } from "next/router";
 
 function getTimeDiff(date) {
   const now = new Date();
@@ -13,7 +12,7 @@ function getTimeDiff(date) {
   if (diffInDays > 0) {
     return `${diffInDays}天前`;
   } else if (diffInDays > 5) {
-    return date;
+    return date.toLocaleString();
   } else {
     return `${diffInHours}小時前`;
   }
@@ -54,7 +53,11 @@ export default function Post() {
               </div>
             </div>
           </div>
-          <article className={styles.secondRow}>{MockData().context}</article>
+          <article
+            className={`${styles.secondRow} ${styles["multiline-text"]}`}
+          >
+            {MockData().context}
+          </article>
           <div className={`${styles.thirdRow} ${styles.row}`}>
             <img className={styles.heartIcon} src="/notHeart.png" />
             <img className={styles.commentIcon} src="/comment.png" />
