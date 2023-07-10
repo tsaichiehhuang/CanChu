@@ -1,7 +1,7 @@
 import styles from "./Post.module.scss";
-import MockData from "./mockData";
+import MockData from "./components/MockData";
 import React, { useState } from "react";
-import Header from "./Header";
+import Header from "./components/Header";
 
 function getTimeDiff(date) {
   const now = new Date();
@@ -39,31 +39,31 @@ function Comment({ comment }) {
 }
 
 export default function Post() {
-  const comments = MockData.comments;
+  const comments = MockData[0].comments;
 
   return (
     <div className={styles.body}>
       <Header></Header>
-      {/* // post */}
+
       <div className={styles.container}>
         <div className={styles.post}>
           <div className={`${styles.firstRow} ${styles.row}`}>
-            <img className={styles.circle} src={MockData.picture} />
+            <img className={styles.circle} src={MockData[0].picture} />
             <div className={styles.text}>
-              <div className={styles.textOne}>{MockData.name}</div>
+              <div className={styles.textOne}>{MockData[0].name}</div>
               <div className={styles.textTwo}>
-                {getTimeDiff(new Date(MockData.created_at))}
+                {getTimeDiff(new Date(MockData[0].created_at))}
               </div>
             </div>
           </div>
-          <article className={styles.secondRow}>{MockData.context}</article>
+          <article className={styles.secondRow}>{MockData[0].context}</article>
           <div className={`${styles.thirdRow} ${styles.row}`}>
             <img className={styles.heartIcon} src="/notHeart.png" />
             <img className={styles.commentIcon} src="/comment.png" />
           </div>
           <div className={`${styles.fourRow} ${styles.row}`}>
-            <div>{MockData.like_count}人喜歡這則貼文</div>
-            <div>{MockData.comment_count}則留言</div>
+            <div>{MockData[0].like_count}人喜歡這則貼文</div>
+            <div>{MockData[0].comment_count}則留言</div>
           </div>
           <div style={{ borderTop: "1px solid #bfbfbf", width: "100%" }}></div>
           {/* 網友留言 */}

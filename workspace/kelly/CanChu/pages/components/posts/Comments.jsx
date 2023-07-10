@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import styles from "../Post.module.scss";
-import MockData from "../mockData";
+import styles from "../../Post.module.scss";
+import MockData from "../MockData";
 import getTimeDiff from "../getTimeDiff";
 
 function Comment({ comment }) {

@@ -1,4 +1,4 @@
-import styles from "./Post.module.scss";
+import styles from "../Post.module.scss";
 import React from "react";
 import getTimeDiff from "./getTimeDiff";
 
