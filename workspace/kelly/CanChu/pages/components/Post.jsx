@@ -2,6 +2,7 @@ import styles from "./Post.module.scss";
 import MockData from "./mockData";
 import React, { useState } from "react";
 import Header from "./Header";
+import { useRouter } from "next/router";
 
 function getTimeDiff(date) {
   const now = new Date();
