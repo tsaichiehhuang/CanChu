@@ -17,6 +17,7 @@ function getTimeDiff(date) {
     return `${diffInHours}小時前`;
   }
 }
+
 function Comment({ comment }) {
   const createdAt = new Date(comment.created_at);
   return (
@@ -36,8 +37,10 @@ function Comment({ comment }) {
     </div>
   );
 }
+
 export default function Post() {
-  const comments = MockData().comments;
+  const comments = MockData[0].comments;
+
   return (
     <div className={styles.body}>
       <Header></Header>
@@ -45,29 +48,31 @@ export default function Post() {
       <div className={styles.container}>
         <div className={styles.post}>
           <div className={`${styles.firstRow} ${styles.row}`}>
-            <img className={styles.circle} src={MockData().picture} />
+            <img className={styles.circle} src={MockData[0].picture} />
             <div className={styles.text}>
-              <div className={styles.textOne}>{MockData().name}</div>
+              <div className={styles.textOne}>{MockData[0].name}</div>
               <div className={styles.textTwo}>
-                {getTimeDiff(new Date(MockData().created_at))}
+                {getTimeDiff(new Date(MockData[0].created_at))}
               </div>
             </div>
           </div>
-          <article className={styles.secondRow}>{MockData().context}</article>
+          <article className={styles.secondRow}>{MockData[0].context}</article>
           <div className={`${styles.thirdRow} ${styles.row}`}>
             <img className={styles.heartIcon} src="/notHeart.png" />
             <img className={styles.commentIcon} src="/comment.png" />
           </div>
           <div className={`${styles.fourRow} ${styles.row}`}>
-            <div>{MockData().like_count}人喜歡這則貼文</div>
-            <div>{MockData().comment_count}則留言</div>
+            <div>{MockData[0].like_count}人喜歡這則貼文</div>
+            <div>{MockData[0].comment_count}則留言</div>
           </div>
           <div style={{ borderTop: "1px solid #bfbfbf", width: "100%" }}></div>
           {/* 網友留言 */}
           <div className={styles.comments}>
-            {comments.map(comment => (
-              <Comment key={comment.id} comment={comment} />
-            ))}
+            {comments &&
+              Array.isArray(comments) &&
+              comments.map(comment => (
+                <Comment key={comment.id} comment={comment} />
+              ))}
           </div>
 
           <div className={`${styles.fiveRow} ${styles.row}`}>

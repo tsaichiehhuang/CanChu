@@ -1,5 +1,5 @@
-export default function MockData() {
-  return {
+const MockData = [
+  {
     id: 1,
     user_id: 1,
     context:
@@ -32,5 +32,7 @@ export default function MockData() {
       }
     ],
     comment_count: 2
-  };
-}
+  }
+];
+
+export default MockData;
