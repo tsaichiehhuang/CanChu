@@ -1,5 +1,5 @@
 import styles from "./Post.module.scss";
-import MockData from "./components/MockData";
+import MockData from "./components/mockData";
 import React, { useState } from "react";
 import Header from "./components/Header";
 
