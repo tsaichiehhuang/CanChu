@@ -56,7 +56,11 @@ export default function Post() {
               </div>
             </div>
           </div>
-          <article className={styles.secondRow}>{MockData[0].context}</article>
+          <article
+            className={`${styles.secondRow} ${styles["multiline-text"]}`}
+          >
+            {MockData[0].context}
+          </article>
           <div className={`${styles.thirdRow} ${styles.row}`}>
             <img className={styles.heartIcon} src="/notHeart.png" />
             <img className={styles.commentIcon} src="/comment.png" />
