@@ -1,9 +1,10 @@
-import Post from "./Post";
+import Post from "./components/Post";
+import Home from "./components/Home";
 
-export default function Home() {
+export default function Index() {
   return (
     <div>
-      <Post></Post>
+      <Home />
     </div>
   );
 }
