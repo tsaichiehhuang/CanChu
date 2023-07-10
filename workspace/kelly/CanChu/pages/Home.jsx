@@ -6,31 +6,27 @@ import HomeData from "./components/HomeData";
 
 export default function Home() {
   const friendList = () => {
-    const friends = [
-      "好朋友",
-      "好朋友",
-      "好朋友",
-      "好朋友",
-      "好朋友",
-      "好朋友"
-    ];
+    const friends = Array(6).fill("好朋友");
+
+    const renderFriendSection = (icon, text) => (
+      <div className={styles.friendListSection}>
+        {icon ? (
+          <div>{icon}</div>
+        ) : (
+          <div className={styles.friendListIcon}></div>
+        )}
+        <div>{text}</div>
+      </div>
+    );
 
     return (
       <div className={styles.friendList}>
-        <div className={styles.friendListSection}>
-          <div className={styles.friendListIcon}></div>
-          <div>你的名字</div>
-        </div>
-        <div className={styles.friendListSection}>
-          <div className={styles.friendListIcon}></div>
-          <div>好友邀請</div>
-        </div>
-
-        <div className={styles.friendListSection}>
-          <img src="/friends.png" />
-          我的好友
-        </div>
-
+        {renderFriendSection("", "你的名字")}
+        {renderFriendSection("", "好友邀請")}
+        <div
+          style={{ width: "90%", background: "#D9D9D9", height: "1px" }}
+        ></div>
+        {renderFriendSection(<img src="/friends.png" />, "我的好友")}
         <div className={styles.friendListMyFriend}>
           {friends.map((friend, index) => (
             <div className={styles.friendListSection} key={index}>
@@ -39,13 +35,11 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <div className={styles.friendListSection}>
-          <img src="/options.png" />
-          查看全部
-        </div>
+        {renderFriendSection(<img src="/options.png" />, "查看全部")}
       </div>
     );
   };
+
   return (
     <div className={styles.body}>
       <div className={styles.container}>

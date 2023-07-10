@@ -1,7 +1,7 @@
 .body {
   background: #f9f9f9;
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 .container {
   padding-top: 1%;
@@ -12,14 +12,15 @@
   gap: 5%;
 }
 .containerRight {
-  display: grid;
-  grid-gap: 1%; /* 設定 1% 的間隔 */
+  // display: grid;
+  // grid-gap: 1%; /* 設定 1% 的間隔 */
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
 }
 
 .friendList {
+  padding: 1%;
   width: 370px;
   height: 582px;
   box-sizing: border-box;
@@ -41,7 +42,7 @@
 }
 .friendListMyFriend {
   width: 100%;
-  gap: 1%;
+  margin: 1%;
 }
 .friendListIcon {
   width: 42px;
@@ -50,6 +51,7 @@
   border-radius: 50%;
 }
 .posting {
+  margin-bottom: 3%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
