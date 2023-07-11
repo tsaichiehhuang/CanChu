@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../Post.module.scss";
+import styles from "../Post/Post.module.scss";
 export default function Header() {
   //header的個人選單
   const [isNameHovered, setIsNameHovered] = useState(false);

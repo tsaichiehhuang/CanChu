@@ -113,6 +113,21 @@
   // margin-top: 56px;
   margin-bottom: 3%;
 }
+.singlePost {
+  padding: 10px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 769px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  border: 1px solid rgba(211, 211, 211, 0.56);
+  background: #fff;
+  // margin-top: 56px;
+  margin-bottom: 3%;
+  margin-top: 3%;
+}
 .firstRow {
   margin-top: 20px;
   width: 700px;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "../../Post.module.scss";
 import MockData from "../MockData";
-import getTimeDiff from "../getTimeDiff";
+import getTimeDiff from "../../components/getTimeDiff";
 
 function Comment({ comment }) {
   const createdAt = new Date(comment.created_at);

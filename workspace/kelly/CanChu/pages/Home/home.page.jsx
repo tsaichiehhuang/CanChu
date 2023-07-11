@@ -1,17 +1,20 @@
 import styles from "./Home.module.scss";
 import React, { useState } from "react";
-import Header from "./components/Header";
-import PostNotComments from "./components/PostNotComments";
+import Header from "../components/Header";
+import Post from "../Post/post.page";
 import HomeData from "./components/HomeData";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
   const friendList = () => {
     const friends = Array(6).fill("好朋友");
 
     const renderFriendSection = (icon, text) => (
       <div className={styles.friendListSection}>
         {icon ? (
-          <div>{icon}</div>
+          <div style={{ marginLeft: "1%" }}>{icon}</div>
         ) : (
           <div className={styles.friendListIcon}></div>
         )}
@@ -42,8 +45,14 @@ export default function Home() {
 
   return (
     <div className={styles.body}>
+      <Header />
       <div className={styles.container}>
-        {friendList()}
+        <div className={styles.containerLeft}>
+          {friendList()}
+          <div className={styles.copyright}>
+            關於我們 · 隱私權條款 · Cookie 條款 · © 2023 CanChu, Inc.
+          </div>
+        </div>
         <div className={styles.containerRight}>
           <div className={styles.posting}>
             <div
@@ -68,7 +77,12 @@ export default function Home() {
             </div>
           </div>
           {HomeData().map(data => (
-            <PostNotComments key={data.id} data={data} />
+            <Post
+              showComments={false}
+              showImage={false}
+              key={data.id}
+              data={data}
+            />
           ))}
         </div>
       </div>
