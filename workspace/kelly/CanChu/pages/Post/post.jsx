@@ -3,14 +3,15 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import getTimeDiff from '../components/getTimeDiff';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 function Comment({ comment }) {
   const createdAt = new Date(comment.created_at);
-  
+
   return (
     <div className={styles.commentContainer}>
-      <img
-        className={styles.commentUserImage}
+      <Image 
+      className={styles.commentUserImage}
         src={comment.user.picture}
         alt="User"
       />
@@ -36,7 +37,7 @@ export default function Post({ data, showComments = true, showImage = true }) {
     context,
     like_count,
     comment_count,
-    comments,
+    comments
   } = data;
 
   return (
@@ -44,7 +45,7 @@ export default function Post({ data, showComments = true, showImage = true }) {
       <div className={styles.container}>
         <div className={postClassName}>
           <div className={`${styles.firstRow} ${styles.row}`}>
-            <img className={styles.circle} src={picture} />
+            <Image className={styles.circle} src={picture} />
             <div className={styles.text}>
               <div className={styles.textOne}>{name}</div>
               <div
@@ -61,8 +62,8 @@ export default function Post({ data, showComments = true, showImage = true }) {
             {context}
           </article>
           <div className={`${styles.thirdRow} ${styles.row}`}>
-            <img className={styles.heartIcon} src={heartIcon} />
-            <img
+            <Image className={styles.heartIcon} src={heartIcon} />
+            <Image
               className={styles.commentIcon}
               src="/comment.png"
               onClick={() => router.push('/posts/demo')}
@@ -92,10 +93,10 @@ export default function Post({ data, showComments = true, showImage = true }) {
             className={`${styles.fiveRow} ${styles.row}`}
             onClick={() => router.push('/posts/demo')}
           >
-            <img className={styles.person} src="/個人照片.png" alt="photo" />
+            <Image className={styles.person} src="/個人照片.png" alt="photo" />
             <div className={styles.selfComment}>
               <div>留個言吧</div>
-              {showImage && <img src="/postButton.png" />}
+              {showImage && <Image src="/postButton.png" />}
             </div>
           </div>
         </div>

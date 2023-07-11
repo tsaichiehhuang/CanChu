@@ -2,9 +2,10 @@ import styles from './Home.module.scss';
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import Post from '../Post/post';
-import HomeData from './components/HomeData';
+import homeData from './components/HomeData';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 export default function Home() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function Home() {
         <div
           style={{ width: '90%', background: '#D9D9D9', height: '1px' }}
         ></div>
-        {renderFriendSection(<img src="/friends.png" />, '我的好友')}
+        {renderFriendSection(<Image src="/friends.png" />, '我的好友')}
         <div className={styles.friendListMyFriend}>
           {friends.map((friend, index) => (
             <div className={styles.friendListSection} key={index}>
@@ -38,7 +39,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-        {renderFriendSection(<img src="/options.png" />, '查看全部')}
+        {renderFriendSection(<Image src="/options.png" />, '查看全部')}
       </div>
     );
   };
@@ -59,10 +60,10 @@ export default function Home() {
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                justifyContent: 'space-between'
               }}
             >
-              <img className={styles.postingPhoto} src="/個人照片.png" />
+              <Image className={styles.postingPhoto} src="/個人照片.png" />
               <div className={styles.postingText}>說點什麼嗎？</div>
             </div>
             <div
@@ -70,13 +71,13 @@ export default function Home() {
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'flex-end',
-                justifyContent: 'flex-end',
+                justifyContent: 'flex-end'
               }}
             >
               <button className={styles.postingButton}>發布貼文</button>
             </div>
           </div>
-          {HomeData().map((data) => (
+          {homeData().map((data) => (
             <Post
               showComments={false}
               showImage={false}

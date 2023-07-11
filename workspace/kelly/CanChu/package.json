@@ -14,9 +14,13 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.22.7",
+    "babel-eslint": "^10.1.0",
     "eslint": "^8.44.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-next": "^13.4.9",
     "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-next": "^0.0.0",
+    "eslint-plugin-proposal": "^2.3.3",
     "prettier": "^3.0.0",
     "prettier-eslint": "^15.0.1"
   }

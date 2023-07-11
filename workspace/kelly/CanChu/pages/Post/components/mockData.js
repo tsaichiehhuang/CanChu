@@ -1,5 +1,3 @@
-import React from 'react';
-
 const MockData = [
   {
     id: 1,
@@ -19,8 +17,8 @@ const MockData = [
         user: {
           id: 2,
           name: '岸邊露伴',
-          picture: 'https://i.imgur.com/Tma98BO.jpg',
-        },
+          picture: 'https://i.imgur.com/Tma98BO.jpg'
+        }
       },
       {
         id: 2,
@@ -29,12 +27,12 @@ const MockData = [
         user: {
           id: 3,
           name: '萊納',
-          picture: 'https://i.imgur.com/DKLeJZN.jpg',
-        },
-      },
+          picture: 'https://i.imgur.com/DKLeJZN.jpg'
+        }
+      }
     ],
-    comment_count: 2,
-  },
+    comment_count: 2
+  }
 ];
 
 export default MockData;

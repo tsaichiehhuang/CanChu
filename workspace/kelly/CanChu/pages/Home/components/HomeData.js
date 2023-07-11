@@ -1,4 +1,4 @@
-export default function HomeData() {
+export default function homeData() {
   return [
     {
       user_id: 1,
@@ -9,7 +9,7 @@ export default function HomeData() {
       created_at: '2023-06-17 12:44:21',
       like_count: 0,
       comment_count: 0,
-      is_like: 0,
+      is_like: 0
     },
     {
       user_id: 14,
@@ -20,7 +20,7 @@ export default function HomeData() {
       created_at: '2023-06-13 16:32:40',
       like_count: 1,
       comment_count: 1,
-      is_like: 1,
+      is_like: 1
     },
     {
       user_id: 14,
@@ -31,7 +31,7 @@ export default function HomeData() {
       created_at: '2023-05-24 17:30:25',
       like_count: 0,
       comment_count: 1,
-      is_like: 0,
-    },
+      is_like: 0
+    }
   ];
 }

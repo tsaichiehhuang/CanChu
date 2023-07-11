@@ -3,14 +3,18 @@ module.exports = {
     browser: true,
     es2021: true
   },
-  extends: 'airbnb-base',
+  extends: ['next', 'prettier'],
   overrides: [],
-  parser: 'babel-eslint',
+  plugins: ['proposal',"prettier"],
+  parser: '@babel/eslint-parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
   rules: {
+    "prettier/prettier": "error",
+    'jsx-a11y/alt-text': 'off',
+    camelcase: 'off',
     'proposal/class-property-semi': ['error', 'never'],
     indent: ['error', 2, { SwitchCase: 1 }],
     'linebreak-style': ['error', 'unix'],
@@ -24,7 +28,6 @@ module.exports = {
     'arrow-spacing': 'error',
     'space-infix-ops': 'error',
     'brace-style': ['error', '1tbs', { allowSingleLine: true }],
-    camelcase: 'error',
     'new-cap': 'error',
     'space-before-blocks': 'error',
     'space-before-function-paren': [
@@ -41,4 +44,4 @@ module.exports = {
     curly: ['error', 'all'],
     'no-unneeded-ternary': 'error'
   }
-}
+};

@@ -48,7 +48,7 @@ export default function Header() {
                 width: '90%',
                 height: '1px',
                 background: '#D1CACE',
-                margin: '0px 10px',
+                margin: '0px 10px'
               }}
             ></div>
             <div className={styles.profileOption}>查看個人檔案</div>
@@ -57,7 +57,7 @@ export default function Header() {
                 width: '90%',
                 height: '1px',
                 background: '#D1CACE',
-                margin: '0px 10px',
+                margin: '0px 10px'
               }}
             ></div>
             <div className={`${styles.profileOption} ${styles.profileLogOut}`}>
