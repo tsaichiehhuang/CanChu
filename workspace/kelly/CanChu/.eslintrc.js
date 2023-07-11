@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es2021: true
   },
-  plugins: ['babel', 'jsx-a11y', 'proposal'],
+  plugins: ['babel', 'jsx-a11y', 'proposal', 'plugin:prettier/recommended'],
   parser: '@babel/eslint-parser',
   extends: ['airbnb-base', 'plugin:jsx-a11y/recommended', 'next', 'prettier'],
   overrides: [],
@@ -23,8 +23,8 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
     'jsx-quotes': ['error', 'prefer-single'],
-    semi: ['error', 'always'],
-    'semi-spacing': ['error'],
+    semi: 'off',
+    'semi-spacing': 'off',
     'comma-dangle': ['error', 'never'],
     'comma-spacing': 'error',
     'key-spacing': 'error',
@@ -46,6 +46,7 @@ module.exports = {
     'no-unreachable': 'error',
     'computed-property-spacing': ['error', 'never'],
     curly: ['error', 'all'],
-    'no-unneeded-ternary': 'error'
+    'no-unneeded-ternary': 'error',
+    'jsx-a11y/alt-text': 'off'
   }
-};
+}
