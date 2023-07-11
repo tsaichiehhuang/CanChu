@@ -1,19 +1,19 @@
-import styles from './Post.module.scss'
-import React, { useState } from 'react'
-import Link from 'next/link'
-import getTimeDiff from '../components/getTimeDiff'
-import { useRouter } from 'next/router'
-import Image from 'next/image'
+import styles from './Post.module.scss';
+import React, { useState } from 'react';
+import Link from 'next/link';
+import getTimeDiff from '../components/getTimeDiff';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 function Comment({ comment }) {
-  const createdAt = new Date(comment.created_at)
+  const createdAt = new Date(comment.created_at);
 
   return (
     <div className={styles.commentContainer}>
       <Image
         className={styles.commentUserImage}
         src={comment.user.picture}
-        alt='User'
+        alt="User"
       />
       <div className={styles.commentContent}>
         <div className={styles.commentContentSquare}>
@@ -23,13 +23,13 @@ function Comment({ comment }) {
         <div className={styles.commentTime}>{getTimeDiff(createdAt)}</div>
       </div>
     </div>
-  )
+  );
 }
 
 export default function Post({ data, showComments = true, showImage = true }) {
-  const router = useRouter()
-  const heartIcon = data.is_like ? '/heart.png' : '/notHeart.png'
-  const postClassName = showComments ? styles.singlePost : styles.post
+  const router = useRouter();
+  const heartIcon = data.is_like ? '/heart.png' : '/notHeart.png';
+  const postClassName = showComments ? styles.singlePost : styles.post;
   const {
     picture,
     name,
@@ -38,7 +38,7 @@ export default function Post({ data, showComments = true, showImage = true }) {
     like_count,
     comment_count,
     comments
-  } = data
+  } = data;
 
   return (
     <div className={styles.body}>
@@ -65,7 +65,7 @@ export default function Post({ data, showComments = true, showImage = true }) {
             <Image className={styles.heartIcon} src={heartIcon} />
             <Image
               className={styles.commentIcon}
-              src='/comment.png'
+              src="/comment.png"
               onClick={() => router.push('/posts/demo')}
             />
           </div>
@@ -93,14 +93,14 @@ export default function Post({ data, showComments = true, showImage = true }) {
             className={`${styles.fiveRow} ${styles.row}`}
             onClick={() => router.push('/posts/demo')}
           >
-            <Image className={styles.person} src='/個人照片.png' alt='photo' />
+            <Image className={styles.person} src="/個人照片.png" alt="photo" />
             <div className={styles.selfComment}>
               <div>留個言吧</div>
-              {showImage && <Image src='/postButton.png' />}
+              {showImage && <Image src="/postButton.png" />}
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

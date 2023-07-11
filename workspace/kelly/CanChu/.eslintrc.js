@@ -3,16 +3,21 @@ module.exports = {
     browser: true,
     es2021: true
   },
-
-  extends: ['next', 'next/core-web-vitals', 'eslint:recommended'],
-  plugins: ['proposal', '@babel'],
+  plugins: ['babel', 'jsx-a11y'],
+  parser: '@babel/eslint-parser',
+  extends: ['airbnb-base', 'plugin:jsx-a11y/recommended'],
   overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'module'
+    sourceType: 'module',
+    requireConfigFile: false
   },
   rules: {
-    'jsx-a11y/alt-text': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'import/no-unresolved': 'off',
+    'import/extensions': 'off',
     'proposal/class-property-semi': ['error', 'never'],
     indent: ['error', 2, { SwitchCase: 1 }],
     'linebreak-style': ['error', 'unix'],
@@ -43,4 +48,4 @@ module.exports = {
     curly: ['error', 'all'],
     'no-unneeded-ternary': 'error'
   }
-}
+};
