@@ -33,5 +33,5 @@ export default function homeData() {
       comment_count: 1,
       is_like: 0
     }
-  ];
+  ]
 }

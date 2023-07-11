@@ -1,16 +1,16 @@
-import styles from './Home.module.scss';
-import React, { useState } from 'react';
-import Header from '../components/Header';
-import Post from '../Post/post';
-import homeData from './components/HomeData';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import Image from 'next/image';
+import styles from './Home.module.scss'
+import React, { useState } from 'react'
+import Header from '../components/Header'
+import Post from '../Post/post'
+import homeData from './components/HomeData'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 export default function Home() {
-  const router = useRouter();
+  const router = useRouter()
   const friendList = () => {
-    const friends = Array(6).fill('好朋友');
+    const friends = Array(6).fill('好朋友')
 
     const renderFriendSection = (icon, text) => (
       <div className={styles.friendListSection}>
@@ -21,7 +21,7 @@ export default function Home() {
         )}
         <div>{text}</div>
       </div>
-    );
+    )
 
     return (
       <div className={styles.friendList}>
@@ -30,7 +30,7 @@ export default function Home() {
         <div
           style={{ width: '90%', background: '#D9D9D9', height: '1px' }}
         ></div>
-        {renderFriendSection(<Image src="/friends.png" />, '我的好友')}
+        {renderFriendSection(<Image src='/friends.png' />, '我的好友')}
         <div className={styles.friendListMyFriend}>
           {friends.map((friend, index) => (
             <div className={styles.friendListSection} key={index}>
@@ -39,10 +39,10 @@ export default function Home() {
             </div>
           ))}
         </div>
-        {renderFriendSection(<Image src="/options.png" />, '查看全部')}
+        {renderFriendSection(<Image src='/options.png' />, '查看全部')}
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div className={styles.body}>
@@ -63,7 +63,7 @@ export default function Home() {
                 justifyContent: 'space-between'
               }}
             >
-              <Image className={styles.postingPhoto} src="/個人照片.png" />
+              <Image className={styles.postingPhoto} src='/個人照片.png' />
               <div className={styles.postingText}>說點什麼嗎？</div>
             </div>
             <div
@@ -88,5 +88,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-  );
+  )
 }
