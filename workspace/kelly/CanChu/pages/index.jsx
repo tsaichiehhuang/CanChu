@@ -1,9 +1,9 @@
 import Post from "./components/Post";
 
-export default function Home() {
+export default function Index() {
   return (
     <div>
-      <Post></Post>
+      <Post />
     </div>
   );
 }
