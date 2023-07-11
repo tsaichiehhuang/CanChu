@@ -33,6 +33,6 @@ const mockData = [
     ],
     comment_count: 2
   }
-]
+];
 
-export default mockData
+export default mockData;

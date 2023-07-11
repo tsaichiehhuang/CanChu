@@ -1,20 +1,16 @@
 import styles from './Post.module.scss';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import getTimeDiff from '../components/getTimeDiff';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import getTimeDiff from '../components/getTimeDiff';
 
 function Comment({ comment }) {
   const createdAt = new Date(comment.created_at);
 
   return (
     <div className={styles.commentContainer}>
-      <Image
-        className={styles.commentUserImage}
-        src={comment.user.picture}
-        alt="User"
-      />
+      <Image className={styles.commentUserImage} src={comment.user.picture} />
       <div className={styles.commentContent}>
         <div className={styles.commentContentSquare}>
           <div className={styles.commentUserName}>{comment.user.name}</div>

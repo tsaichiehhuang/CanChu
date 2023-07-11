@@ -1,11 +1,11 @@
+import React from 'react';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
 import styles from './Home.module.scss';
-import React, { useState } from 'react';
+
 import Header from '../components/Header';
 import Post from '../Post/post';
 import homeData from './components/HomeData';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import Image from 'next/image';
 
 export default function Home() {
   const router = useRouter();

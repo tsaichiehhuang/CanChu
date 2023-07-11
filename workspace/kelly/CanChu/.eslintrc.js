@@ -3,9 +3,9 @@ module.exports = {
     browser: true,
     es2021: true
   },
-  plugins: ['babel', 'jsx-a11y'],
+  plugins: ['babel', 'jsx-a11y', 'proposal'],
   parser: '@babel/eslint-parser',
-  extends: ['airbnb-base', 'plugin:jsx-a11y/recommended'],
+  extends: ['airbnb-base', 'plugin:jsx-a11y/recommended', 'next', 'prettier'],
   overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',
@@ -23,7 +23,7 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
     'jsx-quotes': ['error', 'prefer-single'],
-    semi: ['error', 'never'],
+    semi: ['error', 'always'],
     'semi-spacing': ['error'],
     'comma-dangle': ['error', 'never'],
     'comma-spacing': 'error',
