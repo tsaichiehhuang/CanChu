@@ -1,4 +1,4 @@
-import Post from "./Post/post.page";
+import Post from "./Post/post";
 import Home from "./Home/home.page";
 import Header from "./components/Header";
 import Link from "next/link";

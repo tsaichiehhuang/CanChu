@@ -1,7 +1,7 @@
 import styles from "./Home.module.scss";
 import React, { useState } from "react";
 import Header from "../components/Header";
-import Post from "../Post/post.page";
+import Post from "../Post/post";
 import HomeData from "./components/HomeData";
 import Link from "next/link";
 import { useRouter } from "next/router";
