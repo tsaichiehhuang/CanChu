@@ -1,11 +1,12 @@
-import styles from "./Post.module.scss";
-import React, { useState } from "react";
-import Link from "next/link";
-import getTimeDiff from "../components/getTimeDiff";
-import { useRouter } from "next/router";
+import styles from './Post.module.scss';
+import React, { useState } from 'react';
+import Link from 'next/link';
+import getTimeDiff from '../components/getTimeDiff';
+import { useRouter } from 'next/router';
 
 function Comment({ comment }) {
   const createdAt = new Date(comment.created_at);
+  
   return (
     <div className={styles.commentContainer}>
       <img
@@ -26,7 +27,7 @@ function Comment({ comment }) {
 
 export default function Post({ data, showComments = true, showImage = true }) {
   const router = useRouter();
-  const heartIcon = data.is_like ? "/heart.png" : "/notHeart.png";
+  const heartIcon = data.is_like ? '/heart.png' : '/notHeart.png';
   const postClassName = showComments ? styles.singlePost : styles.post;
   const {
     picture,
@@ -35,7 +36,7 @@ export default function Post({ data, showComments = true, showImage = true }) {
     context,
     like_count,
     comment_count,
-    comments
+    comments,
   } = data;
 
   return (
@@ -48,14 +49,14 @@ export default function Post({ data, showComments = true, showImage = true }) {
               <div className={styles.textOne}>{name}</div>
               <div
                 className={styles.textTwo}
-                onClick={() => router.push("/posts/demo")}
+                onClick={() => router.push('/posts/demo')}
               >
                 {getTimeDiff(new Date(created_at))}
               </div>
             </div>
           </div>
           <article
-            className={`${styles.secondRow} ${styles["multiline-text"]}`}
+            className={`${styles.secondRow} ${styles['multiline-text']}`}
           >
             {context}
           </article>
@@ -64,24 +65,24 @@ export default function Post({ data, showComments = true, showImage = true }) {
             <img
               className={styles.commentIcon}
               src="/comment.png"
-              onClick={() => router.push("/posts/demo")}
+              onClick={() => router.push('/posts/demo')}
             />
           </div>
           <div className={`${styles.fourRow} ${styles.row}`}>
-            <div onClick={() => router.push("/posts/demo")}>
+            <div onClick={() => router.push('/posts/demo')}>
               {like_count}人喜歡這則貼文
             </div>
-            <div onClick={() => router.push("/posts/demo")}>
+            <div onClick={() => router.push('/posts/demo')}>
               {comment_count}則留言
             </div>
           </div>
-          <div style={{ borderTop: "1px solid #bfbfbf", width: "100%" }}></div>
+          <div style={{ borderTop: '1px solid #bfbfbf', width: '100%' }}></div>
           {/* 網友留言 */}
           {showComments && (
             <div className={styles.comments}>
               {comments &&
                 Array.isArray(comments) &&
-                comments.map(comment => (
+                comments.map((comment) => (
                   <Comment key={comment.id} comment={comment} />
                 ))}
             </div>
@@ -89,7 +90,7 @@ export default function Post({ data, showComments = true, showImage = true }) {
 
           <div
             className={`${styles.fiveRow} ${styles.row}`}
-            onClick={() => router.push("/posts/demo")}
+            onClick={() => router.push('/posts/demo')}
           >
             <img className={styles.person} src="/個人照片.png" alt="photo" />
             <div className={styles.selfComment}>

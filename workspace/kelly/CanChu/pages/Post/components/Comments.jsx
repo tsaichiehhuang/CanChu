@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import styles from "../../Post.module.scss";
-import MockData from "../MockData";
-import getTimeDiff from "../../components/getTimeDiff";
+import React, { useState } from 'react';
+import styles from '../../Post.module.scss';
+import MockData from '../MockData';
+import getTimeDiff from '../../components/getTimeDiff';
 
 function Comment({ comment }) {
   const createdAt = new Date(comment.created_at);
@@ -27,7 +27,7 @@ export default function Comments() {
   const comments = MockData().comments;
   return (
     <div className={styles.comments}>
-      {comments.map(comment => (
+      {comments.map((comment) => (
         <Comment key={comment.id} comment={comment} />
       ))}
     </div>

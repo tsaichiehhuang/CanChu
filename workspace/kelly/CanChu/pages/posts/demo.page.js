@@ -1,7 +1,7 @@
-import React from "react";
-import Post from "../Post/post";
-import MockData from "../Post/components/mockData";
-import Header from "../components/Header";
+import React from 'react';
+import Post from '../Post/post';
+import MockData from '../Post/components/mockData';
+import Header from '../components/Header';
 
 export default function Demo() {
   return (
