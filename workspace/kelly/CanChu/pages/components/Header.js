@@ -41,9 +41,11 @@ export default function Header() {
             >
               <img
                 className={styles.profileOptionPhoto}
-                src={isNameHovered ? '/hover個人照片.png' : '/個人照片.png'}
+                style={{ borderRadius: '50%' }}
+                src={user.picture}
+                // src={isNameHovered ? '/hover個人照片.png' : '/個人照片.png'}
               />
-              你的名字
+              {user.name}
             </div>
             <div
               style={{
