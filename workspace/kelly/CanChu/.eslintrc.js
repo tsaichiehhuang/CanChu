@@ -13,6 +13,7 @@ module.exports = {
     requireConfigFile: false
   },
   rules: {
+    'no-param-reassign': 'off',
     'jsx-a11y/alt-text': 'off',
     'no-else-return': 'off',
     'import/newline-after-import': 'off',

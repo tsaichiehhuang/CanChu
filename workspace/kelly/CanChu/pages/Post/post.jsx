@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import getTimeDiff from '../components/getTimeDiff'
+import userData from '../user/components/userData'
 
 function Comment({ comment }) {
   const createdAt = new Date(comment.created_at)
@@ -22,6 +23,7 @@ function Comment({ comment }) {
 }
 
 export default function Post({ data, showComments = true, showImage = true }) {
+  const user = userData()[0]
   const router = useRouter()
   const heartIcon = data.is_like ? '/heart.png' : '/notHeart.png'
   const postClassName = showComments ? styles.singlePost : styles.post
@@ -39,15 +41,18 @@ export default function Post({ data, showComments = true, showImage = true }) {
     <div className={styles.body}>
       <div className={styles.container}>
         <div className={postClassName}>
+          <img className={styles.editIcon} src='/edit.png' />
           <div className={`${styles.firstRow} ${styles.row}`}>
-            <img className={styles.circle} src={picture} />
-            <div className={styles.text}>
-              <div className={styles.textOne}>{name}</div>
-              <div
-                className={styles.textTwo}
-                onClick={() => router.push('/posts/demo')}
-              >
-                {getTimeDiff(new Date(created_at))}
+            <div className={styles.firstRowLeft}>
+              <img className={styles.circle} src={picture} />
+              <div className={styles.text}>
+                <div className={styles.textOne}>{name}</div>
+                <div
+                  className={styles.textTwo}
+                  onClick={() => router.push('/posts/demo')}
+                >
+                  {getTimeDiff(new Date(created_at))}
+                </div>
               </div>
             </div>
           </div>
@@ -88,7 +93,7 @@ export default function Post({ data, showComments = true, showImage = true }) {
             className={`${styles.fiveRow} ${styles.row}`}
             onClick={() => router.push('/posts/demo')}
           >
-            <img className={styles.person} src='/個人照片.png' alt='photo' />
+            <img className={styles.person} src={user.picture} />
             <div className={styles.selfComment}>
               <div>留個言吧</div>
               {showImage && <img src='/postButton.png' />}
