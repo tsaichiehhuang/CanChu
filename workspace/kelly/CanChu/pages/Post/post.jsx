@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import getTimeDiff from '../components/getTimeDiff'
 import userData from '../user/components/userData'
+import Link from 'next/link'
 
 function Comment({ comment }) {
   const createdAt = new Date(comment.created_at)
@@ -53,12 +54,11 @@ export default function Post({
               <img className={styles.circle} src={picture} />
               <div className={styles.text}>
                 <div className={styles.textOne}>{name}</div>
-                <div
-                  className={styles.textTwo}
-                  onClick={() => router.push('/posts/demo')}
-                >
-                  {getTimeDiff(new Date(created_at))}
-                </div>
+                <Link href='/posts/demo' style={{ textDecoration: 'none' }}>
+                  <div className={styles.textTwo}>
+                    {getTimeDiff(new Date(created_at))}
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -69,19 +69,23 @@ export default function Post({
           </article>
           <div className={`${styles.thirdRow} ${styles.row}`}>
             <img className={styles.heartIcon} src={heartIcon} />
-            <img
-              className={styles.commentIcon}
-              src='/comment.png'
-              onClick={() => router.push('/posts/demo')}
-            />
+            <Link href='/posts/demo' style={{ textDecoration: 'none' }}>
+              <img className={styles.commentIcon} src='/comment.png' />
+            </Link>
           </div>
           <div className={`${styles.fourRow} ${styles.row}`}>
-            <div onClick={() => router.push('/posts/demo')}>
-              {like_count}人喜歡這則貼文
-            </div>
-            <div onClick={() => router.push('/posts/demo')}>
-              {comment_count}則留言
-            </div>
+            <Link
+              href='/posts/demo'
+              style={{ textDecoration: 'none', color: '#5C5C5C' }}
+            >
+              <div>{like_count}人喜歡這則貼文</div>
+            </Link>
+            <Link
+              href='/posts/demo'
+              style={{ textDecoration: 'none', color: '#5C5C5C' }}
+            >
+              <div>{comment_count}則留言</div>
+            </Link>
           </div>
           <div style={{ borderTop: '1px solid #bfbfbf', width: '100%' }}></div>
           {/* 網友留言 */}
@@ -95,16 +99,15 @@ export default function Post({
             </div>
           )}
 
-          <div
-            className={`${styles.fiveRow} ${styles.row}`}
-            onClick={() => router.push('/posts/demo')}
-          >
-            <img className={styles.person} src={user.picture} />
-            <div className={styles.selfComment}>
-              <div>留個言吧</div>
-              {showImage && <img src='/postButton.png' />}
+          <Link href='/posts/demo' style={{ textDecoration: 'none' }}>
+            <div className={`${styles.fiveRow} ${styles.row}`}>
+              <img className={styles.person} src='/個人照片.png' alt='photo' />
+              <div className={styles.selfComment}>
+                <div>留個言吧</div>
+                {showImage && <img src='/postButton.png' />}
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>
