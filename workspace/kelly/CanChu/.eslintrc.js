@@ -56,6 +56,7 @@ module.exports = {
     'no-unreachable': 'error',
     'computed-property-spacing': ['error', 'never'],
     curly: ['error', 'all'],
-    'no-unneeded-ternary': 'error'
+    'no-unneeded-ternary': 'error',
+    'jsx-a11y/no-noninteractive-element-interactions': 'off'
   }
 }

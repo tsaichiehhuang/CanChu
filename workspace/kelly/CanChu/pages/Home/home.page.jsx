@@ -30,7 +30,7 @@ export default function Home() {
         <div
           style={{ width: '90%', background: '#D9D9D9', height: '1px' }}
         ></div>
-        {renderFriendSection(<Image src="/friends.png" />, '我的好友')}
+        {renderFriendSection(<img src='/friends.png' />, '我的好友')}
         <div className={styles.friendListMyFriend}>
           {friends.map((friend, index) => (
             <div className={styles.friendListSection} key={index}>
@@ -39,7 +39,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-        {renderFriendSection(<Image src="/options.png" />, '查看全部')}
+        {renderFriendSection(<img src='/options.png' />, '查看全部')}
       </div>
     )
   }
@@ -63,7 +63,7 @@ export default function Home() {
                 justifyContent: 'space-between'
               }}
             >
-              <Image className={styles.postingPhoto} src="/個人照片.png" />
+              <img className={styles.postingPhoto} src='/個人照片.png' />
               <div className={styles.postingText}>說點什麼嗎？</div>
             </div>
             <div
