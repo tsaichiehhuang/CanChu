@@ -22,7 +22,12 @@ function Comment({ comment }) {
   )
 }
 
-export default function Post({ data, showComments = true, showImage = true }) {
+export default function Post({
+  data,
+  showComments = true,
+  showImage = true,
+  showEditIcon = true
+}) {
   const user = userData()[0]
   const router = useRouter()
   const heartIcon = data.is_like ? '/heart.png' : '/notHeart.png'
@@ -41,7 +46,8 @@ export default function Post({ data, showComments = true, showImage = true }) {
     <div className={styles.body}>
       <div className={styles.container}>
         <div className={postClassName}>
-          <img className={styles.editIcon} src='/edit.png' />
+          {showEditIcon && <img className={styles.editIcon} src='/edit.png' />}
+
           <div className={`${styles.firstRow} ${styles.row}`}>
             <div className={styles.firstRowLeft}>
               <img className={styles.circle} src={picture} />

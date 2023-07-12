@@ -81,6 +81,7 @@ export default function Home() {
             <Post
               showComments={false}
               showImage={false}
+              showEditIcon={false}
               key={data.id}
               data={data}
             />

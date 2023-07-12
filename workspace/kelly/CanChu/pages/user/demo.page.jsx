@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import styles from './user.module.scss'
@@ -8,34 +8,42 @@ import homeData from '../Home/components/HomeData'
 import userData from './components/userData'
 
 export default function User() {
+  const [isHovered, setIsHovered] = useState(false)
   const router = useRouter()
   const user = userData()[0]
   const tags = user.tags
   const tagList = tags.split(',')
   const tagRefs = useRef([])
-  const getTextWidth = (text, fontSize, fontFamily) => {
-    const canvas = document.createElement('canvas')
-    const context = canvas.getContext('2d')
-    context.font = `${fontSize} ${fontFamily}`
-    return context.measureText(text).width
-  }
-
-  const setTagWidth = () => {
-    tagRefs.current.forEach((tagRef) => {
-      const { width } = window.getComputedStyle(tagRef)
-      tagRef.style.width = width
-    })
-  }
 
   useEffect(() => {
+    const setTagWidth = () => {
+      tagRefs.current.forEach((tagRef) => {
+        const { width } = window.getComputedStyle(tagRef)
+        tagRef.style.width = width
+      })
+    }
+
     tagRefs.current.forEach((tagRef) => {
       const text = tagRef.textContent
       const fontSize = '16px' // 标签文本的字体大小
       const fontFamily = 'Outfit' // 标签文本的字体
-      const width = getTextWidth(text, fontSize, fontFamily)
+      const canvas = document.createElement('canvas')
+      const context = canvas.getContext('2d')
+      context.font = `${fontSize} ${fontFamily}`
+      const width = context.measureText(text).width + 4
       tagRef.style.width = `${width}px`
     })
+
+    setTagWidth()
   }, [])
+
+  const handleHover = () => {
+    setIsHovered(true)
+  }
+
+  const handleLeave = () => {
+    setIsHovered(false)
+  }
 
   const Introduction = () => (
     <div className={styles.introductionSquare}>
@@ -72,11 +80,17 @@ export default function User() {
       <div className={styles.allContainer}>
         <div className={styles.cover}>
           <div className={styles.coverTop}>
-            <img
-              className={styles.userHeadshot}
-              src={user.picture}
-              alt='大頭貼'
-            />
+            <div className={styles.userHeadshotWrapper}>
+              <img
+                className={styles.userHeadshot}
+                src={user.picture}
+                onMouseEnter={handleHover}
+                onMouseLeave={handleLeave}
+              />
+              {isHovered && (
+                <div className={styles.userHeadshotText}>編輯大頭貼</div>
+              )}
+            </div>
             <div className={styles.coverTopRight}>
               <div className={styles.userName}>{user.name}</div>
               <div className={styles.userFriendCount}>
@@ -125,6 +139,7 @@ export default function User() {
               <Post
                 showComments={false}
                 showImage={false}
+                showEditIcon={true}
                 key={data.id}
                 data={data}
               />

@@ -15,14 +15,13 @@
   gap: 2%;
 
   .coverTop {
-    margin-left: 10%;
     height: 70%;
-    width: 70%;
+    width: 80%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-direction: row;
-    gap: 5%;
+    gap: 3%;
 
     .coverTopRight {
       margin-left: 3%;
@@ -45,10 +44,32 @@
         line-height: 24px;
       }
     }
+    .userHeadshotWrapper {
+      position: relative;
+    }
     .userHeadshot {
+      display: flex;
       max-width: 200px;
       max-height: 200px;
       border-radius: 50%;
+      z-index: 1;
+      &:hover {
+        filter: brightness(70%);
+      }
+    }
+    .userHeadshotText {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-family: Outfit;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px;
+      text-decoration-line: underline;
+      z-index: 2;
     }
   }
   .coverFunction {
@@ -102,8 +123,8 @@
   .introductionContent {
     width: 90%;
     display: flex;
-
     flex-direction: column;
+
     .introductionContentTitle {
       color: #525252;
       font-family: Outfit;
@@ -111,6 +132,7 @@
       font-style: normal;
       font-weight: 700;
       line-height: 24px;
+      margin-bottom: 1.5%;
     }
     .introductionContentText {
       color: #5c5c5c;
