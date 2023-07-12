@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es2021: true
   },
-  plugins: ['babel', 'jsx-a11y', 'proposal', 'plugin:prettier/recommended'],
+  plugins: ['babel', 'jsx-a11y', 'proposal', 'prettier'],
   parser: '@babel/eslint-parser',
   extends: ['airbnb-base', 'plugin:jsx-a11y/recommended', 'next', 'prettier'],
   overrides: [],
@@ -13,6 +13,17 @@ module.exports = {
     requireConfigFile: false
   },
   rules: {
+    'jsx-a11y/alt-text': 'off',
+    'no-else-return': 'off',
+    'import/newline-after-import': 'off',
+    'spaced-comment': 'off',
+    'jsx-quotes': 'off',
+    '@next/next/no-img-element': 'off',
+    'jsx-a11y/img-redundant-alt': 'off',
+    'prefer-destructuring': 'off',
+    'import/order': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'react/jsx-props-no-spreading': 'off',
@@ -22,7 +33,6 @@ module.exports = {
     indent: ['error', 2, { SwitchCase: 1 }],
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
-    'jsx-quotes': ['error', 'prefer-single'],
     semi: 'off',
     'semi-spacing': 'off',
     'comma-dangle': ['error', 'never'],
@@ -46,7 +56,6 @@ module.exports = {
     'no-unreachable': 'error',
     'computed-property-spacing': ['error', 'never'],
     curly: ['error', 'all'],
-    'no-unneeded-ternary': 'error',
-    'jsx-a11y/alt-text': 'off'
+    'no-unneeded-ternary': 'error'
   }
 }
