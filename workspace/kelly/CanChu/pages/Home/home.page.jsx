@@ -2,12 +2,13 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import styles from './Home.module.scss'
-
+import userData from '../user/components/userData'
 import Header from '../components/Header'
 import Post from '../Post/post'
 import homeData from './components/HomeData'
 
 export default function Home() {
+  const user = userData()[0]
   const router = useRouter()
   const friendList = () => {
     const friends = Array(6).fill('好朋友')
@@ -63,7 +64,7 @@ export default function Home() {
                 justifyContent: 'space-between'
               }}
             >
-              <img className={styles.postingPhoto} src='/個人照片.png' />
+              <img className={styles.postingPhoto} src={user.picture} />
               <div className={styles.postingText}>說點什麼嗎？</div>
             </div>
             <div

@@ -1,27 +1,29 @@
-import React, { useState } from 'react';
-import styles from '../Post/Post.module.scss';
+import React, { useState } from 'react'
+import styles from '../Post/Post.module.scss'
+import userData from '../user/components/userData'
 export default function Header() {
+  const user = userData()[0]
   //header的個人選單
-  const [isNameHovered, setIsNameHovered] = useState(false);
-  const [showProfileOptions, setShowProfileOptions] = useState(false);
+  const [isNameHovered, setIsNameHovered] = useState(false)
+  const [showProfileOptions, setShowProfileOptions] = useState(false)
   const handleProfileMouseEnter = () => {
-    setShowProfileOptions(true);
-  };
+    setShowProfileOptions(true)
+  }
 
   const handleProfileMouseLeave = () => {
-    setShowProfileOptions(false);
-  };
+    setShowProfileOptions(false)
+  }
   const handlePhotoMouseEnter = () => {
-    setIsNameHovered(true);
-  };
+    setIsNameHovered(true)
+  }
   const handlePhotoMouseLeave = () => {
-    setIsNameHovered(false);
-  };
+    setIsNameHovered(false)
+  }
   return (
     <div className={styles.header}>
       <div className={styles.logo}>CanChu</div>
       <div className={styles.search}>
-        <img style={{ marginRight: '10px' }} src="/search.png" />
+        <img style={{ marginRight: '10px' }} src='/search.png' />
         搜尋
       </div>
       <div
@@ -29,7 +31,7 @@ export default function Header() {
         onMouseEnter={handleProfileMouseEnter}
         onMouseLeave={handleProfileMouseLeave}
       >
-        <img className={styles.person} src="/個人照片.png" alt="photo" />
+        <img className={styles.person} src={user.picture} alt='photo' />
         {showProfileOptions && (
           <div className={styles.profileOptions}>
             <div
@@ -67,5 +69,5 @@ export default function Header() {
         )}
       </div>
     </div>
-  );
+  )
 }
