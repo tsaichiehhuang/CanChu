@@ -70,6 +70,19 @@ export default function Login({ statusLogin = true }) {
           }
         ></div>
       </div>
+      <div
+        style={{
+          width: '80%',
+          alignItems: 'center',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-end'
+        }}
+      >
+        <div className={styles.copyright}>
+          關於我們 · 隱私權條款 · Cookie 條款 · © 2023 CanChu, Inc.
+        </div>
+      </div>
     </div>
   )
 }
