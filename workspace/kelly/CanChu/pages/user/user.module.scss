@@ -135,12 +135,12 @@
   justify-content: space-around;
   flex-direction: column;
   .introductionButton {
+    cursor: pointer;
     border-radius: 6px;
     background: #5458f7;
     width: 90%;
     height: 40px;
     border: 0px;
-
     color: #fff;
     text-align: center;
     font-family: Outfit;
