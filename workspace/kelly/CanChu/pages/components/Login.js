@@ -73,13 +73,6 @@ const Login = ({
         name={name}
         ref={ref}
       />
-      <input
-        className={styles.inputText}
-        type={name === 'password' ? 'password' : 'text'}
-        placeholder={placeholder}
-        name={name}
-        ref={ref}
-      />
     </div>
   )
 
