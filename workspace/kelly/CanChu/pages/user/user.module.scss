@@ -47,6 +47,9 @@
     .userHeadshotWrapper {
       position: relative;
     }
+    .userHeadshotWrapper:hover .userHeadshot {
+      filter: brightness(70%);
+    }
     .userHeadshot {
       display: flex;
       max-width: 200px;
@@ -57,7 +60,9 @@
         filter: brightness(70%);
       }
     }
-    .userHeadshotText {
+    .userHeadshotWrapper::after {
+      cursor: pointer;
+      content: '編輯大頭貼';
       position: absolute;
       top: 50%;
       left: 50%;
@@ -69,7 +74,31 @@
       font-weight: 700;
       line-height: 24px;
       text-decoration-line: underline;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .userHeadshotWrapper:hover::after {
+      opacity: 1;
+    }
+    .userHeadshotText {
+      cursor: pointer;
+      position: absolute;
+      top: calc(50% - 12px); /* 垂直置中文字 */
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-family: Outfit;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px;
+      text-decoration-line: underline;
       z-index: 2;
+      display: none; /* 預設隱藏文字 */
+    }
+    .userHeadshotWrapper:hover .userHeadshotText {
+      display: block; /* 滑鼠移入時顯示文字 */
     }
   }
   .coverFunction {
