@@ -8,6 +8,7 @@ const SignupPage = () => {
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const confirmPasswordRef = useRef(null)
+
   const apiUrl = process.env.API_DOMAIN
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -47,7 +48,7 @@ const SignupPage = () => {
         console.error(responseData.error)
       }
     } catch (error) {
-      console.error('网络请求错误', error)
+      console.error('網路請求錯誤', error)
     }
   }
 
