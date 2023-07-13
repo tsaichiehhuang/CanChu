@@ -1,13 +1,33 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import styles from './login.module.scss'
 import Link from 'next/link'
 
-export default function Login({ statusLogin = true }) {
-  const inputInfo = (title, text) => (
+export default function Login({
+  statusLogin = true,
+  nameRef,
+  emailRef,
+  passwordRef,
+  confirmPasswordRef
+}) {
+  const router = useRouter()
+  const handleLogin = () => {
+    router.push('/login')
+  }
+
+  const handleSignup = () => {
+    router.push('/signup')
+  }
+  const inputInfo = (title, placeholder, name, ref) => (
     <div className={styles.inputGroup}>
       <div className={styles.inputTitle}>{title}</div>
-      <div className={styles.inputText}>{text}</div>
+      <input
+        className={styles.inputText}
+        type={name === 'password' ? 'password' : 'text'}
+        placeholder={placeholder}
+        name={name}
+        ref={ref}
+      />
     </div>
   )
   return (
@@ -26,22 +46,33 @@ export default function Login({ statusLogin = true }) {
           )}
           {statusLogin ? (
             <div className={styles.inputSquare}>
-              {inputInfo('電子郵件', '例: shirney@appworks.tw')}
-              {inputInfo('密碼', '')}
+              {inputInfo(
+                '電子郵件',
+                '例: shirney@appworks.tw',
+                'email',
+                emailRef
+              )}
+              {inputInfo('密碼', '', 'password', passwordRef)}
             </div>
           ) : (
             <div className={styles.inputSquare}>
-              {inputInfo('使用者名稱', '例: Chou Chou Hu')}
-              {inputInfo('電子郵件', '例: shirney@appworks.tw')}
-              {inputInfo('密碼', '')}
-              {inputInfo('再次輸入密碼', '')}
+              {inputInfo('使用者名稱', '例: Chou Chou Hu', 'name', nameRef)}
+              {inputInfo(
+                '電子郵件',
+                '例: shirney@appworks.tw',
+                'email',
+                emailRef
+              )}
+              {inputInfo('密碼', '', 'password', passwordRef)}
+              {inputInfo('再次輸入密碼', '', 'password', confirmPasswordRef)}
             </div>
           )}
-          {statusLogin ? (
-            <button className={styles.loginButton}>登入</button>
-          ) : (
-            <button className={styles.loginButton}>註冊</button>
-          )}
+          <button
+            className={styles.loginButton}
+            onClick={statusLogin ? handleLogin : handleSignup}
+          >
+            {statusLogin ? '登入' : '註冊'}
+          </button>
           {statusLogin ? (
             <div>
               尚未成為會員?{' '}
