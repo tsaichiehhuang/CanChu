@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styles from '../Post/Post.module.scss'
+import styles from './Header.module.scss'
 import userData from '../user/components/userData'
 import { useRouter } from 'next/router'
 
