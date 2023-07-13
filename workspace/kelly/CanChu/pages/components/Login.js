@@ -73,6 +73,13 @@ const Login = ({
         name={name}
         ref={ref}
       />
+      <input
+        className={styles.inputText}
+        type={name === 'password' ? 'password' : 'text'}
+        placeholder={placeholder}
+        name={name}
+        ref={ref}
+      />
     </div>
   )
 
@@ -101,9 +108,25 @@ const Login = ({
                 emailRef
               )}
               {inputInfo('密碼', '', 'password', passwordRef)}
+              {inputInfo(
+                '電子郵件',
+                '例: shirney@appworks.tw',
+                'email',
+                emailRef
+              )}
+              {inputInfo('密碼', '', 'password', passwordRef)}
             </div>
           ) : (
             <div className={styles.inputSquare}>
+              {inputInfo('使用者名稱', '例: Chou Chou Hu', 'name', nameRef)}
+              {inputInfo(
+                '電子郵件',
+                '例: shirney@appworks.tw',
+                'email',
+                emailRef
+              )}
+              {inputInfo('密碼', '', 'password', passwordRef)}
+              {inputInfo('再次輸入密碼', '', 'password', confirmPasswordRef)}
               {inputInfo('使用者名稱', '例: Chou Chou Hu', 'name', nameRef)}
               {inputInfo(
                 '電子郵件',
