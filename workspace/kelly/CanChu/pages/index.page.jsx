@@ -1,12 +1,10 @@
-import Post from "./Post/post";
-import Home from "./Home/home.page";
-import Header from "./components/Header";
-import Link from "next/link";
+import Home from './Home/home.page'
+import React from 'react'
 
 export default function Index() {
   return (
     <div>
       <Home />
     </div>
-  );
+  )
 }
