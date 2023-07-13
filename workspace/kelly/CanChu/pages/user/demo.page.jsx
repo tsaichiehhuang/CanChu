@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+
 import Image from 'next/image'
 import styles from './user.module.scss'
 import Header from '../components/Header'
@@ -8,8 +8,6 @@ import homeData from '../Home/components/HomeData'
 import userData from './components/userData'
 
 export default function User() {
-  const [isHovered, setIsHovered] = useState(false)
-  const router = useRouter()
   const user = userData()[0]
   const tags = user.tags
   const tagList = tags.split(',')
@@ -36,14 +34,6 @@ export default function User() {
 
     setTagWidth()
   }, [])
-
-  const handleHover = () => {
-    setIsHovered(true)
-  }
-
-  const handleLeave = () => {
-    setIsHovered(false)
-  }
 
   const Introduction = () => (
     <div className={styles.introductionSquare}>
@@ -81,15 +71,7 @@ export default function User() {
         <div className={styles.cover}>
           <div className={styles.coverTop}>
             <div className={styles.userHeadshotWrapper}>
-              <img
-                className={styles.userHeadshot}
-                src={user.picture}
-                onMouseEnter={handleHover}
-                onMouseLeave={handleLeave}
-              />
-              {isHovered && (
-                <div className={styles.userHeadshotText}>編輯大頭貼</div>
-              )}
+              <img className={styles.userHeadshot} src={user.picture} />
             </div>
             <div className={styles.coverTopRight}>
               <div className={styles.userName}>{user.name}</div>
