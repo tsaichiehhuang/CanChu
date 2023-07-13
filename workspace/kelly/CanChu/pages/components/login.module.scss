@@ -61,7 +61,7 @@
 .logo {
   color: #7763fb;
   text-align: center;
-  font-family: 'Pattaya';
+  font-family: 'Pattaya', sans-serif;
   font-size: 60px;
   font-style: normal;
   font-weight: 400;
@@ -69,7 +69,7 @@
 .title {
   color: #000;
   text-align: center;
-  font-family: 'Outfit';
+  font-family: 'Alkatra', sans-serif;
   font-size: 36px;
   font-style: normal;
   font-weight: 100;
@@ -84,7 +84,7 @@
     margin-bottom: 5%;
     .inputTitle {
       color: #000;
-      font-family: Outfit;
+      font-family: 'Alkatra', sans-serif;
       font-size: 16px;
       font-style: normal;
       font-weight: 500;
@@ -96,33 +96,34 @@
       background: #fff;
       width: 330px;
       height: 40px;
-      color: #bfbfbf;
+      color: #000;
       display: flex;
       padding: 0 1%;
       align-items: center;
       justify-content: flex-start;
+    }
+    .inputText::placeholder {
+      color: #bfbfbf;
     }
   }
 }
 .loginButton {
   width: 140.812px;
   height: 40px;
-
   border-radius: 6px;
   background: #5458f7;
   border: 0px;
   color: #fff;
-  color: #fff;
   text-align: center;
-  font-family: Outfit;
+  font-family: 'Alkatra', sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: 24px;
 }
-.copyright {
+.copyrigh {
   color: #525252;
-  font-family: Helvetica Neue;
+  font-family: 'Helvetica Neue', sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;

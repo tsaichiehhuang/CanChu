@@ -30,7 +30,7 @@ const Login = ({
     const password = passwordRef.current?.value
 
     if (!name || !email || !password) {
-      console.error('姓名、电子邮件和密码为必填字段')
+      console.error('姓名、電子郵件和密碼為必填字段')
       return
     }
 
@@ -59,7 +59,7 @@ const Login = ({
         console.error(responseData.error)
       }
     } catch (error) {
-      console.error('网络请求错误', error)
+      console.error('網路請求錯誤', error)
     }
   }
 
@@ -68,7 +68,7 @@ const Login = ({
       <div className={styles.inputTitle}>{title}</div>
       <input
         className={styles.inputText}
-        type='text'
+        type={name === 'password' ? 'password' : 'text'}
         placeholder={placeholder}
         name={name}
         ref={ref}
@@ -77,7 +77,7 @@ const Login = ({
   )
 
   useEffect(() => {
-    // 在此处进行其他操作
+    // 在此處進行其他操作
   }, [])
 
   return (
@@ -112,12 +112,7 @@ const Login = ({
                 emailRef
               )}
               {inputInfo('密碼', '', 'password', passwordRef)}
-              {inputInfo(
-                '再次輸入密碼',
-                '',
-                'confirmPassword',
-                confirmPasswordRef
-              )}
+              {inputInfo('再次輸入密碼', '', 'password', confirmPasswordRef)}
             </div>
           )}
 
