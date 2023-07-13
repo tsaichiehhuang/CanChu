@@ -8,6 +8,7 @@ const SignupPage = () => {
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const confirmPasswordRef = useRef(null)
+
   const apiUrl = process.env.API_DOMAIN
   const handleSubmit = async (event) => {
     event.preventDefault()
