@@ -48,7 +48,7 @@ const SignupPage = () => {
         console.error(responseData.error)
       }
     } catch (error) {
-      console.error('网络请求错误', error)
+      console.error('網路請求錯誤', error)
     }
   }
 

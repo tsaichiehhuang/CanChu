@@ -3,8 +3,6 @@ import { useRouter } from 'next/router'
 import styles from './login.module.scss'
 import Link from 'next/link'
 
-const apiUrl = process.env.API_DOMAIN
-
 const Login = ({
   statusLogin = true,
   nameRef,
