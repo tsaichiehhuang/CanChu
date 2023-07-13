@@ -1,17 +1,18 @@
 import styles from './Post.module.scss'
 import React, { useState } from 'react'
-import { useRouter } from 'next/router'
-import Image from 'next/image'
 import getTimeDiff from '../components/getTimeDiff'
 import userData from '../user/components/userData'
 import Link from 'next/link'
 
 function Comment({ comment }) {
   const createdAt = new Date(comment.created_at)
-
   return (
     <div className={styles.commentContainer}>
-      <img className={styles.commentUserImage} src={comment.user.picture} />
+      <img
+        className={styles.commentUserImage}
+        src={comment.user.picture}
+        alt='User'
+      />
       <div className={styles.commentContent}>
         <div className={styles.commentContentSquare}>
           <div className={styles.commentUserName}>{comment.user.name}</div>
@@ -30,7 +31,7 @@ export default function Post({
   showEditIcon = true
 }) {
   const user = userData()[0]
-  const router = useRouter()
+
   const heartIcon = data.is_like ? '/heart.png' : '/notHeart.png'
   const postClassName = showComments ? styles.singlePost : styles.post
   const {
@@ -98,7 +99,6 @@ export default function Post({
                 ))}
             </div>
           )}
-
           <Link href='/posts/demo' style={{ textDecoration: 'none' }}>
             <div className={`${styles.fiveRow} ${styles.row}`}>
               <img className={styles.person} src='/個人照片.png' alt='photo' />
