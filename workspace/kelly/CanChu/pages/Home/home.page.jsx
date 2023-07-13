@@ -6,6 +6,7 @@ import userData from '../user/components/userData'
 import Header from '../components/Header'
 import Post from '../Post/post'
 import homeData from './components/HomeData'
+import ProtectedPage from '../components/ProtectedPage.js'
 
 export default function Home() {
   const user = userData()[0]
@@ -46,49 +47,51 @@ export default function Home() {
   }
 
   return (
-    <div className={styles.body}>
-      <Header />
-      <div className={styles.container}>
-        <div className={styles.containerLeft}>
-          {friendList()}
-          <div className={styles.copyright}>
-            關於我們 · 隱私權條款 · Cookie 條款 · © 2023 CanChu, Inc.
-          </div>
-        </div>
-        <div className={styles.containerRight}>
-          <div className={styles.posting}>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between'
-              }}
-            >
-              <img className={styles.postingPhoto} src={user.picture} />
-              <div className={styles.postingText}>說點什麼嗎？</div>
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'flex-end',
-                justifyContent: 'flex-end'
-              }}
-            >
-              <button className={styles.postingButton}>發布貼文</button>
+    <ProtectedPage>
+      <div className={styles.body}>
+        <Header />
+        <div className={styles.container}>
+          <div className={styles.containerLeft}>
+            {friendList()}
+            <div className={styles.copyright}>
+              關於我們 · 隱私權條款 · Cookie 條款 · © 2023 CanChu, Inc.
             </div>
           </div>
-          {homeData().map((data) => (
-            <Post
-              showComments={false}
-              showImage={false}
-              showEditIcon={false}
-              key={data.id}
-              data={data}
-            />
-          ))}
+          <div className={styles.containerRight}>
+            <div className={styles.posting}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <img className={styles.postingPhoto} src={user.picture} />
+                <div className={styles.postingText}>說點什麼嗎？</div>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'flex-end',
+                  justifyContent: 'flex-end'
+                }}
+              >
+                <button className={styles.postingButton}>發布貼文</button>
+              </div>
+            </div>
+            {homeData().map((data) => (
+              <Post
+                showComments={false}
+                showImage={false}
+                showEditIcon={false}
+                key={data.id}
+                data={data}
+              />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </ProtectedPage>
   )
 }
