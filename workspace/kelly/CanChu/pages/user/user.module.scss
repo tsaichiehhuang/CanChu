@@ -52,8 +52,8 @@
     }
     .userHeadshot {
       display: flex;
-      max-width: 200px;
-      max-height: 200px;
+      width: 180px;
+      height: 180px;
       border-radius: 50%;
       z-index: 1;
       &:hover {
@@ -135,7 +135,6 @@
   justify-content: space-around;
   flex-direction: column;
   .introductionButton {
-    cursor: pointer;
     border-radius: 6px;
     background: #5458f7;
     width: 90%;
