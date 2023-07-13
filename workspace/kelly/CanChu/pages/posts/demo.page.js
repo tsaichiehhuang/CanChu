@@ -7,7 +7,12 @@ export default function Demo() {
   return (
     <div>
       <Header />
-      <Post data={MockData[0]} showComments={true} showImage={true} />
+      <Post
+        data={MockData[0]}
+        showComments={true}
+        showImage={true}
+        showEditIcon={false}
+      />
     </div>
   )
 }
