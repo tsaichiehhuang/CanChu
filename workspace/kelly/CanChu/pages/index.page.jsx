@@ -1,10 +1,10 @@
-import Home from './Home/home.page'
+import LoginPage from './login/index.page'
 import React from 'react'
 
 export default function Index() {
   return (
     <div>
-      <Home />
+      <LoginPage />
     </div>
   )
 }

@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import styles from '../Post/Post.module.scss'
 import userData from '../user/components/userData'
+import { useRouter } from 'next/router'
+
 export default function Header() {
+  const router = useRouter()
   const user = userData()[0]
   //header的個人選單
   const [isNameHovered, setIsNameHovered] = useState(false)
@@ -18,6 +21,13 @@ export default function Header() {
   }
   const handlePhotoMouseLeave = () => {
     setIsNameHovered(false)
+  }
+  const handleLogout = () => {
+    // 执行登出逻辑，例如清除用户登录状态等
+    localStorage.removeItem('accessToken')
+
+    // 重定向到登录页面
+    router.push('/login')
   }
   return (
     <div className={styles.header}>
@@ -64,7 +74,10 @@ export default function Header() {
                 margin: '0px 10px'
               }}
             ></div>
-            <div className={`${styles.profileOption} ${styles.profileLogOut}`}>
+            <div
+              className={`${styles.profileOption} ${styles.profileLogOut}`}
+              onClick={handleLogout}
+            >
               登出
             </div>
           </div>
