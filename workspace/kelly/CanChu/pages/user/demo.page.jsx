@@ -29,8 +29,8 @@ export default function User() {
 
     tagRefs.current.forEach((tagRef) => {
       const text = tagRef.textContent
-      const fontSize = '16px' // 标签文本的字体大小
-      const fontFamily = 'Outfit' // 标签文本的字体
+      const fontSize = '16px'
+      const fontFamily = 'Outfit'
       const canvas = document.createElement('canvas')
       const context = canvas.getContext('2d')
       context.font = `${fontSize} ${fontFamily}`
@@ -130,13 +130,16 @@ export default function User() {
             <div className={styles.coverTop}>
               <div className={styles.userHeadshotWrapper}>
                 <img className={styles.userHeadshot} src={user.picture} />
-                <div className={styles.userHeadshotText}>編輯大頭貼</div>
-                <input
-                  type='file'
-                  accept='image/*'
-                  className={styles.userHeadshotInput}
-                  onChange={handlePictureUpload}
-                />
+                <div className={styles.userHeadshotText}>
+                  編輯大頭貼
+                  <input
+                    style={{ cursor: 'pointer', fontSize: '0' }}
+                    type='file'
+                    accept='image/*'
+                    className={styles.userHeadshotInput}
+                    onChange={handlePictureUpload}
+                  />
+                </div>
               </div>
               <div className={styles.coverTopRight}>
                 <div className={styles.userName}>{user.name}</div>

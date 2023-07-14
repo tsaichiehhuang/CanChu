@@ -11,7 +11,7 @@ const SignupPage = () => {
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken')
     if (accessToken) {
-      router.replace('/Home/home') // 已登入，重定向到其他頁面
+      router.replace('/') // 已登入，重定向到其他頁面
     }
   }, [])
   const apiUrl = process.env.API_DOMAIN

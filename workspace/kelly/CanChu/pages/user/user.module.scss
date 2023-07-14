@@ -45,16 +45,19 @@
       }
     }
     .userHeadshotWrapper {
+      cursor: pointer;
       position: relative;
       &:hover .userHeadshot {
         filter: brightness(70%);
       }
       &:hover .userHeadshotText {
         display: block; /* 滑鼠移入時顯示文字 */
+        cursor: pointer;
       }
+
       &::after {
         cursor: pointer;
-        content: '編輯大頭貼';
+        // content: '編輯大頭貼';
         position: absolute;
         top: 50%;
         left: 50%;
@@ -71,6 +74,7 @@
       }
       &:hover::after {
         opacity: 1;
+        cursor: pointer;
       }
     }
     .userHeadshotInput {
@@ -81,9 +85,11 @@
       height: 100%;
       opacity: 0;
       cursor: pointer;
+      border: #000 1px solid;
     }
 
     .userHeadshot {
+      cursor: pointer;
       display: flex;
       width: 180px;
       height: 180px;
