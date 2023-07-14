@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import styles from './Home.module.scss'
-import userData from '../user/components/userData'
-import Header from '../components/Header'
-import Post from '../Post/post'
-import homeData from './components/HomeData'
-import Copyright from '../components/Copyright'
-
-import ProtectedPage from '../components/ProtectedPage.js'
+import userData from '../user/userData'
+import Header from '../../components/Header'
+import Post from '../Post'
+import Copyright from '../../components/Copyright'
+import ProtectedPage from '../../components/ProtectedPage'
 const apiUrl = process.env.API_DOMAIN
 export default function Home() {
   const user = userData()[0]

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { useRouter } from 'next/router'
-import Login from '../components/Login'
+import Login from '../../components/Login'
 
 const apiUrl = process.env.API_DOMAIN
 

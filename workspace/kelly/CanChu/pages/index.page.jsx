@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Home from './Home/home.page'
+import Home from './Home'
 import LoginPage from './login/index.page'
 import { useRouter } from 'next/router'
 

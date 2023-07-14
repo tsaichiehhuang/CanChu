@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styles from './Header.module.scss'
-import userData from '../user/components/userData'
+import userData from '../pages/user/userData'
 import { useRouter } from 'next/router'
 
 export default function Header() {

@@ -1,7 +1,7 @@
 import styles from './Post.module.scss'
 import React, { useState } from 'react'
-import getTimeDiff from '../components/getTimeDiff'
-import userData from '../user/components/userData'
+import getTimeDiff from '../../components/getTimeDiff'
+import userData from '../user/userData'
 import Link from 'next/link'
 
 function Comment({ comment }) {

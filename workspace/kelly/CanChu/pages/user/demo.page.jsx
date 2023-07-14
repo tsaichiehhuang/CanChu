@@ -1,11 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react'
-import ProtectedPage from '../components/ProtectedPage.js'
+import ProtectedPage from '../../components/ProtectedPage'
 import styles from './user.module.scss'
-import Header from '../components/Header'
-import Post from '../Post/post'
-import homeData from '../Home/components/HomeData'
-import userData from './components/userData'
-import Copyright from '../components/Copyright'
+import Header from '../../components/Header'
+import Post from '../Post'
+import homeData from '../Home/HomeData'
+import userData from './userData'
+import Copyright from '../../components/Copyright'
 
 export default function User() {
   const user = userData()[0]
