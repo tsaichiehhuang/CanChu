@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Login from '../components/Login'
 import ProtectedPage from '../components/ProtectedPage.js'
@@ -9,6 +9,13 @@ const LoginPage = () => {
   const router = useRouter()
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken')
+    if (accessToken) {
+      router.replace('/Home/home') // 已登入，重定向到其他頁面
+    }
+  }, [])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -55,7 +62,7 @@ const LoginPage = () => {
   }
 
   return (
-    <ProtectedPage>
+    <div>
       <form onSubmit={handleSubmit}>
         <Login
           statusLogin={true}
@@ -63,7 +70,7 @@ const LoginPage = () => {
           passwordRef={passwordRef}
         />
       </form>
-    </ProtectedPage>
+    </div>
   )
 }
 
