@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import styles from './PostCreator.module.scss'
 import userData from '../../pages/user/userData'
 
+const apiUrl = process.env.API_DOMAIN
+
 export default function PostCreator({ onPostSubmit }) {
   const user = userData()[0]
   const [postContent, setPostContent] = useState('')
+  const [postData, setPostData] = useState([]) // 改為空數組作為初始值
 
   const handlePostSubmit = () => {
     // 檢查字段值是否存在且不為空
@@ -13,8 +16,56 @@ export default function PostCreator({ onPostSubmit }) {
       return
     }
 
-    onPostSubmit(postContent)
-    setPostContent('') // 發布後清空輸入框內容
+    // 構造請求體
+    const requestBody = {
+      context: postContent
+    }
+
+    // 獲取存儲在本地的訪問令牌
+    const accessToken = localStorage.getItem('accessToken')
+
+    if (!accessToken) {
+      console.error('未找到accessToken')
+      return
+    }
+
+    // 發送 POST 請求到 API
+    fetch(`${apiUrl}/posts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`
+      },
+      body: JSON.stringify(requestBody)
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error('發布貼文失敗')
+        }
+      })
+      .then((responseData) => {
+        // 請求成功，將返回的帖子數據添加到頁面中顯示
+        const newPost = {
+          id: responseData.data.post.id,
+          created_at: new Date().toISOString(), // 使用當下的時間
+          context: postContent,
+          is_like: false,
+          like_count: 0,
+          comment_count: 0,
+          picture: user.picture,
+          name: user.name
+        }
+        setPostData((prevData) => [newPost, ...prevData])
+
+        window.location.reload() // 自動重新整理頁面
+
+        setPostContent('') // 發布後清空輸入框內容
+      })
+      .catch((error) => {
+        console.error('網絡請求錯誤', error)
+      })
   }
 
   return (

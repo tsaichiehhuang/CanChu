@@ -8,8 +8,13 @@ import userData from './userData'
 import Copyright from '../../components/Copyright'
 import PostCreator from '../../components/PostCreator'
 
+const apiUrl = process.env.API_DOMAIN
+
 export default function User() {
-  const user = userData()[0]
+  const [selectedPicture, setSelectedPicture] = useState(null)
+  const [userState, setUserState] = useState(userData())
+
+  const user = userState[0] // 使用 `userState` 狀態變量
   const tags = user.tags
   const tagList = tags.split(',')
   const tagRefs = useRef([])
@@ -35,6 +40,53 @@ export default function User() {
 
     setTagWidth()
   }, [])
+
+  const updateUser = (updatedUser) => {
+    const updatedUserData = [updatedUser]
+    setUserState(updatedUserData)
+  }
+
+  const uploadPicture = async (file) => {
+    try {
+      const accessToken = localStorage.getItem('accessToken')
+
+      if (!accessToken) {
+        console.error('未找到accessToken')
+        return
+      }
+
+      const formData = new FormData()
+      formData.append('picture', file)
+
+      const response = await fetch(`${apiUrl}/users/picture`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        },
+        body: formData
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        const pictureUrl = data?.data?.picture
+        // 更新用戶的圖片
+        const updatedUser = { ...user, picture: pictureUrl }
+        // 更新用戶數據
+        updateUser(updatedUser)
+      } else {
+        console.error('上傳圖片失敗')
+      }
+    } catch (error) {
+      console.error('網絡請求錯誤', error)
+    }
+  }
+
+  const handlePictureUpload = (event) => {
+    const file = event.target.files[0]
+    setSelectedPicture(file)
+    // 調用上傳圖片的 API 函式，並將 `file` 作為參數傳遞
+    uploadPicture(file)
+  }
 
   const Profile = () => (
     <div className={styles.profileSquare}>
@@ -78,6 +130,13 @@ export default function User() {
             <div className={styles.coverTop}>
               <div className={styles.userHeadshotWrapper}>
                 <img className={styles.userHeadshot} src={user.picture} />
+                <div className={styles.userHeadshotText}>編輯大頭貼</div>
+                <input
+                  type='file'
+                  accept='image/*'
+                  className={styles.userHeadshotInput}
+                  onChange={handlePictureUpload}
+                />
               </div>
               <div className={styles.coverTopRight}>
                 <div className={styles.userName}>{user.name}</div>
