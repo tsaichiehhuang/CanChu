@@ -124,7 +124,7 @@
     }
   }
 }
-.introductionSquare {
+.profileSquare {
   width: 80%;
   height: 40vh;
   padding: 5% 3%;
@@ -135,7 +135,7 @@
   align-items: center;
   justify-content: space-around;
   flex-direction: column;
-  .introductionButton {
+  .profileButton {
     cursor: pointer;
     border-radius: 6px;
     background: #5458f7;
@@ -150,12 +150,12 @@
     font-weight: 700;
     line-height: 24px;
   }
-  .introductionContent {
+  .profileContent {
     width: 90%;
     display: flex;
     flex-direction: column;
 
-    .introductionContentTitle {
+    .profileContentTitle {
       color: #525252;
       font-family: Outfit;
       font-size: 18px;
@@ -164,7 +164,7 @@
       line-height: 24px;
       margin-bottom: 1.5%;
     }
-    .introductionContentText {
+    .profileContentText {
       color: #5c5c5c;
       font-family: Outfit;
       font-size: 16px;
@@ -172,7 +172,7 @@
       font-weight: 500;
       line-height: 24px;
     }
-    .introductionContentTag {
+    .profileContentTag {
       width: 90%;
       gap: 2%;
       display: flex;

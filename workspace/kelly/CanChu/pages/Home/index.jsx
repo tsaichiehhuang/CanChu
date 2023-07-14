@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import styles from './Home.module.scss'
 import userData from '../user/userData'
 import Header from '../../components/Header'
+import PostCreator from '../../components/PostCreator'
 import Post from '../Post'
 import Copyright from '../../components/Copyright'
 import ProtectedPage from '../../components/ProtectedPage'
+
 const apiUrl = process.env.API_DOMAIN
 export default function Home() {
   const user = userData()[0]
@@ -154,39 +156,7 @@ export default function Home() {
             </div>
           </div>
           <div className={styles.containerRight}>
-            <div className={styles.posting}>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between'
-                }}
-              >
-                <img className={styles.postingPhoto} src={user.picture} />
-                <textarea
-                  className={styles.postingText}
-                  placeholder='說點什麼嗎？'
-                  style={{ resize: 'none' }}
-                  value={postContent}
-                  onChange={(event) => setPostContent(event.target.value)}
-                ></textarea>
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'flex-end',
-                  justifyContent: 'flex-end'
-                }}
-              >
-                <button
-                  className={styles.postingButton}
-                  onClick={handlePostSubmit}
-                >
-                  發布貼文
-                </button>
-              </div>
-            </div>
+            <PostCreator onPostSubmit={handlePostSubmit} />
             {postData.map((data) => (
               <Post
                 showComments={false}

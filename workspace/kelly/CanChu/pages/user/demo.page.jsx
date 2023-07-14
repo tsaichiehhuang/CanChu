@@ -6,6 +6,7 @@ import Post from '../Post'
 import homeData from '../Home/HomeData'
 import userData from './userData'
 import Copyright from '../../components/Copyright'
+import PostCreator from '../../components/PostCreator'
 
 export default function User() {
   const user = userData()[0]
@@ -35,19 +36,17 @@ export default function User() {
     setTagWidth()
   }, [])
 
-  const Introduction = () => (
-    <div className={styles.introductionSquare}>
-      <button className={styles.introductionButton}>編輯個人檔案</button>
+  const Profile = () => (
+    <div className={styles.profileSquare}>
+      <button className={styles.profileButton}>編輯個人檔案</button>
 
-      <div className={styles.introductionContent}>
-        <div className={styles.introductionContentTitle}>自我介紹</div>
-        <div className={styles.introductionContentText}>
-          {user.introduction}
-        </div>
+      <div className={styles.profileContent}>
+        <div className={styles.profileContentTitle}>自我介紹</div>
+        <div className={styles.profileContentText}>{user.introduction}</div>
       </div>
-      <div className={styles.introductionContent}>
-        <div className={styles.introductionContentTitle}>興趣</div>
-        <div className={styles.introductionContentTag}>
+      <div className={styles.profileContent}>
+        <div className={styles.profileContentTitle}>興趣</div>
+        <div className={styles.profileContentTag}>
           {tagList.map((tag, index) => (
             <div
               key={index}
@@ -96,34 +95,14 @@ export default function User() {
           </div>
           <div className={styles.container}>
             <div className={styles.containerLeft}>
-              <Introduction />
+              <Profile />
               <div style={{ width: '274px', marginLeft: '10%' }}>
                 <Copyright />
               </div>
             </div>
             <div className={styles.containerRight}>
-              <div className={styles.posting}>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <img className={styles.postingPhoto} src={user.picture} />
-                  <div className={styles.postingText}>說點什麼嗎？</div>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'flex-end',
-                    justifyContent: 'flex-end'
-                  }}
-                >
-                  <button className={styles.postingButton}>發布貼文</button>
-                </div>
-              </div>
+              <PostCreator />
+
               {homeData().map((data) => (
                 <Post
                   showComments={false}
