@@ -1,8 +1,8 @@
 import styles from './Post.module.scss'
 import React, { useState } from 'react'
-import Link from 'next/link'
 import getTimeDiff from '../components/getTimeDiff'
 import userData from '../user/components/userData'
+import Link from 'next/link'
 
 function Comment({ comment }) {
   const createdAt = new Date(comment.created_at)

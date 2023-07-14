@@ -3,14 +3,15 @@ import { useRouter } from 'next/router'
 import styles from './login.module.scss'
 import Link from 'next/link'
 
-export default function Login({
+const Login = ({
   statusLogin = true,
   nameRef,
   emailRef,
   passwordRef,
   confirmPasswordRef
-}) {
+}) => {
   const router = useRouter()
+
   const handleLogin = () => {
     router.push('/login')
   }
@@ -18,6 +19,7 @@ export default function Login({
   const handleSignup = () => {
     router.push('/signup')
   }
+
   const inputInfo = (title, placeholder, name, ref) => (
     <div className={styles.inputGroup}>
       <div className={styles.inputTitle}>{title}</div>
@@ -30,20 +32,23 @@ export default function Login({
       />
     </div>
   )
+
+  useEffect(() => {
+    // 在此處進行其他操作
+  }, [])
+
   return (
     <div className={styles.body}>
-      <div className={!statusLogin ? styles.signupSquare : styles.loginSquare}>
+      <div className={statusLogin ? styles.loginSquare : styles.signupSquare}>
         <div
           className={
-            !statusLogin ? styles.signupSquareLeft : styles.loginSquareLeft
+            statusLogin ? styles.loginSquareLeft : styles.signupSquareLeft
           }
         >
           <div className={styles.logo}>CanChu</div>
-          {statusLogin ? (
-            <div className={styles.title}>會員登入</div>
-          ) : (
-            <div className={styles.title}>會員註冊</div>
-          )}
+          <div className={styles.title}>
+            {statusLogin ? '會員登入' : '會員註冊'}
+          </div>
           {statusLogin ? (
             <div className={styles.inputSquare}>
               {inputInfo(
@@ -67,6 +72,7 @@ export default function Login({
               {inputInfo('再次輸入密碼', '', 'password', confirmPasswordRef)}
             </div>
           )}
+
           <button
             className={styles.loginButton}
             onClick={statusLogin ? handleLogin : handleSignup}
@@ -97,7 +103,7 @@ export default function Login({
         </div>
         <div
           className={
-            !statusLogin ? styles.signupSquareRight : styles.loginSquareRight
+            statusLogin ? styles.loginSquareRight : styles.signupSquareRight
           }
         ></div>
       </div>
@@ -110,10 +116,12 @@ export default function Login({
           justifyContent: 'flex-end'
         }}
       >
-        <div className={styles.copyright}>
+        <div className={styles.copyrigh}>
           關於我們 · 隱私權條款 · Cookie 條款 · © 2023 CanChu, Inc.
         </div>
       </div>
     </div>
   )
 }
+
+export default Login

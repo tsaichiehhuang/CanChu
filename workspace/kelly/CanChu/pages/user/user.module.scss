@@ -52,8 +52,8 @@
     }
     .userHeadshot {
       display: flex;
-      max-width: 200px;
-      max-height: 200px;
+      width: 180px;
+      height: 180px;
       border-radius: 50%;
       z-index: 1;
       &:hover {
@@ -141,7 +141,6 @@
     width: 90%;
     height: 40px;
     border: 0px;
-
     color: #fff;
     text-align: center;
     font-family: Outfit;
