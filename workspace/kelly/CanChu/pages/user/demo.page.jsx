@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
 import ProtectedPage from '../components/ProtectedPage.js'
-import Image from 'next/image'
 import styles from './user.module.scss'
 import Header from '../components/Header'
 import Post from '../Post/post'

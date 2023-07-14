@@ -23,10 +23,10 @@ export default function Header() {
     setIsNameHovered(false)
   }
   const handleLogout = () => {
-    // 执行登出逻辑，例如清除用户登录状态等
+    // 登出，清除用户token
     localStorage.removeItem('accessToken')
 
-    // 重定向到登录页面
+    // 重新回去登入頁面
     router.push('/login')
   }
   return (

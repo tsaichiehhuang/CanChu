@@ -10,12 +10,13 @@ const LoginPage = () => {
   const passwordRef = useRef(null)
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
+    event.preventDefault() //阻止表單的預設提交行為，避免頁面重新載入。
 
+    //從 emailRef 和 passwordRef 取得輸入欄位的值，並將其存儲在 email 和 password 變數中。
     const email = emailRef.current?.value
     const password = passwordRef.current?.value
 
-    // 检查字段值是否存在且不为空
+    // 檢查是否不為空
     if (!email || !password) {
       console.error('電子郵件和密碼為必填字段')
       return
@@ -28,6 +29,7 @@ const LoginPage = () => {
     }
 
     try {
+      //使用 fetch 函式發送 POST 請求到指定的 API 端點，並傳遞 requestBody 作為請求體。
       const response = await fetch(`${apiUrl}/users/signin`, {
         method: 'POST',
         headers: {
@@ -35,15 +37,16 @@ const LoginPage = () => {
         },
         body: JSON.stringify(requestBody)
       })
-
+      //使用 await 等待網路請求的回應，並將回應轉換為 JSON 格式的數據
       const responseData = await response.json()
 
       if (response.ok) {
-        // 登录成功，可以进行相关操作，如存储访问令牌等
+        // 登入成功，儲存token
         console.log(responseData)
         localStorage.setItem('accessToken', responseData.data.access_token)
-        router.push('/Home/home') // 重定向到首页或其他页面
+        router.push('/Home/home') // 導去首頁
       } else if (response.status === 403) {
+        //403 Forbidden 狀態碼，表示用戶認證失敗
         console.error(responseData.error)
       } else {
         console.error(responseData.error)
