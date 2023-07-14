@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import { useRouter } from 'next/router'
 import Login from '../components/Login'
+import ProtectedPage from '../components/ProtectedPage.js'
 
 const apiUrl = process.env.API_DOMAIN
 
@@ -39,10 +40,10 @@ const LoginPage = () => {
       const responseData = await response.json()
 
       if (response.ok) {
-        // 登录成功，可以进行相关操作，如存储访问令牌等
+        // 登入成功
         console.log(responseData)
         localStorage.setItem('accessToken', responseData.data.access_token)
-        router.push('/Home/home') // 重定向到首页或其他页面
+        router.push('/Home/home') // 前往首頁
       } else if (response.status === 403) {
         console.error(responseData.error)
       } else {
@@ -54,7 +55,7 @@ const LoginPage = () => {
   }
 
   return (
-    <div>
+    <ProtectedPage>
       <form onSubmit={handleSubmit}>
         <Login
           statusLogin={true}
@@ -62,7 +63,7 @@ const LoginPage = () => {
           passwordRef={passwordRef}
         />
       </form>
-    </div>
+    </ProtectedPage>
   )
 }
 
