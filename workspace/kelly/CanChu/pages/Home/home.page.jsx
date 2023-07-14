@@ -4,6 +4,7 @@ import userData from '../user/components/userData'
 import Header from '../components/Header'
 import Post from '../Post/post'
 import homeData from './components/HomeData'
+import Copyright from '../components/Copyright'
 
 import ProtectedPage from '../components/ProtectedPage.js'
 const apiUrl = process.env.API_DOMAIN
@@ -150,8 +151,8 @@ export default function Home() {
         <div className={styles.container}>
           <div className={styles.containerLeft}>
             {friendList()}
-            <div className={styles.copyright}>
-              關於我們 · 隱私權條款 · Cookie 條款 · © 2023 CanChu, Inc.
+            <div style={{ width: '274px', marginLeft: '10%' }}>
+              <Copyright />
             </div>
           </div>
           <div className={styles.containerRight}>

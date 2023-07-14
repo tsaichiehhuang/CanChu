@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import styles from './login.module.scss'
 import Link from 'next/link'
+import Copyright from './Copyright'
 
 const Login = ({
   statusLogin = true,
@@ -122,8 +123,8 @@ const Login = ({
           justifyContent: 'flex-end'
         }}
       >
-        <div className={styles.copyrigh}>
-          關於我們 · 隱私權條款 · Cookie 條款 · © 2023 CanChu, Inc.
+        <div style={{ marginTop: '2%' }}>
+          <Copyright />
         </div>
       </div>
     </div>

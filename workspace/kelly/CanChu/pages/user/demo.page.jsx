@@ -5,6 +5,7 @@ import Header from '../components/Header'
 import Post from '../Post/post'
 import homeData from '../Home/components/HomeData'
 import userData from './components/userData'
+import Copyright from '../components/Copyright'
 
 export default function User() {
   const user = userData()[0]
@@ -96,8 +97,8 @@ export default function User() {
           <div className={styles.container}>
             <div className={styles.containerLeft}>
               <Introduction />
-              <div className={styles.copyright}>
-                關於我們 · 隱私權條款 · Cookie 條款 · © 2023 CanChu, Inc.
+              <div style={{ width: '274px', marginLeft: '10%' }}>
+                <Copyright />
               </div>
             </div>
             <div className={styles.containerRight}>
