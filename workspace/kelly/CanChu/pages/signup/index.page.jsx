@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import { useRouter } from 'next/router'
 import Login from '../components/Login'
+import ProtectedPage from '../components/ProtectedPage.js'
 
 const SignupPage = () => {
   const router = useRouter()
@@ -53,7 +54,7 @@ const SignupPage = () => {
   }
 
   return (
-    <div>
+    <ProtectedPage>
       <form onSubmit={handleSubmit}>
         <Login
           statusLogin={false}
@@ -63,7 +64,7 @@ const SignupPage = () => {
           confirmPasswordRef={confirmPasswordRef}
         />
       </form>
-    </div>
+    </ProtectedPage>
   )
 }
 

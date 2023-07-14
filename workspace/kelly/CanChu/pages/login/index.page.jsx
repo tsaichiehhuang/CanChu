@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import { useRouter } from 'next/router'
 import Login from '../components/Login'
+import ProtectedPage from '../components/ProtectedPage.js'
 
 const apiUrl = process.env.API_DOMAIN
 
@@ -57,7 +58,7 @@ const LoginPage = () => {
   }
 
   return (
-    <div>
+    <ProtectedPage>
       <form onSubmit={handleSubmit}>
         <Login
           statusLogin={true}
@@ -65,7 +66,7 @@ const LoginPage = () => {
           passwordRef={passwordRef}
         />
       </form>
-    </div>
+    </ProtectedPage>
   )
 }
 
