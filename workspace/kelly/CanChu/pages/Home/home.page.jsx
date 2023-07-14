@@ -94,6 +94,8 @@ export default function Home() {
         }
         setPostData((prevData) => [newPost, ...prevData])
         setPostContent('') // 發布後清空輸入框內容
+
+        window.location.reload() // 自動重新整理頁面
       })
       .catch((error) => {
         console.error('網絡請求錯誤', error)

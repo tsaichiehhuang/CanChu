@@ -43,6 +43,7 @@ export default function Post({
     comment_count,
     comments
   } = data
+  const formattedPicture = picture !== '' ? picture : '/個人照片.png'
   const formattedLikeCount = like_count !== undefined ? like_count : 0
   const formattedCommentCount = comment_count !== undefined ? comment_count : 0
   return (
@@ -59,7 +60,7 @@ export default function Post({
 
           <div className={`${styles.firstRow} ${styles.row}`}>
             <div className={styles.firstRowLeft}>
-              <img className={styles.circle} src={picture} />
+              <img className={styles.circle} src={formattedPicture} />
               <div className={styles.text}>
                 <div className={styles.textOne}>{name}</div>
                 <Link href='/posts/demo' style={{ textDecoration: 'none' }}>
