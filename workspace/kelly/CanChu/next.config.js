@@ -5,6 +5,7 @@ module.exports = {
   reactStrictMode: true,
   webpack: (config, { isServer }) => {
     if (!isServer) {
+      // eslint-disable-next-line no-param-reassign
       config.resolve.fallback = {
         ...(config.resolve.fallback || {}),
         react: require.resolve('react')
@@ -12,6 +13,5 @@ module.exports = {
     }
     return config
   },
-  pageExtensions: ['page.tsx', 'page.ts', 'page.jsx', 'page.js'],
-  cssModules: true // 啟用 CSS 模組化
+  pageExtensions: ['page.tsx', 'page.ts', 'page.jsx', 'page.js']
 }

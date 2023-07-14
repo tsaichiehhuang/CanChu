@@ -44,7 +44,7 @@ const LoginPage = () => {
         // 登入成功，儲存token
         console.log(responseData)
         localStorage.setItem('accessToken', responseData.data.access_token)
-        router.push('/Home/home') // 導去首頁
+        router.push('/') // 導去首頁
       } else if (response.status === 403) {
         //403 Forbidden 狀態碼，表示用戶認證失敗
         console.error(responseData.error)
