@@ -31,6 +31,18 @@ export default function Header() {
   }
   return (
     <div className={styles.header}>
+      <style global jsx>{`
+        header {
+          width: 100%;
+          height: 100px;
+          flex-shrink: 0;
+          background: #fff;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: row;
+        }
+      `}</style>
       <div className={styles.logo}>CanChu</div>
       <div className={styles.search}>
         <img style={{ marginRight: '10px' }} src='/search.png' />

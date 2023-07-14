@@ -66,6 +66,12 @@ export default function User() {
   return (
     <ProtectedPage>
       <div className={styles.body}>
+        <style global jsx>{`
+          body {
+            background: #f9f9f9;
+            margin: 0;
+          }
+        `}</style>
         <Header />
         <div className={styles.allContainer}>
           <div className={styles.cover}>

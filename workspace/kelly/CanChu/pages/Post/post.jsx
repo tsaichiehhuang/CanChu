@@ -47,6 +47,12 @@ export default function Post({
   const formattedCommentCount = comment_count !== undefined ? comment_count : 0
   return (
     <div className={styles.body}>
+      <style global jsx>{`
+        body {
+          background: #f9f9f9;
+          margin: 0;
+        }
+      `}</style>
       <div className={styles.container}>
         <div className={postClassName}>
           {showEditIcon && <img className={styles.editIcon} src='/edit.png' />}

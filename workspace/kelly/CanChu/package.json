@@ -8,8 +8,10 @@
     "commit": "cz"
   },
   "dependencies": {
+    "@zeit/next-css": "^1.0.1",
     "axios": "^1.4.0",
     "next": "latest",
+    "normalize.css": "^8.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.63.6"

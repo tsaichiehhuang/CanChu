@@ -4,6 +4,7 @@ import userData from '../user/components/userData'
 import Header from '../components/Header'
 import Post from '../Post/post'
 import homeData from './components/HomeData'
+
 import ProtectedPage from '../components/ProtectedPage.js'
 const apiUrl = process.env.API_DOMAIN
 export default function Home() {
@@ -137,6 +138,12 @@ export default function Home() {
   return (
     <ProtectedPage>
       <div className={styles.body}>
+        <style global jsx>{`
+          body {
+            background: #f9f9f9;
+            margin: 0;
+          }
+        `}</style>
         <Header />
         <div className={styles.container}>
           <div className={styles.containerLeft}>
