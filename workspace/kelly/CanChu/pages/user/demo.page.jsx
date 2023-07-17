@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
 import styles from './user.module.scss'
 import Header from '../../components/Header'
@@ -6,10 +7,14 @@ import Post from '../Post'
 import Copyright from '../../components/Copyright'
 import PostCreator from '../../components/PostCreator'
 import Profile from '../../components/Profile'
+import fetchUserProfile from '../../api/fetchUserProfile'
 
 const apiUrl = process.env.API_DOMAIN
 
 export default function User() {
+  const router = useRouter()
+  const { user_id } = router.query
+
   const [selectedPicture, setSelectedPicture] = useState(null)
   const [isLoading, setIsLoading] = useState(true) // 新增 isLoading 狀態
   const [userState, setUserState] = useState({}) // 初始為空陣列
@@ -20,40 +25,13 @@ export default function User() {
   const userId = Cookies.get('userId')
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
+    fetchUserProfile(userId, setUserState, setIsLoading)
+  }, [userState.id])
 
-        if (!accessToken) {
-          console.error('未找到accessToken')
-          return
-        }
+  //顯示user貼文
+  const url = new URL(`${apiUrl}/posts/search`)
+  url.searchParams.append('user_id', userId)
 
-        const response = await fetch(`${apiUrl}/users/${userId}/profile`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
-
-        if (response.ok) {
-          const data = await response.json()
-          const userProfile = data?.data?.user || {}
-          setUserState(userProfile) // 設置用戶資料到 userState 中
-          setIsLoading(false)
-        } else {
-          console.error('獲取用戶信息時出錯')
-        }
-      } catch (error) {
-        console.error('網絡請求錯誤', error)
-      }
-    }
-
-    fetchUserProfile()
-  }, [userState.id]) // 當 user.id 發生變化時，重新獲取用戶資料
-
-  //顯示貼文
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -64,7 +42,7 @@ export default function User() {
           return
         }
 
-        const response = await fetch(`${apiUrl}/posts/search`, {
+        const response = await fetch(url, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

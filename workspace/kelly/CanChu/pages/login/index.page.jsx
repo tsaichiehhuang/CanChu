@@ -70,3 +70,18 @@ const LoginPage = () => {
 }
 
 export default LoginPage
+
+export async function getServerSideProps(context) {
+  const { req, res } = context
+  const accessToken = req.cookies.accessToken
+
+  // 如果已登入，重回首頁
+  if (accessToken) {
+    res.writeHead(302, { Location: '/' })
+    res.end()
+    return { props: {} }
+  }
+
+  // 如果未登入，允許訪問登入和註冊頁面
+  return { props: {} }
+}

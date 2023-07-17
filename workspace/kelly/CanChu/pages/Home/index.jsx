@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Cookies from 'js-cookie' // 導入 js-cookie
 import styles from './Home.module.scss'
-import userData from '../user/userData'
 import Header from '../../components/Header'
 import PostCreator from '../../components/PostCreator'
 import Post from '../Post'
@@ -120,31 +119,31 @@ export async function getServerSideProps(context) {
     return { props: {} }
   }
 
-  // 獲取貼文數據
-  try {
-    const response = await fetch(`${apiUrl}/posts/search`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-      }
-    })
+  // // 獲取貼文數據
+  // try {
+  //   const response = await fetch(`${apiUrl}/posts/search`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${accessToken}`
+  //     }
+  //   })
 
-    if (response.ok) {
-      const data = await response.json()
-      const postData = data?.data?.posts || []
+  //   if (response.ok) {
+  //     const data = await response.json()
+  //     const postData = data?.data?.posts || []
 
-      return {
-        props: {
-          postData
-        }
-      }
-    } else {
-      console.error('獲取貼文數據時出錯')
-    }
-  } catch (error) {
-    console.error('網絡請求錯誤', error)
-  }
+  //     return {
+  //       props: {
+  //         postData
+  //       }
+  //     }
+  //   } else {
+  //     console.error('獲取貼文數據時出錯')
+  //   }
+  // } catch (error) {
+  //   console.error('網絡請求錯誤', error)
+  // }
 
   return { props: {} }
 }

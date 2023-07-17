@@ -60,7 +60,7 @@ export default function PostCreator({ onPostSubmit }) {
     }
 
     // 獲取存儲在本地的訪問令牌
-    const accessToken = localStorage.getItem('accessToken')
+    const accessToken = Cookies.get('accessToken')
 
     if (!accessToken) {
       console.error('未找到accessToken')
