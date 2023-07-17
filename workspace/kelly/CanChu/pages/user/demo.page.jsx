@@ -54,7 +54,7 @@ export default function User() {
           const data = await response.json()
           setPostData(data?.data?.posts || [])
         } else {
-          console.error('獲取貼文數據時出錯')
+          alert('獲取貼文數據時出錯')
         }
       } catch (error) {
         console.error('網絡請求錯誤', error)
@@ -101,8 +101,9 @@ export default function User() {
         // 將新上傳的頭像 URL 存儲在 cookies
         Cookies.set('uploadedPicture', pictureUrl)
         window.location.reload() // 自動重新整理頁面
+        alert('圖片上傳成功')
       } else {
-        console.error('上傳圖片失敗')
+        alert('上傳圖片失敗')
       }
     } catch (error) {
       console.error('網絡請求錯誤', error)

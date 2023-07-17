@@ -50,7 +50,7 @@ export default function PostCreator({ onPostSubmit }) {
   const handlePostSubmit = () => {
     // 檢查字段值是否存在且不為空
     if (!postContent) {
-      console.error('請輸入內容')
+      alert('請輸入內容')
       return
     }
 
@@ -98,6 +98,7 @@ export default function PostCreator({ onPostSubmit }) {
         setPostData((prevData) => [newPost, ...prevData])
 
         window.location.reload() // 自動重新整理頁面
+        alert('貼文發布成功')
 
         setPostContent('') // 發布後清空輸入框內容
       })

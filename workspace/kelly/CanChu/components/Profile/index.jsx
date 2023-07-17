@@ -109,8 +109,9 @@ export default function Profile() {
         }
         updateUser(updatedUser)
         setEditing(false) // 退出編輯模式
+        alert('個人檔案更新完成')
       } else {
-        console.error('更新個人檔案失敗')
+        alert('更新個人檔案失敗')
       }
       setEditing(false) // 確認後退出編輯模式
     } catch (error) {
