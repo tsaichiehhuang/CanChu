@@ -43,16 +43,24 @@ export default function Post({
     comment_count,
     comments
   } = data
-
+  const formattedPicture = picture !== '' ? picture : '/個人照片.png'
+  const formattedLikeCount = like_count !== undefined ? like_count : 0
+  const formattedCommentCount = comment_count !== undefined ? comment_count : 0
   return (
     <div className={styles.body}>
+      <style global jsx>{`
+        body {
+          background: #f9f9f9;
+          margin: 0;
+        }
+      `}</style>
       <div className={styles.container}>
         <div className={postClassName}>
           {showEditIcon && <img className={styles.editIcon} src='/edit.png' />}
 
           <div className={`${styles.firstRow} ${styles.row}`}>
             <div className={styles.firstRowLeft}>
-              <img className={styles.circle} src={picture} />
+              <img className={styles.circle} src={formattedPicture} />
               <div className={styles.text}>
                 <div className={styles.textOne}>{name}</div>
                 <Link href='/posts/demo' style={{ textDecoration: 'none' }}>
@@ -79,13 +87,13 @@ export default function Post({
               href='/posts/demo'
               style={{ textDecoration: 'none', color: '#5C5C5C' }}
             >
-              <div>{like_count}人喜歡這則貼文</div>
+              <div>{formattedLikeCount}人喜歡這則貼文</div>
             </Link>
             <Link
               href='/posts/demo'
               style={{ textDecoration: 'none', color: '#5C5C5C' }}
             >
-              <div>{comment_count}則留言</div>
+              <div>{formattedCommentCount}則留言</div>
             </Link>
           </div>
           <div style={{ borderTop: '1px solid #bfbfbf', width: '100%' }}></div>

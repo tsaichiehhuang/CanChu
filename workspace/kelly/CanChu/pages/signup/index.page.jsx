@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Login from '../components/Login'
-import ProtectedPage from '../components/ProtectedPage.js'
 
 const SignupPage = () => {
   const router = useRouter()

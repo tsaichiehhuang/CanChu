@@ -1,14 +1,18 @@
 export default function getTimeDiff(date) {
   const now = new Date()
   const diffInMilliseconds = now - date
-  const diffInHours = Math.floor(diffInMilliseconds / (1000 * 60 * 60))
-  const diffInDays = Math.floor(diffInHours / 24)
+  const diffInSeconds = Math.floor(diffInMilliseconds / 1000)
 
-  if (diffInDays > 5) {
-    return date.toLocaleString()
-  } else if (diffInDays > 0) {
-    return `${diffInDays}天前`
-  } else {
+  if (diffInSeconds < 60) {
+    return '剛剛'
+  } else if (diffInSeconds < 3600) {
+    const diffInMinutes = Math.floor(diffInSeconds / 60)
+    return `${diffInMinutes}分鐘前`
+  } else if (diffInSeconds < 86400) {
+    const diffInHours = Math.floor(diffInSeconds / 3600)
     return `${diffInHours}小時前`
+  } else {
+    const diffInDays = Math.floor(diffInSeconds / 86400)
+    return `${diffInDays}天前`
   }
 }

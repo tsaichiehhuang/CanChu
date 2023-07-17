@@ -1,7 +1,5 @@
 .body {
   background: #f9f9f9;
-  width: 100%;
-  height: 100%;
 }
 .container {
   padding-top: 1%;
@@ -87,6 +85,8 @@
     height: 74px;
   }
   .postingText {
+    text-align: left; /* 设置文本对齐方式为左对齐 */
+    direction: left; /* 设置文本方向为从左到右 */
     padding: 10px;
     color: #767676;
     font-family: Outfit;
@@ -101,7 +101,15 @@
     border: 1px solid #d9d9d9;
     background: #f0f2f5;
   }
+  .postingText::placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    color: #999;
+  }
   .postingButton {
+    cursor: pointer;
     border-radius: 6px;
     background: #5458f7;
     width: 140.812px;

@@ -39,6 +39,12 @@ const Login = ({
 
   return (
     <div className={styles.body}>
+      <style global jsx>{`
+        body {
+          background: #f9f9f9;
+          margin: 0;
+        }
+      `}</style>
       <div className={statusLogin ? styles.loginSquare : styles.signupSquare}>
         <div
           className={
