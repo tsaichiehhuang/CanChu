@@ -109,7 +109,7 @@ export default function Post({
           )}
           <Link href='/posts/demo' style={{ textDecoration: 'none' }}>
             <div className={`${styles.fiveRow} ${styles.row}`}>
-              <img className={styles.person} src={user.picture} alt='photo' />
+              <img className={styles.person} src={picture} alt='photo' />
               <div className={styles.selfComment}>
                 <div>留個言吧</div>
                 {showImage && <img src='/postButton.png' />}

@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './PostCreator.module.scss'
 import userData from '../../pages/user/userData'
+import Cookies from 'js-cookie' // 導入 js-cookie
 
 const apiUrl = process.env.API_DOMAIN
 
@@ -8,6 +9,43 @@ export default function PostCreator({ onPostSubmit }) {
   const user = userData()[0]
   const [postContent, setPostContent] = useState('')
   const [postData, setPostData] = useState([]) // 改為空數組作為初始值
+  const [userState, setUserState] = useState({}) // 初始為空陣列
+
+  //獲得用戶資料
+  const userId = Cookies.get('userId')
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
+
+        if (!accessToken) {
+          console.error('未找到accessToken')
+          return
+        }
+
+        const response = await fetch(`${apiUrl}/users/${userId}/profile`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          const userProfile = data?.data?.user || {}
+          setUserState(userProfile) // 設置用戶資料到 userState 中
+        } else {
+          console.error('獲取用戶信息時出錯')
+        }
+      } catch (error) {
+        console.error('網絡請求錯誤', error)
+      }
+    }
+
+    fetchUserProfile()
+  }, [userState.id]) // 當 user.id 發生變化時，重新獲取用戶資料
 
   const handlePostSubmit = () => {
     // 檢查字段值是否存在且不為空
@@ -77,7 +115,7 @@ export default function PostCreator({ onPostSubmit }) {
           justifyContent: 'space-between'
         }}
       >
-        <img className={styles.postingPhoto} src={user.picture} />
+        <img className={styles.postingPhoto} src={userState.picture} />
         <textarea
           className={styles.postingText}
           placeholder='說點什麼嗎？'

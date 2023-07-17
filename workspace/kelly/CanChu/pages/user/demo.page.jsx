@@ -239,7 +239,9 @@ export default function User() {
       console.error('網絡請求錯誤', error)
     }
   }
-  const tagList = userState.tags.split(',')
+  console.log(userState.tags.split(','))
+  const tagList = userState.tags ? userState.tags.split(',') : []
+
   const Profile = () => (
     <div className={styles.profileSquare}>
       {editing ? (
