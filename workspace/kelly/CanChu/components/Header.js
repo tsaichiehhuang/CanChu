@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Cookies from 'js-cookie' // 導入 js-cookie
 import styles from './Header.module.scss'
 import userData from '../pages/user/userData'
 import { useRouter } from 'next/router'
@@ -6,9 +7,10 @@ import { useRouter } from 'next/router'
 export default function Header() {
   const router = useRouter()
   const user = userData()[0]
-  //header的個人選單
+  // header的個人選單
   const [isNameHovered, setIsNameHovered] = useState(false)
   const [showProfileOptions, setShowProfileOptions] = useState(false)
+
   const handleProfileMouseEnter = () => {
     setShowProfileOptions(true)
   }
@@ -24,7 +26,7 @@ export default function Header() {
   }
   const handleLogout = () => {
     // 登出，清除用户token
-    localStorage.removeItem('accessToken')
+    Cookies.remove('accessToken')
 
     // 重新回去登入頁面
     router.push('/login')

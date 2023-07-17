@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Login from '../components/Login'
+import Login from '../../components/Login'
+import Cookies from 'js-cookie' // 導入 js-cookie
 
 const SignupPage = () => {
   const router = useRouter()
@@ -9,7 +10,7 @@ const SignupPage = () => {
   const passwordRef = useRef(null)
   const confirmPasswordRef = useRef(null)
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken')
+    const accessToken = Cookies.get('accessToken') // 從 cookies 中取得 accessToken
     if (accessToken) {
       router.replace('/') // 已登入，重定向到其他頁面
     }
