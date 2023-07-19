@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Login from '../components/Login'
-import ProtectedPage from '../components/ProtectedPage.js'
+import Login from '../../components/Login'
+import Cookies from 'js-cookie' // 導入 js-cookie
 
 const SignupPage = () => {
   const router = useRouter()
@@ -10,9 +10,9 @@ const SignupPage = () => {
   const passwordRef = useRef(null)
   const confirmPasswordRef = useRef(null)
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken')
+    const accessToken = Cookies.get('accessToken') // 從 cookies 中取得 accessToken
     if (accessToken) {
-      router.replace('/Home/home') // 已登入，重定向到其他頁面
+      router.replace('/') // 已登入，重定向到其他頁面
     }
   }, [])
   const apiUrl = process.env.API_DOMAIN
@@ -74,3 +74,18 @@ const SignupPage = () => {
 }
 
 export default SignupPage
+
+export async function getServerSideProps(context) {
+  const { req, res } = context
+  const accessToken = req.cookies.accessToken
+
+  // 如果已登入，重回首頁
+  if (accessToken) {
+    res.writeHead(302, { Location: '/' })
+    res.end()
+    return { props: {} }
+  }
+
+  // 如果未登入，允許訪問登入和註冊頁面
+  return { props: {} }
+}

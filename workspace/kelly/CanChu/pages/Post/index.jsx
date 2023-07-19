@@ -1,11 +1,14 @@
 import styles from './Post.module.scss'
-import React, { useState } from 'react'
-import getTimeDiff from '../components/getTimeDiff'
-import userData from '../user/components/userData'
+import React, { useState, useEffect } from 'react'
+import getTimeDiff from '../../components/getTimeDiff'
+import userData from '../../data/userData'
 import Link from 'next/link'
+import Cookies from 'js-cookie'
+import fetchPostsData from '../../api/fetchPostsData'
 
 function Comment({ comment }) {
   const createdAt = new Date(comment.created_at)
+
   return (
     <div className={styles.commentContainer}>
       <img
@@ -23,6 +26,7 @@ function Comment({ comment }) {
     </div>
   )
 }
+const id = Cookies.get('userId')
 
 export default function Post({
   data,
@@ -30,6 +34,47 @@ export default function Post({
   showImage = true,
   showEditIcon = true
 }) {
+  const [postData, setPostData] = useState([]) // 改為空數組作為初始值
+  //取得文章的id
+  //找尋貼文
+  useEffect(() => {
+    fetchPostsData(setPostData)
+  }, [])
+  // 目前postData有很多資料，我要取得個別post的id，並且當我點擊該post時，會前往該post id所在的頁面
+  // 例如
+  // {
+  //   "data": {
+  //     "posts": [
+  //       {
+  //         "user_id": 151,
+  //         "name": "黃采婕",
+  //         "picture": "https://kelly-canchu-api.octave.vip/assets/151/95905dca.jpeg",
+  //         "id": 137,
+  //         "context": "20230717 22:30",
+  //         "created_at": "2023-07-17 22:31:01",
+  //         "like_count": 0,
+  //         "comment_count": 0,
+  //         "is_like": 0
+  //       },
+  //       {
+  //         "user_id": 151,
+  //         "name": "黃采婕",
+  //         "picture": "https://kelly-canchu-api.octave.vip/assets/151/95905dca.jpeg",
+  //         "id": 135,
+  //         "context": "20230716 22:39",
+  //         "created_at": "2023-07-16 22:39:24",
+  //         "like_count": 0,
+  //         "comment_count": 0,
+  //         "is_like": 0
+  //       }
+  //     ]
+  //   }
+  // }
+  const handlePostClick = () => {
+    Cookies.set('postId', data.id) // 將使用者 ID 儲存在 Cookie 中
+    // 導航至該 post 頁面，使用 `Link` 元件
+    window.location.href = `/posts/${data.id}`
+  }
   const user = userData()[0]
 
   const heartIcon = data.is_like ? '/heart.png' : '/notHeart.png'
@@ -63,11 +108,14 @@ export default function Post({
               <img className={styles.circle} src={formattedPicture} />
               <div className={styles.text}>
                 <div className={styles.textOne}>{name}</div>
-                <Link href='/posts/demo' style={{ textDecoration: 'none' }}>
-                  <div className={styles.textTwo}>
-                    {getTimeDiff(new Date(created_at))}
-                  </div>
-                </Link>
+
+                <div
+                  className={styles.textTwo}
+                  onClick={handlePostClick}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {getTimeDiff(new Date(created_at))}
+                </div>
               </div>
             </div>
           </div>
@@ -78,23 +126,22 @@ export default function Post({
           </article>
           <div className={`${styles.thirdRow} ${styles.row}`}>
             <img className={styles.heartIcon} src={heartIcon} />
-            <Link href='/posts/demo' style={{ textDecoration: 'none' }}>
-              <img className={styles.commentIcon} src='/comment.png' />
-            </Link>
+
+            <img
+              className={styles.commentIcon}
+              src='/comment.png'
+              onClick={handlePostClick}
+              style={{ cursor: 'pointer' }}
+            />
           </div>
           <div className={`${styles.fourRow} ${styles.row}`}>
-            <Link
-              href='/posts/demo'
-              style={{ textDecoration: 'none', color: '#5C5C5C' }}
-            >
-              <div>{formattedLikeCount}人喜歡這則貼文</div>
-            </Link>
-            <Link
-              href='/posts/demo'
-              style={{ textDecoration: 'none', color: '#5C5C5C' }}
-            >
-              <div>{formattedCommentCount}則留言</div>
-            </Link>
+            <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
+              {formattedLikeCount}人喜歡這則貼文
+            </div>
+
+            <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
+              {formattedCommentCount}則留言
+            </div>
           </div>
           <div style={{ borderTop: '1px solid #bfbfbf', width: '100%' }}></div>
           {/* 網友留言 */}
@@ -107,15 +154,18 @@ export default function Post({
                 ))}
             </div>
           )}
-          <Link href='/posts/demo' style={{ textDecoration: 'none' }}>
-            <div className={`${styles.fiveRow} ${styles.row}`}>
-              <img className={styles.person} src={user.picture} alt='photo' />
-              <div className={styles.selfComment}>
-                <div>留個言吧</div>
-                {showImage && <img src='/postButton.png' />}
-              </div>
+
+          <div
+            className={`${styles.fiveRow} ${styles.row}`}
+            onClick={handlePostClick}
+            style={{ cursor: 'pointer' }}
+          >
+            <img className={styles.person} src={picture} alt='photo' />
+            <div className={styles.selfComment}>
+              <div>留個言吧</div>
+              {showImage && <img src='/postButton.png' />}
             </div>
-          </Link>
+          </div>
         </div>
       </div>
     </div>

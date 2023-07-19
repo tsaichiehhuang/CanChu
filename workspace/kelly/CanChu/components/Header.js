@@ -1,14 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import Cookies from 'js-cookie'
 import styles from './Header.module.scss'
-import userData from '../user/components/userData'
+import userData from '../data/userData'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
+import fetchUserProfile from '../api/fetchUserProfile'
 
-export default function Header() {
+const apiUrl = process.env.API_DOMAIN
+
+export default function Header({ profile }) {
   const router = useRouter()
   const user = userData()[0]
-  //header的個人選單
+  // header的個人選單
   const [isNameHovered, setIsNameHovered] = useState(false)
   const [showProfileOptions, setShowProfileOptions] = useState(false)
+  const [userState, setUserState] = useState([]) // 初始為空陣列
+
+  //獲得用戶資料
+  const userId = Cookies.get('userId')
+
+  useEffect(() => {
+    fetchUserProfile(userId, setUserState)
+  }, [userId])
+  const id = userState.id
+
   const handleProfileMouseEnter = () => {
     setShowProfileOptions(true)
   }
@@ -24,7 +39,7 @@ export default function Header() {
   }
   const handleLogout = () => {
     // 登出，清除用户token
-    localStorage.removeItem('accessToken')
+    Cookies.remove('accessToken')
 
     // 重新回去登入頁面
     router.push('/login')
@@ -53,7 +68,7 @@ export default function Header() {
         onMouseEnter={handleProfileMouseEnter}
         onMouseLeave={handleProfileMouseLeave}
       >
-        <img className={styles.person} src={user.picture} alt='photo' />
+        <img className={styles.person} src={userState.picture} alt='photo' />
         {showProfileOptions && (
           <div className={styles.profileOptions}>
             <div
@@ -64,10 +79,9 @@ export default function Header() {
               <img
                 className={styles.profileOptionPhoto}
                 style={{ borderRadius: '50%' }}
-                src={user.picture}
-                // src={isNameHovered ? '/hover個人照片.png' : '/個人照片.png'}
+                src={userState.picture}
               />
-              {user.name}
+              {userState.name}
             </div>
             <div
               style={{
@@ -77,7 +91,15 @@ export default function Header() {
                 margin: '0px 10px'
               }}
             ></div>
-            <div className={styles.profileOption}>查看個人檔案</div>
+            <Link
+              href='/users/[id]'
+              as={`/users/${id}`}
+              prefetch
+              style={{ textDecorationLine: 'none', color: '#000' }}
+            >
+              <div className={styles.profileOption}>查看個人檔案</div>
+            </Link>
+
             <div
               style={{
                 width: '90%',
@@ -97,4 +119,24 @@ export default function Header() {
       </div>
     </div>
   )
+}
+export async function getServerSideProps(context) {
+  const accessToken = Cookies.get('accessToken')
+
+  const { params } = context
+  const { id } = params
+
+  const res = await fetch(`${apiUrl}/users/${id}/profile`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  })
+  const data = await res.json()
+
+  return {
+    props: {
+      profile: data.data.user
+    }
+  }
 }

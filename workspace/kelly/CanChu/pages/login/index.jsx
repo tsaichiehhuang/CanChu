@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Login from '../components/Login'
-import ProtectedPage from '../components/ProtectedPage.js'
+import Login from '../../components/Login'
+import Cookies from 'js-cookie' // 導入 js-cookie
 
 const apiUrl = process.env.API_DOMAIN
 
@@ -10,17 +10,10 @@ const LoginPage = () => {
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken')
-    if (accessToken) {
-      router.replace('/Home/home') // 已登入，重定向到其他頁面
-    }
-  }, [])
-
   const handleSubmit = async (event) => {
     event.preventDefault() //阻止表單的預設提交行為，避免頁面重新載入。
 
-    //從 emailRef 和 passwordRef 取得輸入欄位的值，並將其存儲在 email 和 password 變數中。
+    // 從 emailRef 和 passwordRef 取得輸入欄位的值，並將其存儲在 email 和 password 變數中。
     const email = emailRef.current?.value
     const password = passwordRef.current?.value
 
@@ -37,7 +30,7 @@ const LoginPage = () => {
     }
 
     try {
-      //使用 fetch 函式發送 POST 請求到指定的 API 端點，並傳遞 requestBody 作為請求體。
+      // 使用 fetch 函式發送 POST 請求到指定的 API 端點，並傳遞 requestBody 作為請求體。
       const response = await fetch(`${apiUrl}/users/signin`, {
         method: 'POST',
         headers: {
@@ -45,17 +38,15 @@ const LoginPage = () => {
         },
         body: JSON.stringify(requestBody)
       })
-      //使用 await 等待網路請求的回應，並將回應轉換為 JSON 格式的數據
+
+      // 使用 await 等待網路請求的回應，並將回應轉換為 JSON 格式的數據
       const responseData = await response.json()
 
       if (response.ok) {
-        // 登入成功，儲存token
-        console.log(responseData)
-        localStorage.setItem('accessToken', responseData.data.access_token)
-        router.push('/') // 導去首頁
-      } else if (response.status === 403) {
-        //403 Forbidden 狀態碼，表示用戶認證失敗
-        console.error(responseData.error)
+        Cookies.set('accessToken', responseData.data.access_token)
+        Cookies.set('userId', responseData.data.user.id) // 將使用者 ID 儲存在 Cookie 中
+
+        router.push('/')
       } else {
         console.error(responseData.error)
       }
@@ -78,3 +69,18 @@ const LoginPage = () => {
 }
 
 export default LoginPage
+
+export async function getServerSideProps(context) {
+  const { req, res } = context
+  const accessToken = req.cookies.accessToken
+
+  // 如果已登入，重回首頁
+  if (accessToken) {
+    res.writeHead(302, { Location: '/' })
+    res.end()
+    return { props: {} }
+  }
+
+  // 如果未登入，允許訪問登入和註冊頁面
+  return { props: {} }
+}
