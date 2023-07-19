@@ -58,6 +58,7 @@ export default function Demo() {
         showComments={true}
         showImage={true}
         showEditIcon={false}
+        enableClick={false}
       />
     </div>
   )

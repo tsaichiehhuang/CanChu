@@ -47,7 +47,7 @@ export default function PostCreator({ onPostSubmit }) {
     fetchUserProfile()
   }, [userState.id]) // 當 user.id 發生變化時，重新獲取用戶資料
 
-  const handlePostSubmit = () => {
+  const handlePostSubmit = async () => {
     // 檢查字段值是否存在且不為空
     if (!postContent) {
       alert('請輸入內容')
@@ -67,24 +67,21 @@ export default function PostCreator({ onPostSubmit }) {
       return
     }
 
-    // 發送 POST 請求到 API
-    fetch(`${apiUrl}/posts`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-      },
-      body: JSON.stringify(requestBody)
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          throw new Error('發布貼文失敗')
-        }
+    try {
+      // 發送 POST 請求到 API
+      const response = await fetch(`${apiUrl}/posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        },
+        body: JSON.stringify(requestBody)
       })
-      .then((responseData) => {
-        // 請求成功，將返回的帖子數據添加到頁面中顯示
+
+      if (response.ok) {
+        const responseData = await response.json()
+
+        // 請求成功，將返回的貼文數據添加到頁面中顯示
         const newPost = {
           id: responseData.data.post.id,
           created_at: new Date().toISOString(), // 使用當下的時間
@@ -101,10 +98,12 @@ export default function PostCreator({ onPostSubmit }) {
         alert('貼文發布成功')
 
         setPostContent('') // 發布後清空輸入框內容
-      })
-      .catch((error) => {
-        console.error('網絡請求錯誤', error)
-      })
+      } else {
+        throw new Error('發布貼文失敗')
+      }
+    } catch (error) {
+      console.error('網絡請求錯誤', error)
+    }
   }
 
   return (

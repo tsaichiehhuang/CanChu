@@ -5,6 +5,7 @@ import userData from '../../data/userData'
 import Link from 'next/link'
 import Cookies from 'js-cookie'
 import fetchPostsData from '../../api/fetchPostsData'
+const apiUrl = process.env.API_DOMAIN
 
 function Comment({ comment }) {
   const createdAt = new Date(comment.created_at)
@@ -26,16 +27,20 @@ function Comment({ comment }) {
     </div>
   )
 }
-const id = Cookies.get('userId')
 
 export default function Post({
   data,
   showComments = true,
   showImage = true,
-  showEditIcon = true
+  showEditIcon = true,
+  enableClick = true
 }) {
+  const [leaveComment, setLeaveComment] = useState('')
   const [postData, setPostData] = useState([]) // 改為空數組作為初始值
-  //取得文章的id
+  const [liked, setLiked] = useState(data.is_like || false)
+  const [likeCount, setLikeCount] = useState(data.like_count || 0)
+  const heartIcon = data.is_like ? '/heart.png' : '/notHeart.png'
+
   //找尋貼文
   useEffect(() => {
     fetchPostsData(setPostData)
@@ -46,9 +51,59 @@ export default function Post({
     // 導航至該 post 頁面，使用 `Link` 元件
     window.location.href = `/posts/${data.id}`
   }
-  const user = userData()[0]
 
-  const heartIcon = data.is_like ? '/heart.png' : '/notHeart.png'
+  //當點愛心時，愛心會變色且讚的數量+1
+  const handleHeartClick = async () => {
+    // 在點擊愛心後立即更新前端狀態，不等待後端 API 回應
+    setLiked((prevLiked) => !prevLiked)
+    setLikeCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1))
+    try {
+      const method = liked ? 'DELETE' : 'POST' // 如果已經點讚，則發送 DELETE 請求，否則發送 POST 請求
+      const accessToken = Cookies.get('accessToken')
+      const response = await fetch(`${apiUrl}/posts/${data.id}/like`, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+
+      if (!response.ok) {
+        console.error('更新愛心狀態時出錯')
+      }
+    } catch (error) {
+      console.error('網絡請求錯誤', error)
+    }
+  }
+  //發表comment
+  const handleLeaveComment = async () => {
+    if (!leaveComment) {
+      alert('請輸入內容')
+      return
+    }
+    // 構造請求體
+    const requestBody = {
+      content: leaveComment
+    }
+
+    const accessToken = Cookies.get('accessToken')
+    const response = await fetch(`${apiUrl}/posts/${data.id}/comment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`
+      },
+      body: JSON.stringify(requestBody)
+    })
+
+    if (response.ok) {
+      window.location.reload() // 自動重新整理頁面
+      setLeaveComment('')
+    } else {
+      throw new Error('留言失敗')
+    }
+  }
+
   const postClassName = showComments ? styles.singlePost : styles.post
   const {
     picture,
@@ -60,7 +115,7 @@ export default function Post({
     comments
   } = data
   const formattedPicture = picture !== '' ? picture : '/個人照片.png'
-  const formattedLikeCount = like_count !== undefined ? like_count : 0
+  // const formattedLikeCount = like_count !== undefined ? like_count : 0
   const formattedCommentCount = comment_count !== undefined ? comment_count : 0
   return (
     <div className={styles.body}>
@@ -96,7 +151,12 @@ export default function Post({
             {context}
           </article>
           <div className={`${styles.thirdRow} ${styles.row}`}>
-            <img className={styles.heartIcon} src={heartIcon} />
+            {/* 愛心按讚 */}
+            <img
+              className={styles.heartIcon}
+              src={liked ? '/heart.png' : '/notHeart.png'}
+              onClick={handleHeartClick}
+            />
 
             <img
               className={styles.commentIcon}
@@ -107,7 +167,7 @@ export default function Post({
           </div>
           <div className={`${styles.fourRow} ${styles.row}`}>
             <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
-              {formattedLikeCount}人喜歡這則貼文
+              {likeCount}人喜歡這則貼文
             </div>
 
             <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
@@ -125,18 +185,34 @@ export default function Post({
                 ))}
             </div>
           )}
-
-          <div
-            className={`${styles.fiveRow} ${styles.row}`}
-            onClick={handlePostClick}
-            style={{ cursor: 'pointer' }}
-          >
-            <img className={styles.person} src={picture} alt='photo' />
-            <div className={styles.selfComment}>
-              <div>留個言吧</div>
-              {showImage && <img src='/postButton.png' />}
+          {enableClick ? (
+            <div
+              className={`${styles.fiveRow} ${styles.row}`}
+              onClick={handlePostClick}
+              style={{ cursor: 'pointer' }}
+            >
+              <img className={styles.person} src={picture} alt='photo' />
+              <div className={styles.selfComment}>
+                <div>留個言吧</div>
+                {showImage && <img src='/postButton.png' />}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className={`${styles.fiveRow} ${styles.row}`}>
+              <img className={styles.person} src={picture} alt='photo' />
+              <div className={styles.selfComment}>
+                <input
+                  className={styles.inputComment}
+                  value={leaveComment}
+                  placeholder='留個言吧'
+                  onChange={(event) => setLeaveComment(event.target.value)}
+                />
+                {showImage && (
+                  <img src='/postButton.png' onClick={handleLeaveComment} />
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
