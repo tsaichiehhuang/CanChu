@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import styles from './Header.module.scss'
-import userData from '../data/userData'
+import userData from '../../data/userData'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import fetchUserProfile from '../api/fetchUserProfile'
+import fetchUserProfile from '../../api/fetchUserProfile'
 
 const apiUrl = process.env.API_DOMAIN
 

@@ -2,12 +2,7 @@ import Cookies from 'js-cookie'
 
 const apiUrl = process.env.API_DOMAIN
 
-const fetchUserProfile = async (
-  userId,
-  setUserState,
-  setEditedTags,
-  setIsLoading
-) => {
+const fetchUserProfile = async (userId, setUserState, setEditedTags) => {
   try {
     const accessToken = Cookies.get('accessToken')
 
@@ -28,7 +23,7 @@ const fetchUserProfile = async (
       const data = await response.json()
       const userProfile = data?.data?.user || {}
       setUserState(userProfile) // 設置用戶資料到 userState 中
-      setIsLoading(false)
+
       // 確保 tags 被正確設置後再進行 split
       if (userProfile.tags) {
         const tagList = userProfile.tags.split(',')

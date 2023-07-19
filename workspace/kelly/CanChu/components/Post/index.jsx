@@ -1,6 +1,6 @@
 import styles from './Post.module.scss'
 import React, { useState, useEffect } from 'react'
-import getTimeDiff from '../../components/getTimeDiff'
+import getTimeDiff from '../getTimeDiff'
 import userData from '../../data/userData'
 import Link from 'next/link'
 import Cookies from 'js-cookie'
@@ -36,15 +36,6 @@ export default function Post({
   enableClick = true
 }) {
   const [leaveComment, setLeaveComment] = useState('')
-  const [postData, setPostData] = useState([]) // 改為空數組作為初始值
-  const [liked, setLiked] = useState(data.is_like || false)
-  const [likeCount, setLikeCount] = useState(data.like_count || 0)
-  const heartIcon = data.is_like ? '/heart.png' : '/notHeart.png'
-
-  //找尋貼文
-  useEffect(() => {
-    fetchPostsData(setPostData)
-  }, [])
 
   const handlePostClick = () => {
     Cookies.set('postId', data.id) // 將使用者 ID 儲存在 Cookie 中
@@ -52,29 +43,6 @@ export default function Post({
     window.location.href = `/posts/${data.id}`
   }
 
-  //當點愛心時，愛心會變色且讚的數量+1
-  const handleHeartClick = async () => {
-    // 在點擊愛心後立即更新前端狀態，不等待後端 API 回應
-    setLiked((prevLiked) => !prevLiked)
-    setLikeCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1))
-    try {
-      const method = liked ? 'DELETE' : 'POST' // 如果已經點讚，則發送 DELETE 請求，否則發送 POST 請求
-      const accessToken = Cookies.get('accessToken')
-      const response = await fetch(`${apiUrl}/posts/${data.id}/like`, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
-
-      if (!response.ok) {
-        console.error('更新愛心狀態時出錯')
-      }
-    } catch (error) {
-      console.error('網絡請求錯誤', error)
-    }
-  }
   //發表comment
   const handleLeaveComment = async () => {
     if (!leaveComment) {
@@ -105,17 +73,45 @@ export default function Post({
   }
 
   const postClassName = showComments ? styles.singlePost : styles.post
+
   const {
     picture,
     name,
     created_at,
     context,
     like_count,
+    is_like,
     comment_count,
     comments
   } = data
+
+  const [liked, setLiked] = useState(is_like || false)
+  const [likeCount, setLikeCount] = useState(like_count || 0)
+
+  //當點愛心時，愛心會變色且讚的數量+1
+  const handleHeartClick = async () => {
+    // 在點擊愛心後立即更新前端狀態，不等待後端 API 回應
+    setLiked((prevLiked) => !prevLiked)
+    setLikeCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1))
+    try {
+      const method = liked ? 'DELETE' : 'POST' // 如果已經點讚，則發送 DELETE 請求，否則發送 POST 請求
+      const accessToken = Cookies.get('accessToken')
+      const response = await fetch(`${apiUrl}/posts/${data.id}/like`, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+
+      if (!response.ok) {
+        console.error('更新愛心狀態時出錯')
+      }
+    } catch (error) {
+      console.error('網絡請求錯誤', error)
+    }
+  }
   const formattedPicture = picture !== '' ? picture : '/個人照片.png'
-  // const formattedLikeCount = like_count !== undefined ? like_count : 0
   const formattedCommentCount = comment_count !== undefined ? comment_count : 0
   return (
     <div className={styles.body}>
@@ -156,6 +152,7 @@ export default function Post({
               className={styles.heartIcon}
               src={liked ? '/heart.png' : '/notHeart.png'}
               onClick={handleHeartClick}
+              style={{ cursor: 'pointer' }}
             />
 
             <img
@@ -167,7 +164,7 @@ export default function Post({
           </div>
           <div className={`${styles.fourRow} ${styles.row}`}>
             <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
-              {likeCount}人喜歡這則貼文
+              {likeCount}人喜歡這則貼文{/* 沒辦法顯示api資料的讚數 */}
             </div>
 
             <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
@@ -208,7 +205,11 @@ export default function Post({
                   onChange={(event) => setLeaveComment(event.target.value)}
                 />
                 {showImage && (
-                  <img src='/postButton.png' onClick={handleLeaveComment} />
+                  <img
+                    src='/postButton.png'
+                    onClick={handleLeaveComment}
+                    style={{ cursor: 'pointer' }}
+                  />
                 )}
               </div>
             </div>

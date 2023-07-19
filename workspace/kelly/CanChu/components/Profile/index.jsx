@@ -7,7 +7,7 @@ const apiUrl = process.env.API_DOMAIN
 export default function Profile() {
   const [editing, setEditing] = useState(false)
   const [userState, setUserState] = useState({}) // 初始為空陣列
-  const [isLoading, setIsLoading] = useState(true) // 新增 isLoading 狀態
+
   const [editedIntroduction, setEditedIntroduction] = useState('')
   const [editedTags, setEditedTags] = useState('')
   const tagRefs = useRef([])
@@ -36,7 +36,7 @@ export default function Profile() {
           const data = await response.json()
           const userProfile = data?.data?.user || {}
           setUserState(userProfile) // 設置用戶資料到 userState 中
-          setIsLoading(false)
+
           // 確保 tags 被正確設置後再進行 split
           if (userProfile.tags) {
             const tagList = userProfile.tags.split(',')
