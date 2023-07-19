@@ -7,8 +7,6 @@ import Copyright from '../../components/Copyright'
 import PostCreator from '../../components/PostCreator'
 import Profile from '../../components/Profile'
 import fetchUserProfile from '../../api/fetchUserProfile'
-// eslint-disable-next-line import/no-extraneous-dependencies
-import nookies from 'nookies'
 
 const apiUrl = process.env.API_DOMAIN
 const userId = Cookies.get('userId')

@@ -58,7 +58,13 @@ export default function Header({ profile }) {
           flex-direction: row;
         }
       `}</style>
-      <div className={styles.logo}>CanChu</div>
+      <Link
+        href='/'
+        prefetch
+        style={{ textDecorationLine: 'none', color: '#000' }}
+      >
+        <div className={styles.logo}>CanChu</div>
+      </Link>
       <div className={styles.search}>
         <img style={{ marginRight: '10px' }} src='/search.png' />
         搜尋
@@ -71,18 +77,25 @@ export default function Header({ profile }) {
         <img className={styles.person} src={userState.picture} alt='photo' />
         {showProfileOptions && (
           <div className={styles.profileOptions}>
-            <div
-              className={`${styles.profileOption} ${styles.profileName}`}
-              onMouseEnter={handlePhotoMouseEnter}
-              onMouseLeave={handlePhotoMouseLeave}
+            <Link
+              href='/users/[id]'
+              as={`/users/${id}`}
+              prefetch
+              style={{ textDecorationLine: 'none', color: '#000' }}
             >
-              <img
-                className={styles.profileOptionPhoto}
-                style={{ borderRadius: '50%' }}
-                src={userState.picture}
-              />
-              {userState.name}
-            </div>
+              <div
+                className={`${styles.profileOption} ${styles.profileName}`}
+                onMouseEnter={handlePhotoMouseEnter}
+                onMouseLeave={handlePhotoMouseLeave}
+              >
+                <img
+                  className={styles.profileOptionPhoto}
+                  style={{ borderRadius: '50%' }}
+                  src={userState.picture}
+                />
+                {userState.name}
+              </div>
+            </Link>
             <div
               style={{
                 width: '90%',
