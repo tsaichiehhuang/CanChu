@@ -46,8 +46,6 @@ export default function Post({
     // 導航至該 post 頁面，使用 `Link` 元件
     window.location.href = `/posts/${data.id}`
   }
-  const user = userData()[0]
-
   const heartIcon = data.is_like ? '/heart.png' : '/notHeart.png'
   const postClassName = showComments ? styles.singlePost : styles.post
   const {
@@ -62,6 +60,34 @@ export default function Post({
   const formattedPicture = picture !== '' ? picture : '/個人照片.png'
   const formattedLikeCount = like_count !== undefined ? like_count : 0
   const formattedCommentCount = comment_count !== undefined ? comment_count : 0
+  const [userPicture, setUserPicture] = useState('')
+  //判斷圖片有沒有上傳過(網址是否正確)
+
+  useEffect(() => {
+    const isUserPictureUpload = async () => {
+      try {
+        const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
+
+        const response = await fetch(`${picture}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+
+        if (response.ok) {
+          setUserPicture(picture)
+        } else {
+          setUserPicture('/個人照片.png')
+          console.error('獲取用戶信息時出錯')
+        }
+      } catch (error) {
+        console.error('網絡請求錯誤', error)
+      }
+    }
+    isUserPictureUpload()
+  }, [picture])
   return (
     <div className={styles.body}>
       <style global jsx>{`
@@ -131,7 +157,7 @@ export default function Post({
             onClick={handlePostClick}
             style={{ cursor: 'pointer' }}
           >
-            <img className={styles.person} src={picture} alt='photo' />
+            <img className={styles.person} src={formattedPicture} alt='photo' />
             <div className={styles.selfComment}>
               <div>留個言吧</div>
               {showImage && <img src='/postButton.png' />}

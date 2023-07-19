@@ -133,6 +133,35 @@ export default function User() {
     uploadPicture(file)
   }
 
+  const [userPicture, setUserPicture] = useState('')
+  //判斷圖片有沒有上傳過(網址是否正確)
+
+  useEffect(() => {
+    const isUserPictureUpload = async () => {
+      try {
+        const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
+
+        const response = await fetch(`${userState.picture}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+
+        if (response.ok) {
+          setUserPicture(userState.picture)
+        } else {
+          setUserPicture('/個人照片.png')
+          console.error('獲取用戶信息時出錯')
+        }
+      } catch (error) {
+        console.error('網絡請求錯誤', error)
+      }
+    }
+    isUserPictureUpload()
+  }, [userState.picture])
+
   return (
     <div className={styles.body}>
       <style global jsx>{`
@@ -146,7 +175,7 @@ export default function User() {
         <div className={styles.cover}>
           <div className={styles.coverTop}>
             <div className={styles.userHeadshotWrapper}>
-              <img className={styles.userHeadshot} src={userState.picture} />
+              <img className={styles.userHeadshot} src={userPicture} />
 
               <div className={styles.userHeadshotText}>
                 編輯大頭貼

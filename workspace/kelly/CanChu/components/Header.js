@@ -44,6 +44,34 @@ export default function Header({ profile }) {
     // 重新回去登入頁面
     router.push('/login')
   }
+  const [userPicture, setUserPicture] = useState('')
+  //判斷圖片有沒有上傳過(網址是否正確)
+
+  useEffect(() => {
+    const isUserPictureUpload = async () => {
+      try {
+        const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
+
+        const response = await fetch(`${userState.picture}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+
+        if (response.ok) {
+          setUserPicture(userState.picture)
+        } else {
+          setUserPicture('/個人照片.png')
+          console.error('獲取用戶信息時出錯')
+        }
+      } catch (error) {
+        console.error('網絡請求錯誤', error)
+      }
+    }
+    isUserPictureUpload()
+  }, [userState.picture])
   return (
     <div className={styles.header}>
       <style global jsx>{`
@@ -74,7 +102,7 @@ export default function Header({ profile }) {
         onMouseEnter={handleProfileMouseEnter}
         onMouseLeave={handleProfileMouseLeave}
       >
-        <img className={styles.person} src={userState.picture} alt='photo' />
+        <img className={styles.person} src={userPicture} alt='photo' />
         {showProfileOptions && (
           <div className={styles.profileOptions}>
             <Link
@@ -91,7 +119,7 @@ export default function Header({ profile }) {
                 <img
                   className={styles.profileOptionPhoto}
                   style={{ borderRadius: '50%' }}
-                  src={userState.picture}
+                  src={userPicture}
                 />
                 {userState.name}
               </div>
