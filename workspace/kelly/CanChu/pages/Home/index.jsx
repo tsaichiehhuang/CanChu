@@ -5,40 +5,24 @@ import Header from '../../components/Header'
 import PostCreator from '../../components/PostCreator'
 import Post from '../Post'
 import Copyright from '../../components/Copyright'
+import fetchPostsData from '../../api/fetchPostsData'
 
 const apiUrl = process.env.API_DOMAIN
 export default function Home() {
-  const [postData, setPostData] = useState([]) // 改為空數組作為初始值
+  const [postData, setPostData] = useState([])
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const accessToken = Cookies.get('accessToken')
+    fetchPostsData(setPostData)
+  }, [])
 
-        if (!accessToken) {
-          console.error('未找到accessToken')
-          return
-        }
+  const handlePostClick = (postId) => {
+    // 將點擊的 post id 儲存到狀態，然後導航至對應頁面
+    window.location.href = `/posts/${postId}`
+  }
 
-        const response = await fetch(`${apiUrl}/posts/search`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
-
-        if (response.ok) {
-          const data = await response.json()
-          setPostData(data?.data?.posts || [])
-        } else {
-          console.error('獲取貼文數據時出錯')
-        }
-      } catch (error) {
-        console.error('網絡請求錯誤', error)
-      }
-    }
-
-    fetchData()
+  //找尋貼文
+  useEffect(() => {
+    fetchPostsData(setPostData)
   }, [])
 
   const friendList = () => {
@@ -101,6 +85,7 @@ export default function Home() {
               showEditIcon={false}
               key={data.id}
               data={data}
+              onClick={() => handlePostClick(data.id)} // 傳遞點擊事件處理函式
             />
           ))}
         </div>

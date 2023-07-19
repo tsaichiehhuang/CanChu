@@ -43,7 +43,6 @@ const LoginPage = () => {
       const responseData = await response.json()
 
       if (response.ok) {
-        console.log(responseData)
         Cookies.set('accessToken', responseData.data.access_token)
         Cookies.set('userId', responseData.data.user.id) // 將使用者 ID 儲存在 Cookie 中
 
