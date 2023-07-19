@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Post from '../Post'
-
 import Header from '../../components/Header'
 import Cookies from 'js-cookie'
 
@@ -27,6 +26,7 @@ export default function Demo() {
   const accessToken = Cookies.get('accessToken')
   // eslint-disable-next-line consistent-return
   const [postData, setPostData] = useState([]) // 改為空數組作為初始值
+
   useEffect(() => {
     const fetchPostData = async () => {
       try {
@@ -41,12 +41,6 @@ export default function Demo() {
         if (response.ok) {
           const data = await response.json()
           setPostData(data?.data?.post || [])
-
-          return {
-            props: {
-              postData
-            }
-          }
         } else {
           console.error('獲取貼文數據時出錯')
         }
@@ -55,7 +49,7 @@ export default function Demo() {
       }
     }
     fetchPostData()
-  })
+  }, [])
   return (
     <div>
       <Header />

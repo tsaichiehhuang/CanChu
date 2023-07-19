@@ -40,36 +40,7 @@ export default function Post({
   useEffect(() => {
     fetchPostsData(setPostData)
   }, [])
-  // 目前postData有很多資料，我要取得個別post的id，並且當我點擊該post時，會前往該post id所在的頁面
-  // 例如
-  // {
-  //   "data": {
-  //     "posts": [
-  //       {
-  //         "user_id": 151,
-  //         "name": "黃采婕",
-  //         "picture": "https://kelly-canchu-api.octave.vip/assets/151/95905dca.jpeg",
-  //         "id": 137,
-  //         "context": "20230717 22:30",
-  //         "created_at": "2023-07-17 22:31:01",
-  //         "like_count": 0,
-  //         "comment_count": 0,
-  //         "is_like": 0
-  //       },
-  //       {
-  //         "user_id": 151,
-  //         "name": "黃采婕",
-  //         "picture": "https://kelly-canchu-api.octave.vip/assets/151/95905dca.jpeg",
-  //         "id": 135,
-  //         "context": "20230716 22:39",
-  //         "created_at": "2023-07-16 22:39:24",
-  //         "like_count": 0,
-  //         "comment_count": 0,
-  //         "is_like": 0
-  //       }
-  //     ]
-  //   }
-  // }
+
   const handlePostClick = () => {
     Cookies.set('postId', data.id) // 將使用者 ID 儲存在 Cookie 中
     // 導航至該 post 頁面，使用 `Link` 元件
