@@ -134,18 +134,20 @@ export default function User() {
   }
 
   const [userPicture, setUserPicture] = useState('')
-  const img = new Image()
-  img.onload = function () {
-    // 當圖片載入成功時，將其設置為使用者的頭像
-    setUserPicture(userState.picture)
-  }
-  img.onerror = function () {
-    // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
-    setUserPicture('/個人照片.png')
-  }
+  useEffect(() => {
+    const img = new Image()
+    img.onload = function imgOnLoad() {
+      // 當圖片載入成功時，將其設置為使用者的頭像
+      setUserPicture(userState.picture)
+    }
+    img.onerror = function imgOnError() {
+      // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
+      setUserPicture('/個人照片.png')
+    }
 
-  // 設置圖片 URL 並開始載入
-  img.src = userState.picture
+    // 設置圖片 URL 並開始載入
+    img.src = userState.picture
+  }, [userState.picture])
   // //判斷圖片有沒有上傳過(網址是否正確)
   // console.log(userState.picture)
   // useEffect(() => {
@@ -187,7 +189,11 @@ export default function User() {
         <div className={styles.cover}>
           <div className={styles.coverTop}>
             <div className={styles.userHeadshotWrapper}>
-              <img className={styles.userHeadshot} src={userPicture} />
+              <img
+                className={styles.userHeadshot}
+                src={userPicture}
+                alt='photo'
+              />
 
               <div className={styles.userHeadshotText}>
                 編輯大頭貼

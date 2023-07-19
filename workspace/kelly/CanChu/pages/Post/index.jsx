@@ -89,18 +89,20 @@ export default function Post({
   //   isUserPictureUpload()
   // }, [picture])
 
-  const img = new Image()
-  img.onload = function () {
-    // 當圖片載入成功時，將其設置為使用者的頭像
-    setUserPicture(picture)
-  }
-  img.onerror = function () {
-    // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
-    setUserPicture('/個人照片.png')
-  }
+  useEffect(() => {
+    const img = new Image()
+    img.onload = function imgOnLoad() {
+      // 當圖片載入成功時，將其設置為使用者的頭像
+      setUserPicture(picture)
+    }
+    img.onerror = function imgOnError() {
+      // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
+      setUserPicture('/個人照片.png')
+    }
 
-  // 設置圖片 URL 並開始載入
-  img.src = picture
+    // 設置圖片 URL 並開始載入
+    img.src = picture
+  }, [picture])
 
   return (
     <div className={styles.body}>
@@ -116,7 +118,7 @@ export default function Post({
 
           <div className={`${styles.firstRow} ${styles.row}`}>
             <div className={styles.firstRowLeft}>
-              <img className={styles.circle} src={userPicture} />
+              <img className={styles.circle} src={userPicture} alt='photo' />
               <div className={styles.text}>
                 <div className={styles.textOne}>{name}</div>
 
