@@ -105,6 +105,49 @@ export default function PostCreator({ onPostSubmit }) {
       console.error('網絡請求錯誤', error)
     }
   }
+  const [userPicture, setUserPicture] = useState('')
+  // //判斷圖片有沒有上傳過(網址是否正確)
+  // useEffect(() => {
+  //   const isUserPictureUpload = async () => {
+  //     try {
+  //       const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
+
+  //       const response = await fetch(`${userState.picture}`, {
+  //         method: 'GET',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${accessToken}`
+  //         }
+  //       })
+
+  //       if (response.ok) {
+  //         setUserPicture(userState.picture)
+  //       } else {
+  //         setUserPicture('/個人照片.png')
+  //         console.error('獲取用戶信息時出錯')
+  //       }
+  //     } catch (error) {
+  //       setUserPicture('/個人照片.png')
+  //       console.error('網絡請求錯誤', error)
+  //     }
+  //   }
+  //   isUserPictureUpload()
+  // }, [userState.picture])
+
+  useEffect(() => {
+    const img = new Image()
+    img.onload = function imgOnLoad() {
+      // 當圖片載入成功時，將其設置為使用者的頭像
+      setUserPicture(userState.picture)
+    }
+    img.onerror = function imgOnError() {
+      // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
+      setUserPicture('/個人照片.png')
+    }
+
+    // 設置圖片 URL 並開始載入
+    img.src = userState.picture
+  }, [userState.picture])
 
   return (
     <div className={styles.posting}>
@@ -115,7 +158,7 @@ export default function PostCreator({ onPostSubmit }) {
           justifyContent: 'space-between'
         }}
       >
-        <img className={styles.postingPhoto} src={userState.picture} />
+        <img className={styles.postingPhoto} src={userPicture} />
         <textarea
           className={styles.postingText}
           placeholder='說點什麼嗎？'

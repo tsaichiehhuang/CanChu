@@ -47,6 +47,7 @@ const LoginPage = () => {
         Cookies.set('userId', responseData.data.user.id) // 將使用者 ID 儲存在 Cookie 中
 
         router.push('/')
+        window.location.reload() // 自動重新整理頁面
       } else {
         console.error(responseData.error)
       }
