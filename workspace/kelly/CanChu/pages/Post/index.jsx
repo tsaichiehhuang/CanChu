@@ -109,7 +109,11 @@ export default function Post({
               <div className={styles.text}>
                 <div className={styles.textOne}>{name}</div>
 
-                <div className={styles.textTwo} onClick={handlePostClick}>
+                <div
+                  className={styles.textTwo}
+                  onClick={handlePostClick}
+                  style={{ cursor: 'pointer' }}
+                >
                   {getTimeDiff(new Date(created_at))}
                 </div>
               </div>
@@ -127,14 +131,17 @@ export default function Post({
               className={styles.commentIcon}
               src='/comment.png'
               onClick={handlePostClick}
+              style={{ cursor: 'pointer' }}
             />
           </div>
           <div className={`${styles.fourRow} ${styles.row}`}>
-            <div onClick={handlePostClick}>
+            <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
               {formattedLikeCount}人喜歡這則貼文
             </div>
 
-            <div onClick={handlePostClick}>{formattedCommentCount}則留言</div>
+            <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
+              {formattedCommentCount}則留言
+            </div>
           </div>
           <div style={{ borderTop: '1px solid #bfbfbf', width: '100%' }}></div>
           {/* 網友留言 */}
@@ -151,6 +158,7 @@ export default function Post({
           <div
             className={`${styles.fiveRow} ${styles.row}`}
             onClick={handlePostClick}
+            style={{ cursor: 'pointer' }}
           >
             <img className={styles.person} src={picture} alt='photo' />
             <div className={styles.selfComment}>

@@ -8,9 +8,8 @@ export default function Profile() {
   const [editing, setEditing] = useState(false)
   const [userState, setUserState] = useState({}) // 初始為空陣列
   const [isLoading, setIsLoading] = useState(true) // 新增 isLoading 狀態
-  const [editedIntroduction, setEditedIntroduction] = useState(
-    userState.introduction
-  )
+  const [editedIntroduction, setEditedIntroduction] = useState('')
+
   const [editedTags, setEditedTags] = useState(userState.tag)
   const tagRefs = useRef([])
   //獲得用戶資料

@@ -27,30 +27,7 @@ export async function getServerSideProps(context) {
   return { props: {} }
 }
 
-//   const res = await fetch(`${apiUrl}/users/${context.params.id}/profile`, {
-//     method: 'GET',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       Authorization: `Bearer ${accessToken}`
-//     }
-//   })
-//   const data = await res.json()
-//   console.log(data)
-//   if (!data || !data.data || !data.data.user) {
-//     return {
-//       props: {
-//         profile: null
-//       }
-//     }
-//   }
-//   return {
-//     props: {
-//       profile: data.data.user
-//     }
-//   }
-// }
-
-export default function User({ profile }) {
+export default function User() {
   const [selectedPicture, setSelectedPicture] = useState(null)
   const [userState, setUserState] = useState({}) // 初始為空陣列
   const [postData, setPostData] = useState([]) // 改為空數組作為初始值
@@ -175,13 +152,13 @@ export default function User({ profile }) {
 
               <div className={styles.userHeadshotText}>
                 編輯大頭貼
-                {/* <input
+                <input
                   style={{ cursor: 'pointer', fontSize: '0' }}
                   type='file'
-                  accept='image/*'
+                  accept='.png, .jpg, .jpeg'
                   className={styles.userHeadshotInput}
                   onChange={handlePictureUpload}
-                /> */}
+                />
               </div>
             </div>
             <div className={styles.coverTopRight}>

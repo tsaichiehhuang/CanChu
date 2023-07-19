@@ -125,7 +125,7 @@ export async function getServerSideProps(context) {
 
   const { params } = context
   const { id } = params
-  console.log(id)
+
   const res = await fetch(`${apiUrl}/users/${id}/profile`, {
     method: 'GET',
     headers: {
