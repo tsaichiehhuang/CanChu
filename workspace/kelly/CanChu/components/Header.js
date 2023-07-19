@@ -47,31 +47,43 @@ export default function Header({ profile }) {
   const [userPicture, setUserPicture] = useState('')
   //判斷圖片有沒有上傳過(網址是否正確)
 
-  useEffect(() => {
-    const isUserPictureUpload = async () => {
-      try {
-        const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
+  const img = new Image()
+  img.onload = function () {
+    // 當圖片載入成功時，將其設置為使用者的頭像
+    setUserPicture(userState.picture)
+  }
+  img.onerror = function () {
+    // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
+    setUserPicture('/個人照片.png')
+  }
 
-        const response = await fetch(`${userState.picture}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
+  // 設置圖片 URL 並開始載入
+  img.src = userState.picture
+  // useEffect(() => {
+  //   const isUserPictureUpload = async () => {
+  //     try {
+  //       const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
 
-        if (response.ok) {
-          setUserPicture(userState.picture)
-        } else {
-          setUserPicture('/個人照片.png')
-          console.error('獲取用戶信息時出錯')
-        }
-      } catch (error) {
-        console.error('網絡請求錯誤', error)
-      }
-    }
-    isUserPictureUpload()
-  }, [userState.picture])
+  //       const response = await fetch(`${userState.picture}`, {
+  //         method: 'GET',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${accessToken}`
+  //         }
+  //       })
+
+  //       if (response.ok) {
+  //         setUserPicture(userState.picture)
+  //       } else {
+  //         setUserPicture('/個人照片.png')
+  //         console.error('獲取用戶信息時出錯')
+  //       }
+  //     } catch (error) {
+  //       console.error('網絡請求錯誤', error)
+  //     }
+  //   }
+  //   isUserPictureUpload()
+  // }, [userState.picture])
   return (
     <div className={styles.header}>
       <style global jsx>{`
