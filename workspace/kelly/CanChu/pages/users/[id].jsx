@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
 import styles from './user.module.scss'
 import Header from '../../components/Header'
@@ -8,24 +7,55 @@ import Copyright from '../../components/Copyright'
 import PostCreator from '../../components/PostCreator'
 import Profile from '../../components/Profile'
 import fetchUserProfile from '../../api/fetchUserProfile'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import nookies from 'nookies'
 
 const apiUrl = process.env.API_DOMAIN
+const userId = Cookies.get('userId')
 
-export default function User() {
-  const router = useRouter()
-  const { user_id } = router.query
+export async function getServerSideProps(context) {
+  const { req, res } = context
+  const accessToken = req.cookies.accessToken
 
+  // 如果未登入，回login
+  if (!accessToken) {
+    res.writeHead(302, { Location: '/login' })
+    res.end()
+    return { props: {} }
+  }
+
+  return { props: {} }
+}
+
+//   const res = await fetch(`${apiUrl}/users/${context.params.id}/profile`, {
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       Authorization: `Bearer ${accessToken}`
+//     }
+//   })
+//   const data = await res.json()
+//   console.log(data)
+//   if (!data || !data.data || !data.data.user) {
+//     return {
+//       props: {
+//         profile: null
+//       }
+//     }
+//   }
+//   return {
+//     props: {
+//       profile: data.data.user
+//     }
+//   }
+// }
+
+export default function User({ profile }) {
   const [selectedPicture, setSelectedPicture] = useState(null)
-  const [isLoading, setIsLoading] = useState(true) // 新增 isLoading 狀態
   const [userState, setUserState] = useState({}) // 初始為空陣列
-
   const [postData, setPostData] = useState([]) // 改為空數組作為初始值
-
-  //獲得用戶資料
-  const userId = Cookies.get('userId')
-
   useEffect(() => {
-    fetchUserProfile(userId, setUserState, setIsLoading)
+    fetchUserProfile(userId, setUserState)
   }, [userState.id])
 
   //顯示user貼文
@@ -142,19 +172,21 @@ export default function User() {
           <div className={styles.coverTop}>
             <div className={styles.userHeadshotWrapper}>
               <img className={styles.userHeadshot} src={userState.picture} />
+
               <div className={styles.userHeadshotText}>
                 編輯大頭貼
-                <input
+                {/* <input
                   style={{ cursor: 'pointer', fontSize: '0' }}
                   type='file'
                   accept='image/*'
                   className={styles.userHeadshotInput}
                   onChange={handlePictureUpload}
-                />
+                /> */}
               </div>
             </div>
             <div className={styles.coverTopRight}>
               <div className={styles.userName}>{userState.name}</div>
+
               <div className={styles.userFriendCount}>
                 {userState.friend_count}位朋友
               </div>

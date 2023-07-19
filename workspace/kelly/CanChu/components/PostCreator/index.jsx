@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styles from './PostCreator.module.scss'
-import userData from '../../pages/user/userData'
+import userData from '../../data/userData'
 import Cookies from 'js-cookie'
 
 const apiUrl = process.env.API_DOMAIN

@@ -1,8 +1,9 @@
 import styles from './Post.module.scss'
 import React, { useState } from 'react'
 import getTimeDiff from '../../components/getTimeDiff'
-import userData from '../user/userData'
+import userData from '../../data/userData'
 import Link from 'next/link'
+import Cookies from 'js-cookie'
 
 function Comment({ comment }) {
   const createdAt = new Date(comment.created_at)
@@ -23,6 +24,7 @@ function Comment({ comment }) {
     </div>
   )
 }
+const id = Cookies.get('userId')
 
 export default function Post({
   data,
@@ -78,7 +80,11 @@ export default function Post({
           </article>
           <div className={`${styles.thirdRow} ${styles.row}`}>
             <img className={styles.heartIcon} src={heartIcon} />
-            <Link href='/posts/demo' style={{ textDecoration: 'none' }}>
+            <Link
+              href='/posts/[id]'
+              as={`/posts/${id}`}
+              style={{ textDecoration: 'none' }}
+            >
               <img className={styles.commentIcon} src='/comment.png' />
             </Link>
           </div>
@@ -107,7 +113,11 @@ export default function Post({
                 ))}
             </div>
           )}
-          <Link href='/posts/demo' style={{ textDecoration: 'none' }}>
+          <Link
+            href='/posts/[id]'
+            // as={`/posts/${id}`}
+            style={{ textDecoration: 'none' }}
+          >
             <div className={`${styles.fiveRow} ${styles.row}`}>
               <img className={styles.person} src={picture} alt='photo' />
               <div className={styles.selfComment}>

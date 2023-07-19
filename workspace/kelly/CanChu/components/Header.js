@@ -1,55 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import styles from './Header.module.scss'
-import userData from '../pages/user/userData'
+import userData from '../data/userData'
 import { useRouter } from 'next/router'
-import Link from 'next/Link'
+import Link from 'next/link'
+import fetchUserProfile from '../api/fetchUserProfile'
 
 const apiUrl = process.env.API_DOMAIN
 
-export default function Header() {
+export default function Header({ profile }) {
   const router = useRouter()
   const user = userData()[0]
   // header的個人選單
   const [isNameHovered, setIsNameHovered] = useState(false)
   const [showProfileOptions, setShowProfileOptions] = useState(false)
-  const [userState, setUserState] = useState({}) // 初始為空陣列
+  const [userState, setUserState] = useState([]) // 初始為空陣列
 
   //獲得用戶資料
   const userId = Cookies.get('userId')
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
-
-        if (!accessToken) {
-          console.error('未找到accessToken')
-          return
-        }
-
-        const response = await fetch(`${apiUrl}/users/${userId}/profile`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
-
-        if (response.ok) {
-          const data = await response.json()
-          const userProfile = data?.data?.user || {}
-          setUserState(userProfile) // 設置用戶資料到 userState 中
-        } else {
-          console.error('獲取用戶信息時出錯')
-        }
-      } catch (error) {
-        console.error('網絡請求錯誤', error)
-      }
-    }
-
-    fetchUserProfile()
-  }, [userState.id]) // 當 user.id 發生變化時，重新獲取用戶資料
+    fetchUserProfile(userId, setUserState)
+  }, [userId])
+  const id = userState.id
 
   const handleProfileMouseEnter = () => {
     setShowProfileOptions(true)
@@ -119,7 +92,9 @@ export default function Header() {
               }}
             ></div>
             <Link
-              href='/user/demo'
+              href='/users/[id]'
+              as={`/users/${id}`}
+              prefetch
               style={{ textDecorationLine: 'none', color: '#000' }}
             >
               <div className={styles.profileOption}>查看個人檔案</div>
@@ -144,4 +119,24 @@ export default function Header() {
       </div>
     </div>
   )
+}
+export async function getServerSideProps(context) {
+  const accessToken = Cookies.get('accessToken')
+
+  const { params } = context
+  const { id } = params
+  console.log(id)
+  const res = await fetch(`${apiUrl}/users/${id}/profile`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  })
+  const data = await res.json()
+
+  return {
+    props: {
+      profile: data.data.user
+    }
+  }
 }

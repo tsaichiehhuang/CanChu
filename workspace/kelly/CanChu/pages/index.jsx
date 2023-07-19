@@ -1,6 +1,6 @@
 import React from 'react'
 import Home from './Home'
-import LoginPage from './login/index.page'
+import LoginPage from './login'
 import Cookies from 'js-cookie'
 
 const accessToken = Cookies.get('accessToken')
