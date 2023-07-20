@@ -23,7 +23,30 @@ export default function Header({ profile }) {
     fetchUserProfile(userId, setUserState)
   }, [userId])
   const id = userState.id
+  // 獲得資料之後再判斷圖片網址
+  const [userDataLoaded, setUserDataLoaded] = useState(false) //用於標記是否已獲取用戶資料
+  const [userPicture, setUserPicture] = useState('')
 
+  useEffect(() => {
+    if (userState.picture) {
+      const img = new Image()
+      img.onload = function imgOnLoad() {
+        // 當圖片載入成功時，將其設置為使用者的頭像
+        console.log('網址有效')
+        setUserPicture(userState.picture)
+        setUserDataLoaded(true) // 標記已經獲取用戶資料
+      }
+      img.onerror = function imgOnError() {
+        console.log('網址無效')
+        // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
+        setUserPicture('/個人照片.png')
+        setUserDataLoaded(true) // 標記已經獲取用戶資料
+      }
+
+      // 設置圖片 URL 並開始載入
+      img.src = userState.picture
+    }
+  }, [userState.picture])
   const handleProfileMouseEnter = () => {
     setShowProfileOptions(true)
   }
@@ -44,22 +67,7 @@ export default function Header({ profile }) {
     // 重新回去登入頁面
     router.push('/login')
   }
-  const [userPicture, setUserPicture] = useState('')
-  //判斷圖片有沒有上傳過(網址是否正確)
-  useEffect(() => {
-    const img = new Image()
-    img.onload = function imgOnLoad() {
-      // 當圖片載入成功時，將其設置為使用者的頭像
-      setUserPicture(userState.picture)
-    }
-    img.onerror = function imgOnError() {
-      // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
-      setUserPicture('/個人照片.png')
-    }
 
-    // 設置圖片 URL 並開始載入
-    img.src = userState.picture
-  }, [userState.picture])
   // useEffect(() => {
   //   const isUserPictureUpload = async () => {
   //     try {
