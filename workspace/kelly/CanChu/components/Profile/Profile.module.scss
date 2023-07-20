@@ -54,28 +54,6 @@
         display: block; /* 滑鼠移入時顯示文字 */
         cursor: pointer;
       }
-
-      &::after {
-        cursor: pointer;
-        // content: '編輯大頭貼';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #fff;
-        font-family: Outfit;
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 24px;
-        text-decoration-line: underline;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-      &:hover::after {
-        opacity: 1;
-        cursor: pointer;
-      }
     }
     .userHeadshotInput {
       position: absolute;

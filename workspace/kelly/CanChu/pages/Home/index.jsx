@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import Cookies from 'js-cookie' // 導入 js-cookie
 import styles from './Home.module.scss'
 import Header from '../../components/Header'
 import PostCreator from '../../components/PostCreator'
 import Post from '../../components/Post'
 import Copyright from '../../components/Copyright'
 import fetchPostsData from '../../api/fetchPostsData'
-
-const apiUrl = process.env.API_DOMAIN
 
 export default function Home() {
   const [postData, setPostData] = useState([])

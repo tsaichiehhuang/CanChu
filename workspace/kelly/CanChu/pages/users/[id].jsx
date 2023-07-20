@@ -7,6 +7,7 @@ import Copyright from '../../components/Copyright'
 import PostCreator from '../../components/PostCreator'
 import Profile from '../../components/Profile'
 import fetchUserProfile from '../../api/fetchUserProfile'
+import IsPictureUrlOk from '../../components/IsPictureUrlOk'
 
 const apiUrl = process.env.API_DOMAIN
 const userId = Cookies.get('userId')
@@ -58,8 +59,6 @@ export default function User() {
         if (response.ok) {
           const data = await response.json()
           setPostData(data?.data?.posts || [])
-        } else {
-          // alert('獲取貼文數據時出錯')
         }
       } catch (error) {
         console.error('網絡請求錯誤', error)
@@ -132,55 +131,6 @@ export default function User() {
     // 調用上傳圖片的 API 函式，並將 `file` 作為參數傳遞
     uploadPicture(file)
   }
-  const [userDataLoaded, setUserDataLoaded] = useState(false) //用於標記是否已獲取用戶資料
-  const [userPicture, setUserPicture] = useState('')
-  // 獲得資料之後再判斷圖片網址
-  useEffect(() => {
-    if (userState.picture) {
-      const img = new Image()
-      img.onload = function imgOnLoad() {
-        // 當圖片載入成功時，將其設置為使用者的頭像
-
-        setUserPicture(userState.picture)
-        setUserDataLoaded(true) // 標記已經獲取用戶資料
-      }
-      img.onerror = function imgOnError() {
-        // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
-        setUserPicture('/個人照片.png')
-        setUserDataLoaded(true) // 標記已經獲取用戶資料
-      }
-
-      // 設置圖片 URL 並開始載入
-      img.src = userState.picture
-    }
-  }, [userState.picture])
-
-  // console.log(userState.picture)
-  // useEffect(() => {
-  //   const isUserPictureUpload = async () => {
-  //     try {
-  //       const accessToken = Cookies.get('accessToken')
-
-  //       const response = await fetch(`${userState.picture}`, {
-  //         method: 'GET',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${accessToken}`
-  //         }
-  //       })
-
-  //       if (response.ok) {
-  //         setUserPicture(userState.picture)
-  //       } else {
-  //         setUserPicture('/個人照片.png')
-  //         console.error('獲取用戶信息時出錯')
-  //       }
-  //     } catch (error) {
-  //       console.error('userPicture網絡請求錯誤', error)
-  //     }
-  //   }
-  //   isUserPictureUpload()
-  // }, [userState.picture])
 
   return (
     <div className={styles.body}>
@@ -195,10 +145,9 @@ export default function User() {
         <div className={styles.cover}>
           <div className={styles.coverTop}>
             <div className={styles.userHeadshotWrapper}>
-              <img
+              <IsPictureUrlOk
                 className={styles.userHeadshot}
-                src={userPicture}
-                alt='photo'
+                userState={userState}
               />
 
               <div className={styles.userHeadshotText}>

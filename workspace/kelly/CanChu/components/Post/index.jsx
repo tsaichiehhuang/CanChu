@@ -86,6 +86,7 @@ export default function Post({
   const formattedCommentCount = comment_count !== undefined ? comment_count : 0
   const [liked, setLiked] = useState(data.is_liked || data.is_like || false)
   const [likeCount, setLikeCount] = useState(data.like_count || 0)
+
   // 新增 useEffect 用於更新愛心相關狀態
   useEffect(() => {
     setLiked(data.is_liked || data.is_like || false)

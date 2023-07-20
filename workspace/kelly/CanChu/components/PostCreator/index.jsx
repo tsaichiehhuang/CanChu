@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import styles from './PostCreator.module.scss'
 import userData from '../../data/userData'
 import Cookies from 'js-cookie'
-
+import fetchUserProfile from '../../api/fetchUserProfile'
+import IsPictureUrlOk from '../IsPictureUrlOk'
 const apiUrl = process.env.API_DOMAIN
 
 export default function PostCreator() {
@@ -13,64 +14,9 @@ export default function PostCreator() {
 
   //獲得用戶資料
   const userId = Cookies.get('userId')
-
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const accessToken = Cookies.get('accessToken')
-
-        if (!accessToken) {
-          console.error('未找到accessToken')
-          return
-        }
-
-        const response = await fetch(`${apiUrl}/users/${userId}/profile`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
-
-        if (response.ok) {
-          const data = await response.json()
-          const userProfile = data?.data?.user || {}
-          setUserState(userProfile) // 設置用戶資料到 userState 中
-        } else {
-          console.error('獲取用戶信息時出錯')
-        }
-      } catch (error) {
-        console.error('網絡請求錯誤', error)
-      }
-    }
-
-    fetchUserProfile()
-  }, [userState.id]) // 當 user.id 發生變化時，重新獲取用戶資料
-
-  // 獲得資料之後再判斷圖片網址
-  const [userDataLoaded, setUserDataLoaded] = useState(false) //用於標記是否已獲取用戶資料
-  const [userPicture, setUserPicture] = useState('')
-
-  useEffect(() => {
-    if (userState.picture) {
-      const img = new Image()
-      img.onload = function imgOnLoad() {
-        // 當圖片載入成功時，將其設置為使用者的頭像
-        console.log('網址有效')
-        setUserPicture(userState.picture)
-        setUserDataLoaded(true) // 標記已經獲取用戶資料
-      }
-      img.onerror = function imgOnError() {
-        console.log('網址無效')
-        // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
-        setUserPicture('/個人照片.png')
-        setUserDataLoaded(true) // 標記已經獲取用戶資料
-      }
-
-      // 設置圖片 URL 並開始載入
-      img.src = userState.picture
-    }
-  }, [userState.picture])
+    fetchUserProfile(userId, setUserState)
+  }, [userId])
 
   const handlePostSubmit = async () => {
     // 檢查字段值是否存在且不為空
@@ -106,7 +52,6 @@ export default function PostCreator() {
         const responseData = await response.json()
 
         // 請求成功，將返回的貼文數據添加到頁面中顯示
-        // 請求成功，將返回的貼文數據添加到頁面中顯示
         const newPost = {
           id: responseData.data.post.id,
           created_at: new Date().toISOString(), // 使用當下的時間
@@ -131,34 +76,6 @@ export default function PostCreator() {
     }
   }
 
-  // //判斷圖片有沒有上傳過(網址是否正確)
-  // useEffect(() => {
-  //   const isUserPictureUpload = async () => {
-  //     try {
-  //       const accessToken = Cookies.get('accessToken')
-
-  //       const response = await fetch(`${userState.picture}`, {
-  //         method: 'GET',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${accessToken}`
-  //         }
-  //       })
-
-  //       if (response.ok) {
-  //         setUserPicture(userState.picture)
-  //       } else {
-  //         setUserPicture('/個人照片.png')
-  //         console.error('獲取用戶信息時出錯')
-  //       }
-  //     } catch (error) {
-  //       setUserPicture('/個人照片.png')
-  //       console.error('網絡請求錯誤', error)
-  //     }
-  //   }
-  //   isUserPictureUpload()
-  // }, [userState.picture])
-
   return (
     <div className={styles.posting}>
       <div
@@ -168,7 +85,7 @@ export default function PostCreator() {
           justifyContent: 'space-between'
         }}
       >
-        <img className={styles.postingPhoto} src={userPicture} />
+        <IsPictureUrlOk className={styles.postingPhoto} userState={userState} />
         <textarea
           className={styles.postingText}
           placeholder='說點什麼嗎？'

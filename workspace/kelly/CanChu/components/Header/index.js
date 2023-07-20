@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import styles from './Header.module.scss'
-import userData from '../../data/userData'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import fetchUserProfile from '../../api/fetchUserProfile'
+import IsPictureUrlOk from '../IsPictureUrlOk'
 
 const apiUrl = process.env.API_DOMAIN
 
-export default function Header({ profile }) {
+export default function Header() {
   const router = useRouter()
-  const user = userData()[0]
   // header的個人選單
   const [isNameHovered, setIsNameHovered] = useState(false)
   const [showProfileOptions, setShowProfileOptions] = useState(false)
@@ -23,30 +22,7 @@ export default function Header({ profile }) {
     fetchUserProfile(userId, setUserState)
   }, [userId])
   const id = userState.id
-  // 獲得資料之後再判斷圖片網址
-  const [userDataLoaded, setUserDataLoaded] = useState(false) //用於標記是否已獲取用戶資料
-  const [userPicture, setUserPicture] = useState('')
 
-  useEffect(() => {
-    if (userState.picture) {
-      const img = new Image()
-      img.onload = function imgOnLoad() {
-        // 當圖片載入成功時，將其設置為使用者的頭像
-        console.log('網址有效')
-        setUserPicture(userState.picture)
-        setUserDataLoaded(true) // 標記已經獲取用戶資料
-      }
-      img.onerror = function imgOnError() {
-        console.log('網址無效')
-        // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
-        setUserPicture('/個人照片.png')
-        setUserDataLoaded(true) // 標記已經獲取用戶資料
-      }
-
-      // 設置圖片 URL 並開始載入
-      img.src = userState.picture
-    }
-  }, [userState.picture])
   const handleProfileMouseEnter = () => {
     setShowProfileOptions(true)
   }
@@ -68,31 +44,6 @@ export default function Header({ profile }) {
     router.push('/login')
   }
 
-  // useEffect(() => {
-  //   const isUserPictureUpload = async () => {
-  //     try {
-  //       const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
-
-  //       const response = await fetch(`${userState.picture}`, {
-  //         method: 'GET',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${accessToken}`
-  //         }
-  //       })
-
-  //       if (response.ok) {
-  //         setUserPicture(userState.picture)
-  //       } else {
-  //         setUserPicture('/個人照片.png')
-  //         console.error('獲取用戶信息時出錯')
-  //       }
-  //     } catch (error) {
-  //       console.error('網絡請求錯誤', error)
-  //     }
-  //   }
-  //   isUserPictureUpload()
-  // }, [userState.picture])
   return (
     <div className={styles.header}>
       <style global jsx>{`
@@ -123,7 +74,8 @@ export default function Header({ profile }) {
         onMouseEnter={handleProfileMouseEnter}
         onMouseLeave={handleProfileMouseLeave}
       >
-        <img className={styles.person} src={userPicture} alt='photo' />
+        <IsPictureUrlOk className={styles.person} userState={userState} />
+
         {showProfileOptions && (
           <div className={styles.profileOptions}>
             <Link
@@ -137,10 +89,9 @@ export default function Header({ profile }) {
                 onMouseEnter={handlePhotoMouseEnter}
                 onMouseLeave={handlePhotoMouseLeave}
               >
-                <img
+                <IsPictureUrlOk
                   className={styles.profileOptionPhoto}
-                  style={{ borderRadius: '50%' }}
-                  src={userPicture}
+                  userState={userState}
                 />
                 {userState.name}
               </div>
