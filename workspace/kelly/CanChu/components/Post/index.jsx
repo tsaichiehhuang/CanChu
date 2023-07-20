@@ -1,10 +1,7 @@
 import styles from './Post.module.scss'
 import React, { useState, useEffect } from 'react'
 import getTimeDiff from '../getTimeDiff'
-import userData from '../../data/userData'
-import Link from 'next/link'
 import Cookies from 'js-cookie'
-import fetchPostsData from '../../api/fetchPostsData'
 const apiUrl = process.env.API_DOMAIN
 
 function Comment({ comment }) {
@@ -83,8 +80,7 @@ export default function Post({
     is_liked,
     is_like,
     comment_count,
-    comments,
-    id
+    comments
   } = data
   const formattedPicture = picture !== '' ? picture : '/個人照片.png'
   const formattedCommentCount = comment_count !== undefined ? comment_count : 0
@@ -93,12 +89,13 @@ export default function Post({
 
   //當點愛心時，愛心會變色且讚的數量+1
   const handleHeartClick = async () => {
-    // 在點擊愛心後立即更新前端狀態，不等待後端 API 回應
+    // 在點擊愛心後立即更新前端狀態，不需等待後端 API 回應
     setLiked((prevLiked) => !prevLiked)
     setLikeCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1))
     try {
       const accessToken = Cookies.get('accessToken')
-      const method = liked ? 'DELETE' : 'POST' // 如果已經點讚，則發送 DELETE 請求，否則發送 POST 請求
+      // 如果已經點讚，則發送 DELETE 請求，否則發送 POST 請求
+      const method = liked ? 'DELETE' : 'POST'
       const response = await fetch(`${apiUrl}/posts/${data.id}/like`, {
         method,
         headers: {
@@ -138,9 +135,10 @@ export default function Post({
     }
   }
   useEffect(() => {
-    // 初始化時獲取貼文數據
+    // 重新整理或剛進入頁面時獲取貼文數據
     getPostData()
   }, [])
+
   return (
     <div className={styles.body}>
       <style global jsx>{`
@@ -192,7 +190,7 @@ export default function Post({
           </div>
           <div className={`${styles.fourRow} ${styles.row}`}>
             <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
-              {likeCount}人喜歡這則貼文{/* 沒辦法顯示api資料的讚數 */}
+              {likeCount}人喜歡這則貼文
             </div>
 
             <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
