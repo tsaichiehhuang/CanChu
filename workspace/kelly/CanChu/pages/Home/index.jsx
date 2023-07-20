@@ -104,31 +104,5 @@ export async function getServerSideProps(context) {
     return { props: {} }
   }
 
-  // // 獲取貼文數據
-  // try {
-  //   const response = await fetch(`${apiUrl}/posts/search`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Bearer ${accessToken}`
-  //     }
-  //   })
-
-  //   if (response.ok) {
-  //     const data = await response.json()
-  //     const postData = data?.data?.posts || []
-
-  //     return {
-  //       props: {
-  //         postData
-  //       }
-  //     }
-  //   } else {
-  //     console.error('獲取貼文數據時出錯')
-  //   }
-  // } catch (error) {
-  //   console.error('網絡請求錯誤', error)
-  // }
-
   return { props: {} }
 }

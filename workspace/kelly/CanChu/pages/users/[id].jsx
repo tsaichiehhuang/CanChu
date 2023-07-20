@@ -153,7 +153,7 @@ export default function User() {
   // useEffect(() => {
   //   const isUserPictureUpload = async () => {
   //     try {
-  //       const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
+  //       const accessToken = Cookies.get('accessToken')
 
   //       const response = await fetch(`${userState.picture}`, {
   //         method: 'GET',

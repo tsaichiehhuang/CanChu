@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 
 const apiUrl = process.env.API_DOMAIN
 
-export default function PostCreator({ onPostSubmit }) {
+export default function PostCreator() {
   const user = userData()[0]
   const [postContent, setPostContent] = useState('')
   const [postData, setPostData] = useState([]) // 改為空數組作為初始值
@@ -17,7 +17,7 @@ export default function PostCreator({ onPostSubmit }) {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的token
+        const accessToken = Cookies.get('accessToken')
 
         if (!accessToken) {
           console.error('未找到accessToken')
@@ -47,6 +47,31 @@ export default function PostCreator({ onPostSubmit }) {
     fetchUserProfile()
   }, [userState.id]) // 當 user.id 發生變化時，重新獲取用戶資料
 
+  // 獲得資料之後再判斷圖片網址
+  const [userDataLoaded, setUserDataLoaded] = useState(false) //用於標記是否已獲取用戶資料
+  const [userPicture, setUserPicture] = useState('')
+
+  useEffect(() => {
+    if (userState.picture) {
+      const img = new Image()
+      img.onload = function imgOnLoad() {
+        // 當圖片載入成功時，將其設置為使用者的頭像
+        console.log('網址有效')
+        setUserPicture(userState.picture)
+        setUserDataLoaded(true) // 標記已經獲取用戶資料
+      }
+      img.onerror = function imgOnError() {
+        console.log('網址無效')
+        // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
+        setUserPicture('/個人照片.png')
+        setUserDataLoaded(true) // 標記已經獲取用戶資料
+      }
+
+      // 設置圖片 URL 並開始載入
+      img.src = userState.picture
+    }
+  }, [userState.picture])
+
   const handlePostSubmit = async () => {
     // 檢查字段值是否存在且不為空
     if (!postContent) {
@@ -59,7 +84,6 @@ export default function PostCreator({ onPostSubmit }) {
       context: postContent
     }
 
-    // 獲取存儲在本地的token
     const accessToken = Cookies.get('accessToken')
 
     if (!accessToken) {
@@ -81,6 +105,7 @@ export default function PostCreator({ onPostSubmit }) {
       if (response.ok) {
         const responseData = await response.json()
 
+        // 請求成功，將返回的貼文數據添加到頁面中顯示
         // 請求成功，將返回的貼文數據添加到頁面中顯示
         const newPost = {
           id: responseData.data.post.id,
@@ -105,12 +130,12 @@ export default function PostCreator({ onPostSubmit }) {
       console.error('網絡請求錯誤', error)
     }
   }
-  const [userPicture, setUserPicture] = useState('')
+
   // //判斷圖片有沒有上傳過(網址是否正確)
   // useEffect(() => {
   //   const isUserPictureUpload = async () => {
   //     try {
-  //       const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
+  //       const accessToken = Cookies.get('accessToken')
 
   //       const response = await fetch(`${userState.picture}`, {
   //         method: 'GET',
@@ -133,21 +158,6 @@ export default function PostCreator({ onPostSubmit }) {
   //   }
   //   isUserPictureUpload()
   // }, [userState.picture])
-
-  useEffect(() => {
-    const img = new Image()
-    img.onload = function imgOnLoad() {
-      // 當圖片載入成功時，將其設置為使用者的頭像
-      setUserPicture(userState.picture)
-    }
-    img.onerror = function imgOnError() {
-      // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
-      setUserPicture('/個人照片.png')
-    }
-
-    // 設置圖片 URL 並開始載入
-    img.src = userState.picture
-  }, [userState.picture])
 
   return (
     <div className={styles.posting}>
