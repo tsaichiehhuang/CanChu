@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import styles from './Header.module.scss'
-import userData from '../data/userData'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import fetchUserProfile from '../api/fetchUserProfile'
 
 const apiUrl = process.env.API_DOMAIN
 
-export default function Header({ profile }) {
+export default function Header() {
   const router = useRouter()
-  const user = userData()[0]
   // header的個人選單
   const [isNameHovered, setIsNameHovered] = useState(false)
   const [showProfileOptions, setShowProfileOptions] = useState(false)
@@ -18,10 +16,34 @@ export default function Header({ profile }) {
 
   //獲得用戶資料
   const userId = Cookies.get('userId')
-
   useEffect(() => {
     fetchUserProfile(userId, setUserState)
   }, [userId])
+
+  const [userDataLoaded, setUserDataLoaded] = useState(false) //用於標記是否已獲取用戶資料
+  const [userPicture, setUserPicture] = useState('')
+  // 獲得資料之後再判斷圖片網址
+  useEffect(() => {
+    if (userState.picture) {
+      const img = new Image()
+      img.onload = function imgOnLoad() {
+        // 當圖片載入成功時，將其設置為使用者的頭像
+        console.log('網址有效')
+        setUserPicture(userState.picture)
+        setUserDataLoaded(true) // 標記已經獲取用戶資料
+      }
+      img.onerror = function imgOnError() {
+        console.log('網址無效')
+        // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
+        setUserPicture('/個人照片.png')
+        setUserDataLoaded(true) // 標記已經獲取用戶資料
+      }
+
+      // 設置圖片 URL 並開始載入
+      img.src = userState.picture
+    }
+  }, [userState.picture])
+
   const id = userState.id
 
   const handleProfileMouseEnter = () => {
@@ -44,26 +66,11 @@ export default function Header({ profile }) {
     // 重新回去登入頁面
     router.push('/login')
   }
-  const [userPicture, setUserPicture] = useState('')
-  //判斷圖片有沒有上傳過(網址是否正確)
-  useEffect(() => {
-    const img = new Image()
-    img.onload = function imgOnLoad() {
-      // 當圖片載入成功時，將其設置為使用者的頭像
-      setUserPicture(userState.picture)
-    }
-    img.onerror = function imgOnError() {
-      // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
-      setUserPicture('/個人照片.png')
-    }
 
-    // 設置圖片 URL 並開始載入
-    img.src = userState.picture
-  }, [userState.picture])
   // useEffect(() => {
   //   const isUserPictureUpload = async () => {
   //     try {
-  //       const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
+  //       const accessToken = Cookies.get('accessToken')
 
   //       const response = await fetch(`${userState.picture}`, {
   //         method: 'GET',
@@ -173,24 +180,4 @@ export default function Header({ profile }) {
       </div>
     </div>
   )
-}
-export async function getServerSideProps(context) {
-  const accessToken = Cookies.get('accessToken')
-
-  const { params } = context
-  const { id } = params
-
-  const res = await fetch(`${apiUrl}/users/${id}/profile`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`
-    }
-  })
-  const data = await res.json()
-
-  return {
-    props: {
-      profile: data.data.user
-    }
-  }
 }
