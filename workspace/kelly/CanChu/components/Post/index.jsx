@@ -84,61 +84,40 @@ export default function Post({
   } = data
   const formattedPicture = picture !== '' ? picture : '/個人照片.png'
   const formattedCommentCount = comment_count !== undefined ? comment_count : 0
-  const [liked, setLiked] = useState(is_liked || is_like || false)
-  const [likeCount, setLikeCount] = useState(like_count || 0)
+  const [liked, setLiked] = useState(data.is_liked || data.is_like || false)
+  const [likeCount, setLikeCount] = useState(data.like_count || 0)
+  // 新增 useEffect 用於更新愛心相關狀態
+  useEffect(() => {
+    setLiked(data.is_liked || data.is_like || false)
+    setLikeCount(data.like_count || 0)
+  }, [data])
+  //當點愛心時，愛心會變色且讚的數量+1
+  const handleHeartClick = async () => {
+    // 在點擊愛心後立即更新前端狀態，不需等待後端 API 回應
+    setLiked((prevLiked) => !prevLiked)
+    setLikeCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1))
+    try {
+      const accessToken = Cookies.get('accessToken')
+      // 如果已經點讚，則發送 DELETE 請求，否則發送 POST 請求
+      const method = liked ? 'DELETE' : 'POST'
+      const response = await fetch(`${apiUrl}/posts/${data.id}/like`, {
+        method,
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
 
-  // //當點愛心時，愛心會變色且讚的數量+1
-  // const handleHeartClick = async () => {
-  //   // 在點擊愛心後立即更新前端狀態，不需等待後端 API 回應
-  //   setLiked((prevLiked) => !prevLiked)
-  //   setLikeCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1))
-  //   try {
-  //     const accessToken = Cookies.get('accessToken')
-  //     // 如果已經點讚，則發送 DELETE 請求，否則發送 POST 請求
-  //     const method = liked ? 'DELETE' : 'POST'
-  //     const response = await fetch(`${apiUrl}/posts/${data.id}/like`, {
-  //       method,
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`
-  //       }
-  //     })
+      if (!response.ok) {
+        // 如果 API 請求失敗，取消更新愛心狀態
+        setLiked(liked)
+        console.error('更新愛心狀態時出錯')
+      }
+    } catch (error) {
+      console.error('網絡請求錯誤', error)
+    }
+  }
 
-  //     if (!response.ok) {
-  //       console.error('更新愛心狀態時出錯')
-  //     }
-  //   } catch (error) {
-  //     console.error('網絡請求錯誤', error)
-  //   }
-  // }
-  // //fix:重新回到頁面時，即時顯示的愛心會消失
-  // const getPostData = async () => {
-  //   try {
-  //     const postId = Cookies.get('postId')
-  //     const accessToken = Cookies.get('accessToken')
-  //     const response = await fetch(`${apiUrl}/posts/${postId}`, {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${accessToken}`
-  //       }
-  //     })
-
-  //     if (response.ok) {
-  //       const postData = await response.json()
-  //       setLiked(postData.data.post.is_liked)
-  //       setLikeCount(postData.data.post.like_count)
-  //     } else {
-  //       // alert('獲取貼文數據時出錯')
-  //     }
-  //   } catch (error) {
-  //     console.error('網絡請求錯誤', error)
-  //   }
-  // }
-  // useEffect(() => {
-  //   // 重新整理或剛進入頁面時獲取貼文數據
-  //   getPostData()
-  // }, [])
-
+  const formattedLikeCount = likeCount === 0 ? 0 : likeCount
   return (
     <div className={styles.body}>
       <style global jsx>{`
@@ -190,7 +169,7 @@ export default function Post({
           </div>
           <div className={`${styles.fourRow} ${styles.row}`}>
             <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
-              {likeCount}人喜歡這則貼文
+              {formattedLikeCount}人喜歡這則貼文
             </div>
 
             <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
