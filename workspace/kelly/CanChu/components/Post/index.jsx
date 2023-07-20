@@ -156,7 +156,7 @@ export default function Post({
             <img
               className={styles.heartIcon}
               src={liked ? '/heart.png' : '/notHeart.png'}
-              // onClick={handleHeartClick}
+              onClick={handleHeartClick}
               style={{ cursor: 'pointer' }}
             />
 
