@@ -17,7 +17,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
+        const accessToken = Cookies.get('accessToken')
 
         if (!accessToken) {
           console.error('未找到accessToken')

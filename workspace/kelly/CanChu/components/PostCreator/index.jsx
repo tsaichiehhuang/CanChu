@@ -17,7 +17,7 @@ export default function PostCreator({ onPostSubmit }) {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的訪問令牌
+        const accessToken = Cookies.get('accessToken') // 獲取存儲在 cookies 的token
 
         if (!accessToken) {
           console.error('未找到accessToken')
@@ -59,7 +59,7 @@ export default function PostCreator({ onPostSubmit }) {
       context: postContent
     }
 
-    // 獲取存儲在本地的訪問令牌
+    // 獲取存儲在本地的token
     const accessToken = Cookies.get('accessToken')
 
     if (!accessToken) {

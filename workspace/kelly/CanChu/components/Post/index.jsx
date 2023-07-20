@@ -80,12 +80,15 @@ export default function Post({
     created_at,
     context,
     like_count,
+    is_liked,
     is_like,
     comment_count,
-    comments
+    comments,
+    id
   } = data
-
-  const [liked, setLiked] = useState(is_like || false)
+  const formattedPicture = picture !== '' ? picture : '/個人照片.png'
+  const formattedCommentCount = comment_count !== undefined ? comment_count : 0
+  const [liked, setLiked] = useState(is_liked || is_like || false)
   const [likeCount, setLikeCount] = useState(like_count || 0)
 
   //當點愛心時，愛心會變色且讚的數量+1
@@ -94,12 +97,11 @@ export default function Post({
     setLiked((prevLiked) => !prevLiked)
     setLikeCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1))
     try {
-      const method = liked ? 'DELETE' : 'POST' // 如果已經點讚，則發送 DELETE 請求，否則發送 POST 請求
       const accessToken = Cookies.get('accessToken')
+      const method = liked ? 'DELETE' : 'POST' // 如果已經點讚，則發送 DELETE 請求，否則發送 POST 請求
       const response = await fetch(`${apiUrl}/posts/${data.id}/like`, {
         method,
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`
         }
       })
@@ -111,8 +113,34 @@ export default function Post({
       console.error('網絡請求錯誤', error)
     }
   }
-  const formattedPicture = picture !== '' ? picture : '/個人照片.png'
-  const formattedCommentCount = comment_count !== undefined ? comment_count : 0
+  //fix:重新回到頁面時，即時顯示的愛心會消失
+  const getPostData = async () => {
+    try {
+      const postId = Cookies.get('postId')
+      const accessToken = Cookies.get('accessToken')
+      const response = await fetch(`${apiUrl}/posts/${postId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+
+      if (response.ok) {
+        const postData = await response.json()
+        setLiked(postData.data.post.is_liked)
+        setLikeCount(postData.data.post.like_count)
+      } else {
+        alert('獲取貼文數據時出錯')
+      }
+    } catch (error) {
+      console.error('網絡請求錯誤', error)
+    }
+  }
+  useEffect(() => {
+    // 初始化時獲取貼文數據
+    getPostData()
+  }, [])
   return (
     <div className={styles.body}>
       <style global jsx>{`
