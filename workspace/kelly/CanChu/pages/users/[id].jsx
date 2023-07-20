@@ -59,7 +59,7 @@ export default function User() {
           const data = await response.json()
           setPostData(data?.data?.posts || [])
         } else {
-          alert('獲取貼文數據時出錯')
+          // alert('獲取貼文數據時出錯')
         }
       } catch (error) {
         console.error('網絡請求錯誤', error)
@@ -140,12 +140,11 @@ export default function User() {
       const img = new Image()
       img.onload = function imgOnLoad() {
         // 當圖片載入成功時，將其設置為使用者的頭像
-        console.log('網址有效')
+
         setUserPicture(userState.picture)
         setUserDataLoaded(true) // 標記已經獲取用戶資料
       }
       img.onerror = function imgOnError() {
-        console.log('網址無效')
         // 當圖片載入失敗時，將使用者頭像設置為默認的 '/個人照片.png'
         setUserPicture('/個人照片.png')
         setUserDataLoaded(true) // 標記已經獲取用戶資料

@@ -23,10 +23,10 @@ const fetchPostsData = async (setPostData) => {
       const data = await response.json()
       setPostData(data?.data?.posts || [])
     } else {
-      console.error('獲取貼文數據時出錯')
+      // console.error('獲取貼文數據時出錯')
     }
   } catch (error) {
-    console.error('網絡請求錯誤', error)
+    // console.error('網絡請求錯誤', error)
   }
 }
 

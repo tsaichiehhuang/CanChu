@@ -8,12 +8,9 @@ import Copyright from '../../components/Copyright'
 import fetchPostsData from '../../api/fetchPostsData'
 
 const apiUrl = process.env.API_DOMAIN
+
 export default function Home() {
   const [postData, setPostData] = useState([])
-
-  useEffect(() => {
-    fetchPostsData(setPostData)
-  }, [])
 
   const handlePostClick = (postId) => {
     // 將點擊的 post id 儲存到狀態，然後導航至對應頁面
