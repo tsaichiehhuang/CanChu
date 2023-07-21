@@ -1,6 +1,6 @@
 import React from 'react'
 import App from 'next/app'
-import fetchPostsData from '../api/useFetchPostsData'
+
 import '../styles/globals.css'
 
 class MyApp extends App {

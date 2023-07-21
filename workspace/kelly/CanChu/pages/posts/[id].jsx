@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Post from '../../components/Post'
-import Header from '../../components/Header'
+import Post from '@/components/Post'
+import Header from '@/components/Header'
 import Cookies from 'js-cookie'
 
 const apiUrl = process.env.API_DOMAIN

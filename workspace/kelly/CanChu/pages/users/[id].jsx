@@ -1,13 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
-import styles from './user.module.scss'
-import Header from '../../components/Header'
-import Post from '../../components/Post'
-import Copyright from '../../components/Copyright'
-import PostCreator from '../../components/PostCreator'
-import Profile from '../../components/Profile'
-import fetchUserProfile from '../../api/fetchUserProfile'
-import IsPictureUrlOk from '../../components/IsPictureUrlOk'
+import styles from '@/user.module.scss'
+import Header from '@/components/Header'
+import Post from '@/components/Post'
+import Copyright from '@/components/Copyright'
+import PostCreator from '@/components/PostCreator'
+import Profile from '@/components/Profile'
+import useFetchUserProfile from '@/hook/userFetchUserProfile'
+import IsPictureUrlOk from '@/components/IsPictureUrlOk'
 
 const apiUrl = process.env.API_DOMAIN
 const userId = Cookies.get('userId')
@@ -28,11 +28,11 @@ export async function getServerSideProps(context) {
 
 export default function User() {
   const [selectedPicture, setSelectedPicture] = useState(null)
-  const [userState, setUserState] = useState({}) // 初始為空陣列
+
   const [postData, setPostData] = useState([]) // 改為空數組作為初始值
-  useEffect(() => {
-    fetchUserProfile(userId, setUserState)
-  }, [userState.id])
+  //獲得用戶資料
+
+  const { userState, updateUserState } = useFetchUserProfile(userId)
 
   //顯示user貼文
   const url = new URL(`${apiUrl}/posts/search`)
@@ -69,11 +69,6 @@ export default function User() {
   }, [])
 
   //上傳圖片
-  const updateUser = (updatedUser) => {
-    const updatedUserData = [updatedUser]
-    setUserState(updatedUserData)
-  }
-
   const uploadPicture = async (file) => {
     try {
       const accessToken = Cookies.get('accessToken')
@@ -98,10 +93,9 @@ export default function User() {
         const data = await response.json()
         const pictureUrl = data?.data?.picture
         // 更新用戶的圖片
-        const updatedUser = { ...userState, picture: pictureUrl }
+        const updatedUser = { ...userState.userState, picture: pictureUrl }
         // 更新用戶數據
-        updateUser(updatedUser)
-
+        updateUserState(updatedUser)
         // 將新上傳的頭像 URL 存儲在 cookies
         Cookies.set('uploadedPicture', pictureUrl)
         window.location.reload() // 自動重新整理頁面
