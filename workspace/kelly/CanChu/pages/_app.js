@@ -1,6 +1,6 @@
 import React from 'react'
 import App from 'next/app'
-import fetchPostsData from '../api/fetchPostsData'
+import fetchPostsData from '../api/useFetchPostsData'
 import '../styles/globals.css'
 
 class MyApp extends App {
@@ -8,18 +8,16 @@ class MyApp extends App {
     // 在這裡處理自訂的預取數據
     const appProps = await App.getInitialProps(appContext)
     const apiUrl = process.env.API_DOMAIN
-    const postData = await fetchPostsData() // 處理主頁的貼文數據
 
     return {
       ...appProps,
-      apiUrl,
-      postData
+      apiUrl
     }
   }
 
   render() {
-    const { Component, pageProps, apiUrl, postData } = this.props
-    return <Component {...pageProps} apiUrl={apiUrl} postData={postData} />
+    const { Component, pageProps, apiUrl } = this.props
+    return <Component {...pageProps} apiUrl={apiUrl} />
   }
 }
 
