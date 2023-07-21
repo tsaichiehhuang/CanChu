@@ -13,7 +13,7 @@ export default function Header() {
   // header的個人選單
   const [isNameHovered, setIsNameHovered] = useState(false)
   const [showProfileOptions, setShowProfileOptions] = useState(false)
-  const [userState, setUserState] = useState([]) // 初始為空陣列
+  const [userState, setUserState] = useState([])
 
   //獲得用戶資料
   const userId = Cookies.get('userId')
@@ -44,6 +44,37 @@ export default function Header() {
     router.push('/login')
   }
 
+  // 用於呼叫搜尋 API 並處理回傳的結果
+  const fetchUserSearchResultsAPI = async (keywords) => {
+    try {
+      const accessToken = Cookies.get('accessToken')
+      const res = await fetch(`${apiUrl}/users/search?keyword=${keywords}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+      const data = await res.json()
+      return data.data.users
+    } catch (error) {
+      console.error('Error fetching search results:', error)
+      return []
+    }
+  }
+  const [searchResults, setSearchResults] = useState([]) //保存搜尋結果
+  const [keywords, setKeywords] = useState([])
+  const handleSearchInputChange = async (event) => {
+    const keyword = event.target.value
+    setKeywords(keyword)
+
+    if (keyword.trim() !== '') {
+      const results = await fetchUserSearchResultsAPI(keyword)
+      setSearchResults(results)
+    } else {
+      setSearchResults([])
+    }
+  }
+
   return (
     <div className={styles.header}>
       <style global jsx>{`
@@ -66,8 +97,24 @@ export default function Header() {
         <div className={styles.logo}>CanChu</div>
       </Link>
       <div className={styles.search}>
-        <img style={{ marginRight: '10px' }} src='/search.png' />
-        搜尋
+        <img style={{ marginRight: '8px' }} src='/search.png' />
+        <input
+          className={styles.inputSearch}
+          placeholder='搜尋'
+          value={keywords}
+          onChange={handleSearchInputChange}
+        />
+        {searchResults.length > 0 && (
+          <ul className={styles.searchResults}>
+            {searchResults.map((user) => (
+              <li key={user.id}>
+                <Link href={`/users/${user.id}`} prefetch>
+                  {user.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       <div
         className={styles.profile}

@@ -25,7 +25,6 @@
   line-height: 24px;
 }
 .search {
-  color: #566470;
   padding: 0px 15px;
   margin-left: 2%;
   margin-right: 40%;
@@ -38,6 +37,20 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+.inputSearch {
+  font-size: 15px;
+  box-sizing: border-box;
+  color: #566470;
+  width: 95%;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: transparent;
+  background: transparent;
+  &:focus {
+    outline: none;
+  }
 }
 .profile {
   position: relative;
