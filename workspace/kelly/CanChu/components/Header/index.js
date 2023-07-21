@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 import styles from './Header.module.scss'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import fetchUserProfile from '../../api/fetchUserProfile'
+import useFetchUserProfile from '../../hook/userFetchUserProfile'
 import IsPictureUrlOk from '../IsPictureUrlOk'
 
 const apiUrl = process.env.API_DOMAIN
@@ -13,15 +13,14 @@ export default function Header() {
   // header的個人選單
   const [isNameHovered, setIsNameHovered] = useState(false)
   const [showProfileOptions, setShowProfileOptions] = useState(false)
-  const [userState, setUserState] = useState([])
-
   //獲得用戶資料
   const userId = Cookies.get('userId')
+  const userState = useFetchUserProfile(userId)
 
-  useEffect(() => {
-    fetchUserProfile(userId, setUserState)
-  }, [userId])
-  const id = userState.id
+  // useEffect(() => {
+  //   fetchUserProfile(userId, setUserState)
+  // }, [userId])
+  const id = userState.userState.id
 
   const handleProfileMouseEnter = () => {
     setShowProfileOptions(true)
@@ -121,7 +120,10 @@ export default function Header() {
         onMouseEnter={handleProfileMouseEnter}
         onMouseLeave={handleProfileMouseLeave}
       >
-        <IsPictureUrlOk className={styles.person} userState={userState} />
+        <IsPictureUrlOk
+          className={styles.person}
+          userState={userState.userState}
+        />
 
         {showProfileOptions && (
           <div className={styles.profileOptions}>
@@ -138,9 +140,9 @@ export default function Header() {
               >
                 <IsPictureUrlOk
                   className={styles.profileOptionPhoto}
-                  userState={userState}
+                  userState={userState.userState}
                 />
-                {userState.name}
+                {userState.userState.name}
               </div>
             </Link>
             <div

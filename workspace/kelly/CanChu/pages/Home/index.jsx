@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import styles from './Home.module.scss'
-import Header from '../../components/Header'
-import PostCreator from '../../components/PostCreator'
-import Post from '../../components/Post'
-import Copyright from '../../components/Copyright'
-import fetchPostsData from '../../api/fetchPostsData'
+import Header from '@/components/Header'
+import PostCreator from '@/components/PostCreator'
+import Post from '@/components/Post'
+import Copyright from '@/components/Copyright'
+import useFetchPostsData from '@/hook/useFetchPostsData'
 
 export default function Home() {
-  const [postData, setPostData] = useState([])
-
+  const postData = useFetchPostsData()
   const handlePostClick = (postId) => {
     // 將點擊的 post id 儲存到狀態，然後導航至對應頁面
     window.location.href = `/posts/${postId}`
   }
-
-  //找尋貼文
-  useEffect(() => {
-    fetchPostsData(setPostData)
-  }, [])
 
   const friendList = () => {
     const friends = Array(6).fill('好朋友')

@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import styles from './PostCreator.module.scss'
-import userData from '../../data/userData'
 import Cookies from 'js-cookie'
-import fetchUserProfile from '../../api/fetchUserProfile'
+import useFetchUserProfile from '@/hook/userFetchUserProfile'
 import IsPictureUrlOk from '../IsPictureUrlOk'
 const apiUrl = process.env.API_DOMAIN
 
 export default function PostCreator() {
-  const user = userData()[0]
   const [postContent, setPostContent] = useState('')
   const [postData, setPostData] = useState([]) // 改為空數組作為初始值
-  const [userState, setUserState] = useState({}) // 初始為空陣列
 
   //獲得用戶資料
   const userId = Cookies.get('userId')
-  useEffect(() => {
-    fetchUserProfile(userId, setUserState)
-  }, [userId])
+  const userState = useFetchUserProfile(userId)
 
   const handlePostSubmit = async () => {
     // 檢查字段值是否存在且不為空
@@ -49,21 +44,6 @@ export default function PostCreator() {
       })
 
       if (response.ok) {
-        const responseData = await response.json()
-
-        // 請求成功，將返回的貼文數據添加到頁面中顯示
-        const newPost = {
-          id: responseData.data.post.id,
-          created_at: new Date().toISOString(), // 使用當下的時間
-          context: postContent,
-          is_like: false,
-          like_count: 0,
-          comment_count: 0,
-          picture: user.picture,
-          name: user.name
-        }
-        setPostData((prevData) => [newPost, ...prevData])
-
         window.location.reload() // 自動重新整理頁面
         alert('貼文發布成功')
 
@@ -85,7 +65,10 @@ export default function PostCreator() {
           justifyContent: 'space-between'
         }}
       >
-        <IsPictureUrlOk className={styles.postingPhoto} userState={userState} />
+        <IsPictureUrlOk
+          className={styles.postingPhoto}
+          userState={userState.userState}
+        />
         <textarea
           className={styles.postingText}
           placeholder='說點什麼嗎？'
