@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styles from './PostCreator.module.scss'
 import Cookies from 'js-cookie'
-import useFetchUserProfile from '../../hook/userFetchUserProfile'
+import useFetchUserProfile from '@/hook/userFetchUserProfile'
 import IsPictureUrlOk from '../IsPictureUrlOk'
 const apiUrl = process.env.API_DOMAIN
 

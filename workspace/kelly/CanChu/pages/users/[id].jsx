@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
-import styles from '@/user.module.scss'
+import styles from './user.module.scss'
 import Header from '@/components/Header'
 import Post from '@/components/Post'
 import Copyright from '@/components/Copyright'

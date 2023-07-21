@@ -7,7 +7,6 @@ const apiUrl = process.env.API_DOMAIN
 export default function Profile() {
   const [editing, setEditing] = useState(false)
   const [userState, setUserState] = useState({}) // 初始為空陣列
-
   const [editedIntroduction, setEditedIntroduction] = useState('')
   const [editedTags, setEditedTags] = useState('')
   const tagRefs = useRef([])
@@ -41,6 +40,9 @@ export default function Profile() {
           if (userProfile.tags) {
             const tagList = userProfile.tags.split(',')
             setEditedTags(tagList.join(','))
+            // 在獲取用戶資料後再設置 editedIntroduction 和 editedTags
+            setEditedIntroduction(userProfile.introduction || '')
+            setEditedTags(userProfile.tags || '')
           }
         } else {
           console.error('獲取用戶信息時出錯')
