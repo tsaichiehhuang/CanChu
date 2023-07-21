@@ -39,7 +39,11 @@ export default function Post({
     // 導航至該 post 頁面，使用 `Link` 元件
     window.location.href = `/posts/${data.id}`
   }
-
+  const handleUserClick = () => {
+    const userId = Cookies.get('userId') // 將使用者 ID 儲存在 Cookie 中
+    // 導航至該 post 頁面，使用 `Link` 元件
+    window.location.href = `/users/${userId}`
+  }
   //發表comment
   const handleLeaveComment = async () => {
     if (!leaveComment) {
@@ -133,7 +137,12 @@ export default function Post({
 
           <div className={`${styles.firstRow} ${styles.row}`}>
             <div className={styles.firstRowLeft}>
-              <img className={styles.circle} src={formattedPicture} />
+              <img
+                className={styles.circle}
+                src={formattedPicture}
+                onClick={handleUserClick}
+                style={{ cursor: 'pointer' }}
+              />
               <div className={styles.text}>
                 <div className={styles.textOne}>{name}</div>
 
