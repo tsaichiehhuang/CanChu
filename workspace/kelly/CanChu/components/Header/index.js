@@ -34,7 +34,7 @@ export default function Header() {
     setIsNameHovered(false)
   }
   const handleLogout = () => {
-    // 登出，清除用户token
+    // 登出，清除token
     Cookies.remove('accessToken')
     // 重新回去登入頁面
     router.push('/login')
@@ -110,31 +110,27 @@ export default function Header() {
           <div className={styles.searchResults}>
             <ul>
               {searchResults.map((user, index) => (
-                <li
-                  key={user.id}
-                  className={
-                    // eslint-disable-next-line no-nested-ternary
-                    searchResults.length === 1 // 判斷是否只有一個搜尋結果
-                      ? `${styles.searchResultsList} ${styles.singleResult}` // 只有一個結果時的 className
-                      : index === 0
-                      ? `${styles.searchResultsList} ${styles.firstItem}`
-                      : index === searchResults.length - 1
-                      ? `${styles.searchResultsList} ${styles.lastItem}`
-                      : styles.searchResultsList
-                  }
-                >
-                  <IsPictureUrlOk
-                    className={styles.profileOptionPhoto}
-                    userState={user}
-                  />
-                  <Link
-                    href='/users/[user.id]'
-                    as={`/users/${user.id}`}
-                    prefetch
+                // eslint-disable-next-line react/jsx-key
+                <Link href='/users/[user.id]' as={`/users/${user.id}`} prefetch>
+                  <li
+                    key={user.id}
+                    className={
+                      searchResults.length === 1 // 判斷是否只有一個搜尋結果
+                        ? `${styles.searchResultsList} ${styles.singleResult}` // 只有一個結果時的 className
+                        : index === 0
+                        ? `${styles.searchResultsList} ${styles.firstItem}`
+                        : index === searchResults.length - 1
+                        ? `${styles.searchResultsList} ${styles.lastItem}`
+                        : styles.searchResultsList
+                    }
                   >
+                    <IsPictureUrlOk
+                      className={styles.profileOptionPhoto}
+                      userState={user}
+                    />
                     {user.name}
-                  </Link>
-                </li>
+                  </li>
+                </Link>
               ))}
             </ul>
           </div>
@@ -210,23 +206,3 @@ export default function Header() {
     </div>
   )
 }
-// export async function getServerSideProps(context) {
-//   const accessToken = Cookies.get('accessToken')
-
-//   const { params } = context
-//   const { id } = params
-
-//   const res = await fetch(`${apiUrl}/users/${id}/profile`, {
-//     method: 'GET',
-//     headers: {
-//       Authorization: `Bearer ${accessToken}`
-//     }
-//   })
-//   const data = await res.json()
-
-//   return {
-//     props: {
-//       profile: data.data.user
-//     }
-//   }
-// }
