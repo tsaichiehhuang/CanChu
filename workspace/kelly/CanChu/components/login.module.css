@@ -1,0 +1,130 @@
+@import url(https://fonts.googleapis.com/css?family=Pattaya&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Alkatra&display=swap);
+.body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10% 0%;
+}
+
+.loginSquare {
+  width: 80%;
+  height: 80vh;
+  flex-direction: row;
+  display: flex;
+}
+
+.signupSquare {
+  width: 80%;
+  height: 120vh;
+  flex-direction: row;
+  display: flex;
+}
+
+.loginSquareLeft {
+  background: white;
+  border-radius: 20px 0px 0px 20px;
+  width: 70%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5%;
+}
+
+.signupSquareLeft {
+  background: white;
+  border-radius: 20px 0px 0px 20px;
+  width: 70%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5%;
+}
+
+.loginSquareRight {
+  border-radius: 0px 20px 20px 0px;
+  width: 30%;
+  background: #7763fb;
+  height: 100%;
+}
+
+.signupSquareRight {
+  border-radius: 0px 20px 20px 0px;
+  width: 30%;
+  background: #7763fb;
+  height: 100%;
+}
+
+.logo {
+  color: #7763fb;
+  text-align: center;
+  font-family: "Pattaya", sans-serif;
+  font-size: 60px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.title {
+  color: #000;
+  text-align: center;
+  font-family: "Alkatra", sans-serif;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 100;
+  line-height: 24px;
+}
+
+.inputSquare .inputGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-bottom: 5%;
+}
+.inputSquare .inputGroup .inputTitle {
+  color: #000;
+  font-family: "Alkatra", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+}
+.inputSquare .inputGroup .inputText {
+  border-radius: 6px;
+  border: 1px solid #5458f7;
+  background: #fff;
+  width: 330px;
+  height: 40px;
+  color: #000;
+  display: flex;
+  padding: 0.5% 3%;
+  align-items: center;
+  justify-content: flex-start;
+}
+.inputSquare .inputGroup .inputText::-moz-placeholder {
+  color: #bfbfbf;
+}
+.inputSquare .inputGroup .inputText::placeholder {
+  color: #bfbfbf;
+}
+
+.loginButton {
+  cursor: pointer;
+  width: 140.812px;
+  height: 40px;
+  border-radius: 6px;
+  background: #5458f7;
+  border: 0px;
+  color: #fff;
+  text-align: center;
+  font-family: "Alkatra", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}/*# sourceMappingURL=login.module.css.map */

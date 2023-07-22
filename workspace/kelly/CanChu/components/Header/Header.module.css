@@ -1,11 +1,9 @@
-// @import url(https://fonts.googleapis.com/css?family=Pattaya&display=swap);
-
+@charset "UTF-8";
 @font-face {
-  font-family: 'Pattaya';
-  src: url('../../public/Pattaya-Regular.ttf') format('truetype');
+  font-family: "Pattaya";
+  src: url("../../public/Pattaya-Regular.ttf") format("truetype");
   /* 添加其他字体格式（如 woff、woff2）的源文件 */
 }
-
 .header {
   position: relative;
   width: 100%;
@@ -17,15 +15,17 @@
   align-items: center;
   flex-direction: row;
 }
+
 .logo {
   top: 40%;
   left: 8%;
   position: absolute;
   color: #7763fb;
-  font-family: 'Pattaya';
+  font-family: "Pattaya";
   font-size: 3vw;
   line-height: 24px;
 }
+
 .searchContainer {
   width: 23%;
   z-index: 999;
@@ -33,6 +33,7 @@
   top: 25%;
   position: absolute;
 }
+
 .search {
   display: flex;
   justify-content: flex-start;
@@ -40,12 +41,12 @@
   border-radius: 10px;
   border: 1px solid #d9d9d9;
   background: #f0f2f5;
-
   height: 48px;
   padding: 0px 15px;
   display: flex;
   flex-direction: row;
 }
+
 .inputSearch {
   font-size: 15px;
   box-sizing: border-box;
@@ -56,16 +57,18 @@
   border-radius: 10px;
   border: transparent;
   background: transparent;
-  &:focus {
-    outline: none;
-  }
 }
+.inputSearch:focus {
+  outline: none;
+}
+
 .searchResults {
   border-radius: 20px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+
 .searchResultsList {
   cursor: pointer;
   color: #566470;
@@ -76,53 +79,56 @@
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: row;
-  &:hover {
-    color: #fff;
-    background: #5458f7;
-  }
-  &.singleResult {
-    border-radius: 20px;
-  }
-  &.firstItem {
-    border-top: 0px;
-    border-radius: 20px 20px 0px 0px;
-  }
-  &.lastItem {
-    border-radius: 0px 0px 20px 20px;
-  }
+}
+.searchResultsList:hover {
+  color: #fff;
+  background: #5458f7;
+}
+.searchResultsList.singleResult {
+  border-radius: 20px;
+}
+.searchResultsList.firstItem {
+  border-top: 0px;
+  border-radius: 20px 20px 0px 0px;
+}
+.searchResultsList.lastItem {
+  border-radius: 0px 0px 20px 20px;
 }
 
 .profile {
   right: 10%;
   position: absolute;
-  &:hover .profileOptions {
-    display: flex;
-  }
+}
+.profile:hover .profileOptions {
+  display: flex;
 }
 
 .profileOption {
   padding: 18px;
-  &.profileName {
-    cursor: pointer;
-    gap: 5%;
-    padding: 14px;
-    border-radius: 20px 20px 0px 0px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-  }
 }
+.profileOption.profileName {
+  cursor: pointer;
+  gap: 5%;
+  padding: 14px;
+  border-radius: 20px 20px 0px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 .profileOptionPhoto {
   cursor: pointer;
   width: 28px;
   height: 28px;
   border-radius: 50%;
 }
+
 .profileOption.profileLogOut {
   cursor: pointer;
   padding: 15px;
   border-radius: 0px 0px 20px 20px;
 }
+
 .profileOption:hover {
   color: #fff;
   background: #5458f7;
@@ -142,6 +148,7 @@
   flex-direction: column;
   z-index: 999;
 }
+
 .row {
   display: flex;
   flex-direction: row;
@@ -152,4 +159,4 @@
   height: 36px;
   flex-shrink: 0;
   border-radius: 50%;
-}
+}/*# sourceMappingURL=Header.module.css.map */

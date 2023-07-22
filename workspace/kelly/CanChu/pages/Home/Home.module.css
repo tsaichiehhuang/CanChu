@@ -1,0 +1,129 @@
+@charset "UTF-8";
+.body {
+  background: #f9f9f9;
+}
+
+.container {
+  padding-top: 1%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 5%;
+}
+
+.containerRight {
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+}
+
+.containerLeft {
+  display: grid;
+  grid-gap: 2%;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+}
+
+.friendList {
+  padding: 1% 7%;
+  width: 370px;
+  height: 582px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--white, #fff);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1.5%;
+}
+
+.friendListSection {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 1.5% 0px;
+  gap: 3%;
+}
+
+.friendListMyFriend {
+  width: 100%;
+  margin: 1%;
+}
+
+.friendListIcon {
+  width: 42px;
+  height: 42px;
+  background-color: #d9d9d9;
+  border-radius: 50%;
+}
+
+.posting {
+  margin-bottom: 3%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3%;
+  width: 770px;
+  height: 220px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--white, #fff);
+}
+.posting .postingPhoto {
+  border-radius: 50%;
+  width: 74px;
+  height: 74px;
+}
+.posting .postingText {
+  text-align: left; /* 设置文本对齐方式为左对齐 */
+  direction: left; /* 设置文本方向为从左到右 */
+  padding: 10px;
+  color: #767676;
+  font-family: Outfit;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  width: 600px;
+  height: 90px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid #d9d9d9;
+  background: #f0f2f5;
+}
+.posting .postingText::-moz-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  color: #999;
+}
+.posting .postingText::placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  color: #999;
+}
+.posting .postingButton {
+  cursor: pointer;
+  border-radius: 6px;
+  background: #5458f7;
+  width: 140.812px;
+  height: 39.468px;
+  color: #fff;
+  border: 0px;
+  text-align: center;
+  font-family: Outfit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}/*# sourceMappingURL=Home.module.css.map */
