@@ -68,7 +68,7 @@ export default function User() {
     }
 
     fetchData()
-  }, [])
+  }, [id])
 
   //上傳圖片
   const uploadPicture = async (file) => {

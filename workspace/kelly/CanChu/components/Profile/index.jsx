@@ -9,7 +9,6 @@ export default function Profile() {
   const [userState, setUserState] = useState({}) // 初始為空陣列
   const [editedIntroduction, setEditedIntroduction] = useState('')
   const [editedTags, setEditedTags] = useState('')
-  const [isCurrentUser, setIsCurrentUser] = useState(false)
   const tagRefs = useRef([])
   //獲得用戶資料
   const userId = Cookies.get('userId')
