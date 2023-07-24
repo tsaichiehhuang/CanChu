@@ -46,21 +46,20 @@ export default function Home() {
         style={{
           flexDirection: 'row',
           display: 'flex',
-
           gap: '5%'
         }}
       >
         <button
           className={styles.friendRequestButton}
           style={{ background: '#5458F7' }}
-          onClick={() => agreeFriendRequest(friend.id)}
+          onClick={() => agreeFriendRequest(friend.friendship.id)}
         >
           確定
         </button>
         <button
           className={styles.friendRequestButton}
           style={{ background: '#BFBFBF' }}
-          onClick={() => deleteFriendRequest(friend.id)}
+          onClick={() => deleteFriendRequest(friend.friendship.id)}
         >
           取消
         </button>
@@ -108,13 +107,16 @@ export default function Home() {
         ></div>
         {renderIconSection('/friends.png', '我的好友')}
         <div className={styles.friendListMyFriend}>
+          {friendsPending.map((friend) => renderFriendRequest(friend))}
           {friends.map((friend, index) => (
             <div className={styles.friendListSection} key={index}>
-              <div className={styles.friendListIcon}></div>
-              <div>{friend}</div>
+              <IsPictureUrlOk
+                className={styles.friendRequestImg}
+                userState={friend}
+              />
+              <div>{friend.name}</div>
             </div>
           ))}
-          {friendsPending.map((friend) => renderFriendRequest(friend))}
         </div>
         {renderIconSection('/options.png', '查看全部')}
       </div>

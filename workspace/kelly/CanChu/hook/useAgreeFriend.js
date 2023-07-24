@@ -4,13 +4,9 @@ import Cookies from 'js-cookie'
 const apiUrl = process.env.API_DOMAIN
 
 const useAgreeFriend = () => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
-
+  // eslint-disable-next-line consistent-return
   const agreeFriendRequest = async (friendshipId) => {
     try {
-      setIsLoading(true)
-
       const accessToken = Cookies.get('accessToken')
       if (!accessToken) {
         throw new Error('未找到accessToken')
@@ -24,20 +20,17 @@ const useAgreeFriend = () => {
         }
       })
 
-      if (!response.ok) {
-        throw new Error('確認好友請求失敗')
+      if (response.ok) {
+        window.location.reload()
+      } else {
+        console.error('確定好友邀請失敗')
       }
-
-      setIsLoading(false)
-      return true
     } catch {
-      setIsLoading(false)
-      setError(error)
-      return false
+      console.error('網絡請求錯誤')
     }
   }
 
-  return { isLoading, error, agreeFriendRequest }
+  return { agreeFriendRequest }
 }
 
 export default useAgreeFriend

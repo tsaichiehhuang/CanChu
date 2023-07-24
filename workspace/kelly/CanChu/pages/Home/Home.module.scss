@@ -57,17 +57,17 @@
   background-color: #d9d9d9;
   border-radius: 50%;
 }
+.friendRequestImg {
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+}
 .friendRequest {
   margin: 5% 0px;
   flex-direction: row;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  .friendRequestImg {
-    border-radius: 50%;
-    width: 28px;
-    // height: 28px;
-  }
 
   .friendRequestButton {
     cursor: pointer;
