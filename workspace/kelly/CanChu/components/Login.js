@@ -34,10 +34,6 @@ const Login = ({
     </div>
   )
 
-  useEffect(() => {
-    // 在此處進行其他操作
-  }, [])
-
   return (
     <div className={styles.body}>
       <style global jsx>{`

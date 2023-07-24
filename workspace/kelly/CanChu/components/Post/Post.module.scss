@@ -180,6 +180,25 @@
     line-height: 24px;
     color: #777777;
   }
+  .inputComment {
+    // padding: 0px 20px;
+    box-sizing: border-box;
+    width: 640px;
+    height: 50px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #777777;
+    &:focus {
+      outline: none;
+    }
+  }
 }
 
 // 網友留言

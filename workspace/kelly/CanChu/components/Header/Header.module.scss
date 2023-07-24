@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'Pattaya';
-  src: url('../public/Pattaya-Regular.ttf') format('truetype');
+  src: url('../../public/Pattaya-Regular.ttf') format('truetype');
   /* 添加其他字体格式（如 woff、woff2）的源文件 */
 }
 
@@ -62,7 +62,7 @@
   cursor: pointer;
   width: 28px;
   height: 28px;
-  // transform: scale(0.8);
+  border-radius: 50%;
 }
 .profileOption.profileLogOut {
   cursor: pointer;

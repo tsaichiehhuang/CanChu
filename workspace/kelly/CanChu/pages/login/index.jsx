@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Login from '../../components/Login'
+import Login from '@/components/Login'
 import Cookies from 'js-cookie' // 導入 js-cookie
 
 const apiUrl = process.env.API_DOMAIN
