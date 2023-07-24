@@ -25,6 +25,7 @@ function useDeleteAddFriend() {
 
       if (response.ok) {
         setFriendRequestDeleted(true)
+        window.location.reload()
       } else {
         console.error('刪除好友邀請失敗')
       }
