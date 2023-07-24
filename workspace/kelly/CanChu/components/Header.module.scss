@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'Pattaya';
-  src: url('../../public/Pattaya-Regular.ttf') format('truetype');
+  src: url('../public/Pattaya-Regular.ttf') format('truetype');
   /* 添加其他字体格式（如 woff、woff2）的源文件 */
 }
 
@@ -41,22 +41,22 @@
 }
 .profile {
   position: relative;
+  &:hover .profileOptions {
+    display: flex;
+  }
 }
 
-.profile:hover .profileOptions {
-  display: flex;
-}
 .profileOption {
   padding: 18px;
-}
-.profileOption.profileName {
-  cursor: pointer;
-  gap: 5%;
-  padding: 14px;
-  border-radius: 20px 20px 0px 0px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  &.profileName {
+    cursor: pointer;
+    gap: 5%;
+    padding: 14px;
+    border-radius: 20px 20px 0px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
 }
 .profileOptionPhoto {
   cursor: pointer;
