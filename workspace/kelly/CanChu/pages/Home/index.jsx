@@ -66,7 +66,7 @@ export default function Home() {
       <div className={styles.friendListSection}>
         {icon ? (
           <img
-            style={{ marginLeft: '1%', width: '10%', borderRadius: '50%' }}
+            style={{ marginLeft: '1%', width: '28px', borderRadius: '50%' }}
             src={icon}
           />
         ) : (
@@ -88,7 +88,7 @@ export default function Home() {
     return (
       <div className={styles.friendList}>
         {renderFriendSection(
-          userState.userState.picture,
+          userState.userState.picture || '/個人照片.png',
           userState.userState.name
         )}
 
