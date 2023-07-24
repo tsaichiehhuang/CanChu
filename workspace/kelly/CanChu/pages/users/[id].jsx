@@ -12,7 +12,6 @@ import { useRouter } from 'next/router'
 
 const apiUrl = process.env.API_DOMAIN
 const userId = Cookies.get('userId')
-
 export async function getServerSideProps(context) {
   const { req, res } = context
   const accessToken = req.cookies.accessToken
@@ -30,6 +29,7 @@ export async function getServerSideProps(context) {
 export default function User() {
   const router = useRouter()
   const { id } = router.query
+
   const [selectedPicture, setSelectedPicture] = useState(null)
   const [postData, setPostData] = useState([]) // 改為空數組作為初始值
   //獲得用戶資料

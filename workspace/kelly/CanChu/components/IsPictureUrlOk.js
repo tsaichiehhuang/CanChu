@@ -18,6 +18,9 @@ const IsPictureUrlOk = ({ userState, className }) => {
       }
 
       img.src = userState.picture
+    } else {
+      setUserPicture('/個人照片.png')
+      setUserDataLoaded(true)
     }
   }, [userState.picture])
 

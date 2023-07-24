@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 import styles from './Profile.module.scss'
 import { useRouter } from 'next/router'
+import useAddFriend from '@/hook/useAddFriend'
+import useDeleteAddFriend from '@/hook/useDeleteAddFriend'
 const apiUrl = process.env.API_DOMAIN
 
 export default function Profile() {
@@ -14,7 +16,25 @@ export default function Profile() {
   const userId = Cookies.get('userId')
   const router = useRouter()
   const { id } = router.query
-
+  if (id !== userId) {
+    Cookies.set('otherUserId', id)
+  }
+  const { addFriend } = useAddFriend()
+  const [friendRequestSent, setFriendRequestSent] = useState(false)
+  const { deleteFriendRequest } = useDeleteAddFriend()
+  const [friendRequestDeleted, setFriendRequestDeleted] = useState(false)
+  const friendshipId = Cookies.get('friendshipId')
+  useEffect(() => {
+    // Read friend request status from localStorage (if available)
+    const storedFriendRequestStatus = window.localStorage.getItem(
+      'friendRequestStatus'
+    )
+    if (storedFriendRequestStatus !== null) {
+      setFriendRequestSent(storedFriendRequestStatus === 'true')
+      setFriendRequestDeleted(storedFriendRequestStatus === 'false')
+    }
+  }, [])
+  const otherUserId = Cookies.get('otherUserId')
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -122,8 +142,31 @@ export default function Profile() {
   }
 
   const tagList = userState.tags ? userState.tags.split(',') : []
-  console.log(`id ${id}`)
-  console.log(`userid ${userId}`)
+
+  //按鈕的文字及功能切換
+  const handleButtonClick = async () => {
+    try {
+      if (friendRequestSent && !friendRequestDeleted) {
+        // 如果已經發送好友邀請，則按鈕文字變成「刪除」，功能變成「刪除好友邀請」
+        await deleteFriendRequest(friendshipId)
+        setFriendRequestDeleted(true)
+        setFriendRequestSent(false)
+      } else {
+        // 如果還沒有發送好友邀請，則按鈕文字變成「邀請」，功能變成「邀請成為好友」
+        await addFriend(otherUserId)
+        setFriendRequestSent(true)
+        setFriendRequestDeleted(false)
+      }
+
+      // 更新localStorage中的值
+      localStorage.setItem(
+        'friendRequestStatus',
+        friendRequestSent && !friendRequestDeleted ? 'false' : 'true'
+      )
+    } catch (error) {
+      console.error('發生錯誤', error)
+    }
+  }
   return (
     <div className={styles.profileSquare}>
       {editing ? (
@@ -193,7 +236,14 @@ export default function Profile() {
               編輯個人檔案
             </button>
           ) : (
-            ''
+            <button
+              className={styles.profileButton}
+              onClick={handleButtonClick}
+            >
+              {friendRequestSent && !friendRequestDeleted
+                ? '刪除好友邀請'
+                : '邀請成為好友'}
+            </button>
           )}
           <div className={styles.profileContent}>
             <div className={styles.profileContentTitle}>自我介紹</div>
