@@ -45,18 +45,13 @@
   align-items: center;
   justify-content: flex-start;
   margin: 5% 0px;
-  gap: 3%;
+  gap: 5%;
 }
 .friendListMyFriend {
   width: 100%;
   margin: 1%;
 }
-.friendListIcon {
-  width: 42px;
-  height: 42px;
-  background-color: #d9d9d9;
-  border-radius: 50%;
-}
+
 .friendRequestImg {
   border-radius: 50%;
   width: 40px;
@@ -65,7 +60,6 @@
 .friendRequestText {
   font-size: 18px;
   font-weight: 700;
-  line-height: 24px;
 }
 .friendRequest {
   margin: 5% 0px;
@@ -81,9 +75,9 @@
     border-radius: 6px;
     width: 50px;
     height: 30px;
-    white-space: nowrap; /* 新增此行來防止文字換行 */
-    display: flex; /* 將按鈕設置為彈性容器 */
-    justify-content: center; /* 將內容水平置中 */
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
     align-items: center;
   }
 }

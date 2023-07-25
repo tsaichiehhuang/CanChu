@@ -23,28 +23,12 @@ export default function Profile() {
   } else {
     Cookies.remove('otherUserId')
   }
+
   const otherUserId = Cookies.get('otherUserId')
   const { addFriend } = useAddFriend()
-  const [friendRequestSent, setFriendRequestSent] = useState(false)
   const { deleteFriendRequest } = useDeleteAddFriend()
-  const [friendRequestDeleted, setFriendRequestDeleted] = useState(false)
-  const [friendshipId, setFriendshipId] = useState(
-    0 || Cookies.get('friendshipId')
-  )
-
   const [isFriend, setIsFriend] = useState(false) //是否為朋友
-  const [isFriendRequestSent, setIsFriendRequestSent] = useState(false) //是否發邀請
-
-  useEffect(() => {
-    // Read friend request status from localStorage (if available)
-    const storedFriendRequestStatus = window.localStorage.getItem(
-      'friendRequestStatus'
-    )
-    if (storedFriendRequestStatus !== null) {
-      setFriendRequestSent(storedFriendRequestStatus === 'true')
-      setFriendRequestDeleted(storedFriendRequestStatus === 'false')
-    }
-  }, [])
+  const [isFriendSent, setIsFriendSent] = useState(false) //是否發邀請
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -158,11 +142,14 @@ export default function Profile() {
     // 檢查目前顯示用戶是否是好友或已發送好友邀請
     const checkFriendStatus = () => {
       if (userState.friendship?.status === 'friend') {
-        console.log('friend')
         setIsFriend(true)
-        setFriendshipId(userState.friendship.id)
       } else {
         setIsFriend(false)
+      }
+      if (userState.friendship?.status === 'requested') {
+        setIsFriendSent(true)
+      } else {
+        setIsFriendSent(false)
       }
     }
 
@@ -174,30 +161,17 @@ export default function Profile() {
     try {
       if (isFriend) {
         // 如果是好友，則按鈕文字變成「刪除好友」，功能變成「刪除好友」
-        await deleteFriendRequest(friendshipId)
-        setFriendRequestDeleted(true)
-        setFriendRequestSent(false)
+        await deleteFriendRequest(userState.friendship.id)
+
         setIsFriend(false)
-      } else if (!isFriendRequestSent) {
+      } else if (!isFriendSent) {
         // 如果不是好友、還沒有發送好友邀請，則按鈕文字變成「邀請成為好友」，功能變成「邀請成為好友」
         await addFriend(otherUserId)
-        setFriendRequestSent(true)
-        setFriendRequestDeleted(false)
-        setIsFriendRequestSent(true)
+        setIsFriendSent(false)
       } else {
         // 如果不是好友、已經發送好友邀請，則按鈕文字變成「刪除好友邀請」，功能變成「刪除好友邀請」
-        await deleteFriendRequest(friendshipId)
-        setFriendRequestDeleted(true)
-        setFriendRequestSent(false)
-        setIsFriendRequestSent(false)
+        await deleteFriendRequest(userState.friendship.id)
       }
-
-      // 更新localStorage中的值
-      localStorage.setItem(
-        'friendRequestStatus',
-        // eslint-disable-next-line no-nested-ternary
-        isFriend ? 'false' : isFriendRequestSent ? 'false' : 'true'
-      )
     } catch (error) {
       console.error('發生錯誤', error)
     }
@@ -208,7 +182,7 @@ export default function Profile() {
       return '編輯個人檔案'
     } else if (isFriend) {
       return '刪除好友'
-    } else if (isFriendRequestSent) {
+    } else if (isFriendSent) {
       return '刪除好友邀請'
     } else {
       return '邀請成為好友'
