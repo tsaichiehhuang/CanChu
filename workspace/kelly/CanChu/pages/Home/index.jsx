@@ -12,6 +12,7 @@ import useDeleteAddFriend from '@/hook/useDeleteAddFriend'
 import useAgreeFriend from '@/hook/useAgreeFriend'
 import Cookies from 'js-cookie'
 import IsPictureUrlOk from '@/components/IsPictureUrlOk'
+import Link from 'next/link'
 
 export default function Home() {
   const { deleteFriendRequest } = useDeleteAddFriend()
@@ -111,12 +112,19 @@ export default function Home() {
         <div className={styles.friendListMyFriend}>
           {friendsPending.map((friend) => renderFriendRequest(friend))}
           {friends.map((friend, index) => (
-            <div className={styles.friendListSection} key={index}>
-              <IsPictureUrlOk
-                className={styles.friendRequestImg}
-                userState={friend}
-              />
-              <div className={styles.friendRequestText}>{friend.name}</div>
+            <div key={index}>
+              <Link
+                href='/users/[user.id]'
+                as={`/users/${friend.id}`}
+                className={styles.friendListSection}
+                prefetch
+              >
+                <IsPictureUrlOk
+                  className={styles.friendRequestImg}
+                  userState={friend}
+                />
+                <div className={styles.friendRequestText}>{friend.name}</div>
+              </Link>
             </div>
           ))}
         </div>
