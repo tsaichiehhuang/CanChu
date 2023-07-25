@@ -16,14 +16,25 @@ export default function Profile() {
   const userId = Cookies.get('userId')
   const router = useRouter()
   const { id } = router.query
-  if (id !== userId) {
+  // 獲取當前用戶是否為自己的個人頁面
+  const isSelf = userId === id
+  if (!isSelf) {
     Cookies.set('otherUserId', id)
+  } else {
+    Cookies.remove('otherUserId')
   }
+  const otherUserId = Cookies.get('otherUserId')
   const { addFriend } = useAddFriend()
   const [friendRequestSent, setFriendRequestSent] = useState(false)
   const { deleteFriendRequest } = useDeleteAddFriend()
   const [friendRequestDeleted, setFriendRequestDeleted] = useState(false)
-  const friendshipId = Cookies.get('friendshipId')
+  const [friendshipId, setFriendshipId] = useState(
+    0 || Cookies.get('friendshipId')
+  )
+
+  const [isFriend, setIsFriend] = useState(false) //是否為朋友
+  const [isFriendRequestSent, setIsFriendRequestSent] = useState(false) //是否發邀請
+
   useEffect(() => {
     // Read friend request status from localStorage (if available)
     const storedFriendRequestStatus = window.localStorage.getItem(
@@ -34,7 +45,7 @@ export default function Profile() {
       setFriendRequestDeleted(storedFriendRequestStatus === 'false')
     }
   }, [])
-  const otherUserId = Cookies.get('otherUserId')
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -140,31 +151,67 @@ export default function Profile() {
       console.error('網絡請求錯誤', error)
     }
   }
-
+  //興趣的樣式
   const tagList = userState.tags ? userState.tags.split(',') : []
 
-  //按鈕的文字及功能切換
+  useEffect(() => {
+    // 檢查目前顯示用戶是否是好友或已發送好友邀請
+    const checkFriendStatus = () => {
+      if (userState.friendship?.status === 'friend') {
+        console.log('friend')
+        setIsFriend(true)
+        setFriendshipId(userState.friendship.id)
+      } else {
+        setIsFriend(false)
+      }
+    }
+
+    checkFriendStatus()
+  }, [userState.friendship])
+
+  //按鈕的功能切換
   const handleButtonClick = async () => {
     try {
-      if (friendRequestSent && !friendRequestDeleted) {
-        // 如果已經發送好友邀請，則按鈕文字變成「刪除」，功能變成「刪除好友邀請」
+      if (isFriend) {
+        // 如果是好友，則按鈕文字變成「刪除好友」，功能變成「刪除好友」
         await deleteFriendRequest(friendshipId)
         setFriendRequestDeleted(true)
         setFriendRequestSent(false)
-      } else {
-        // 如果還沒有發送好友邀請，則按鈕文字變成「邀請」，功能變成「邀請成為好友」
+        setIsFriend(false)
+      } else if (!isFriendRequestSent) {
+        // 如果不是好友、還沒有發送好友邀請，則按鈕文字變成「邀請成為好友」，功能變成「邀請成為好友」
         await addFriend(otherUserId)
         setFriendRequestSent(true)
         setFriendRequestDeleted(false)
+        setIsFriendRequestSent(true)
+      } else {
+        // 如果不是好友、已經發送好友邀請，則按鈕文字變成「刪除好友邀請」，功能變成「刪除好友邀請」
+        await deleteFriendRequest(friendshipId)
+        setFriendRequestDeleted(true)
+        setFriendRequestSent(false)
+        setIsFriendRequestSent(false)
       }
 
       // 更新localStorage中的值
       localStorage.setItem(
         'friendRequestStatus',
-        friendRequestSent && !friendRequestDeleted ? 'false' : 'true'
+        // eslint-disable-next-line no-nested-ternary
+        isFriend ? 'false' : isFriendRequestSent ? 'false' : 'true'
       )
     } catch (error) {
       console.error('發生錯誤', error)
+    }
+  }
+  //按鈕的文字切換
+  const getButtonLabel = () => {
+    if (isSelf) {
+      return '編輯個人檔案'
+    } else if (isFriend) {
+      return '刪除好友'
+    } else if (isFriendRequestSent) {
+      return '刪除好友邀請'
+    } else {
+      return '邀請成為好友'
     }
   }
   return (
@@ -172,16 +219,13 @@ export default function Profile() {
       {editing ? (
         // 如果在編輯模式下
         <>
-          {userId === id ? (
-            <button
-              className={styles.profileButton}
-              style={{ background: '#D3D3D3' }}
-            >
-              編輯個人檔案
-            </button>
-          ) : (
-            ''
-          )}
+          <button
+            className={styles.profileButton}
+            style={{ background: '#D3D3D3' }}
+          >
+            編輯個人檔案
+          </button>
+
           <div className={styles.profileContent}>
             <div className={styles.profileContentTitle}>自我介紹</div>
             <textarea
@@ -228,23 +272,15 @@ export default function Profile() {
       ) : (
         // 如果不在編輯模式下，顯示用戶的自我介紹和興趣
         <>
-          {userId === id ? (
-            <button
-              className={styles.profileButton}
-              onClick={handleEditProfile}
-            >
-              編輯個人檔案
-            </button>
-          ) : (
-            <button
-              className={styles.profileButton}
-              onClick={handleButtonClick}
-            >
-              {friendRequestSent && !friendRequestDeleted
-                ? '刪除好友邀請'
-                : '邀請成為好友'}
-            </button>
-          )}
+          <button
+            className={styles.profileButton}
+            onClick={
+              isSelf ? handleEditProfile : handleButtonClick // 如果是自己，則執行 handleEditProfile 函數；否則執行 handleButtonClick 函數
+            }
+          >
+            {getButtonLabel()}
+          </button>
+
           <div className={styles.profileContent}>
             <div className={styles.profileContentTitle}>自我介紹</div>
             <div className={styles.profileContentText}>

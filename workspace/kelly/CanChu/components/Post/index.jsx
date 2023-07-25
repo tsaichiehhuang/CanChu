@@ -2,6 +2,7 @@ import styles from './Post.module.scss'
 import React, { useState, useEffect } from 'react'
 import getTimeDiff from '../getTimeDiff'
 import Cookies from 'js-cookie'
+import IsPictureUrlOk from '@/components/IsPictureUrlOk'
 const apiUrl = process.env.API_DOMAIN
 
 function Comment({ comment }) {
@@ -9,10 +10,9 @@ function Comment({ comment }) {
 
   return (
     <div className={styles.commentContainer}>
-      <img
+      <IsPictureUrlOk
         className={styles.commentUserImage}
-        src={comment.user.picture}
-        alt='User'
+        userState={comment.user}
       />
       <div className={styles.commentContent}>
         <div className={styles.commentContentSquare}>
@@ -26,6 +26,7 @@ function Comment({ comment }) {
 }
 
 export default function Post({
+  userState,
   data,
   showComments = true,
   showImage = true,
@@ -33,16 +34,53 @@ export default function Post({
   enableClick = true
 }) {
   const [leaveComment, setLeaveComment] = useState('')
-
+  const [editedContent, setEditedContent] = useState(data.context || '')
+  const [editing, setEditing] = useState(false) // 編輯模式的狀態
+  const userId = Cookies.get('userId')
   const handlePostClick = () => {
     Cookies.set('postId', data.id) // 將使用者 ID 儲存在 Cookie 中
     // 導航至該 post 頁面，使用 `Link` 元件
     window.location.href = `/posts/${data.id}`
   }
   const handleUserClick = () => {
-    const userId = Cookies.get('userId') // 將使用者 ID 儲存在 Cookie 中
-    // 導航至該 post 頁面，使用 `Link` 元件
-    window.location.href = `/users/${userId}`
+    window.location.href = `/users/${data.user_id}`
+  }
+  const isCurrentUserPostOwner = userId === data.user_id
+
+  // 編輯模式下的事件處理函式
+  const handleEditClick = () => {
+    setEditedContent(data.context || '') // 將原始貼文內容設置到編輯框
+    setEditing(true)
+  }
+
+  const handleCancelEdit = () => {
+    setEditing(false)
+  }
+  //編輯並發API
+  const handleConfirmEdit = async () => {
+    try {
+      const accessToken = Cookies.get('accessToken')
+      // 發送 PUT 請求來修改貼文內容
+      const response = await fetch(`${apiUrl}/posts/${data.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({ context: editedContent })
+      })
+
+      if (response.ok) {
+        setEditing(false) // 退出編輯模式
+        alert('貼文更新完成')
+        window.location.reload()
+      } else {
+        alert('更新貼文內容失敗')
+      }
+      setEditing(false) // 退出編輯模式
+    } catch (error) {
+      console.error('網絡請求錯誤', error)
+    }
   }
   //發表comment
   const handleLeaveComment = async () => {
@@ -132,7 +170,13 @@ export default function Post({
       `}</style>
       <div className={styles.container}>
         <div className={postClassName}>
-          {showEditIcon && <img className={styles.editIcon} src='/edit.png' />}
+          {showEditIcon && !editing && isCurrentUserPostOwner && (
+            <img
+              className={styles.editIcon}
+              src='/edit.png'
+              onClick={handleEditClick}
+            />
+          )}
 
           <div className={`${styles.firstRow} ${styles.row}`}>
             <div className={styles.firstRowLeft}>
@@ -155,11 +199,38 @@ export default function Post({
               </div>
             </div>
           </div>
-          <article
-            className={`${styles.secondRow} ${styles['multiline-text']}`}
-          >
-            {context}
-          </article>
+          {/* 顯示貼文內容或可編輯 */}
+          {editing ? (
+            <div className={styles.editContainer}>
+              <textarea
+                className={styles.editTextarea}
+                value={editedContent}
+                onChange={(e) => setEditedContent(e.target.value)}
+              />
+              <div className={styles.editButtonGroup} style={{}}>
+                <button
+                  className={styles.editButton}
+                  onClick={handleConfirmEdit}
+                  style={{ background: '#5458F7' }}
+                >
+                  確定
+                </button>
+                <button
+                  className={styles.editButton}
+                  onClick={handleCancelEdit}
+                  style={{ background: '#D3D3D3' }}
+                >
+                  取消
+                </button>
+              </div>
+            </div>
+          ) : (
+            <article
+              className={`${styles.secondRow} ${styles['multiline-text']}`}
+            >
+              {data.context}
+            </article>
+          )}
           <div className={`${styles.thirdRow} ${styles.row}`}>
             {/* 愛心按讚 */}
             <img
@@ -202,7 +273,15 @@ export default function Post({
               onClick={handlePostClick}
               style={{ cursor: 'pointer' }}
             >
-              <img className={styles.person} src={picture} alt='photo' />
+              <img
+                className={styles.person}
+                src={
+                  userState.userState?.picture ||
+                  userState.picture ||
+                  '/個人照片.png'
+                }
+                alt='photo'
+              />
               <div className={styles.selfComment}>
                 <div>留個言吧</div>
                 {showImage && <img src='/postButton.png' />}
@@ -210,7 +289,15 @@ export default function Post({
             </div>
           ) : (
             <div className={`${styles.fiveRow} ${styles.row}`}>
-              <img className={styles.person} src={picture} alt='photo' />
+              <img
+                className={styles.person}
+                src={
+                  userState.userState?.picture ||
+                  userState.picture ||
+                  '/個人照片.png'
+                }
+                alt='photo'
+              />
               <div className={styles.selfComment}>
                 <input
                   className={styles.inputComment}

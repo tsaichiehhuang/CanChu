@@ -8,19 +8,25 @@ import useFetchPostsData from '@/hook/useFetchPostsData'
 import useFriends from '@/hook/useFriends'
 import useFetchUserProfile from '@/hook/userFetchUserProfile'
 import useFriendsPending from '@/hook/useFriendsPending'
+import useDeleteAddFriend from '@/hook/useDeleteAddFriend'
+import useAgreeFriend from '@/hook/useAgreeFriend'
 import Cookies from 'js-cookie'
 import IsPictureUrlOk from '@/components/IsPictureUrlOk'
 
 export default function Home() {
+  const { deleteFriendRequest } = useDeleteAddFriend()
+  const { agreeFriendRequest } = useAgreeFriend()
   const postData = useFetchPostsData()
   const handlePostClick = (postId) => {
-    // 將點擊的 post id 儲存到狀態，然後導航至對應頁面
     window.location.href = `/posts/${postId}`
+  }
+  const handleUserClick = (user_id) => {
+    window.location.href = `/users/${user_id}`
   }
   const userId = Cookies.get('userId')
   const userState = useFetchUserProfile(userId)
-  const friends = useFriends()
   const friendsPending = useFriendsPending()
+  const friends = useFriends()
 
   const renderFriendRequest = (friend) => (
     <div key={friend.id} className={styles.friendRequest}>
@@ -36,25 +42,26 @@ export default function Home() {
           className={styles.friendRequestImg}
           userState={friend}
         />
-        <div>{friend.name}</div>
+        <div className={styles.friendRequestText}>{friend.name}</div>
       </div>
       <div
         style={{
           flexDirection: 'row',
           display: 'flex',
-
           gap: '5%'
         }}
       >
         <button
           className={styles.friendRequestButton}
           style={{ background: '#5458F7' }}
+          onClick={() => agreeFriendRequest(friend.friendship.id)}
         >
           確定
         </button>
         <button
           className={styles.friendRequestButton}
           style={{ background: '#BFBFBF' }}
+          onClick={() => deleteFriendRequest(friend.friendship.id)}
         >
           取消
         </button>
@@ -62,17 +69,13 @@ export default function Home() {
     </div>
   )
   const friendList = () => {
-    const renderFriendSection = (icon, text) => (
+    const renderFriendSection = (img, text) => (
       <div className={styles.friendListSection}>
-        {icon ? (
-          <img
-            style={{ marginLeft: '1%', width: '28px', borderRadius: '50%' }}
-            src={icon}
-          />
-        ) : (
-          <div className={styles.friendListIcon}></div>
-        )}
-        <div>{text}</div>
+        <img
+          style={{ marginLeft: '1%', width: '40px', borderRadius: '50%' }}
+          src={img}
+        />
+        <div className={styles.friendRequestText}>{text}</div>
       </div>
     )
     const renderIconSection = (icon, text) => (
@@ -82,7 +85,9 @@ export default function Home() {
         ) : (
           <div className={styles.friendListIcon}></div>
         )}
-        <div style={{ color: '#767676', fontWeight: '700' }}>{text}</div>
+        <div style={{ color: '#767676' }} className={styles.friendRequestText}>
+          {text}
+        </div>
       </div>
     )
     return (
@@ -102,19 +107,22 @@ export default function Home() {
         ></div>
         {renderIconSection('/friends.png', '我的好友')}
         <div className={styles.friendListMyFriend}>
-          {/* {friends.map((friend, index) => (
-            <div className={styles.friendListSection} key={index}>
-              <div className={styles.friendListIcon}></div>
-              <div>{friend}</div>
-            </div>
-          ))} */}
           {friendsPending.map((friend) => renderFriendRequest(friend))}
+          {friends.map((friend, index) => (
+            <div className={styles.friendListSection} key={index}>
+              <IsPictureUrlOk
+                className={styles.friendRequestImg}
+                userState={friend}
+              />
+              <div className={styles.friendRequestText}>{friend.name}</div>
+            </div>
+          ))}
         </div>
         {renderIconSection('/options.png', '查看全部')}
       </div>
     )
   }
-
+  const userPicutre = userState.userState.picture || '/個人照片.png'
   return (
     <div className={styles.body}>
       <style global jsx>{`
@@ -140,7 +148,11 @@ export default function Home() {
               showEditIcon={false}
               key={data.id}
               data={data}
-              onClick={() => handlePostClick(data.id)} // 傳遞點擊事件處理函式
+              userState={userState}
+              onClick={() => {
+                handlePostClick(data.id)
+                handleUserClick(data.user_id)
+              }}
             />
           ))}
         </div>

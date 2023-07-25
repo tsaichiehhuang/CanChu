@@ -25,7 +25,7 @@ const useFriends = () => {
 
         if (response.ok) {
           const data = await response.json()
-          setFriends(data?.data?.users || {})
+          setFriends(data?.data?.users || [])
         } else {
           console.error('獲取用戶信息時出錯')
         }
@@ -37,7 +37,7 @@ const useFriends = () => {
     Friend()
   }, [])
 
-  return { friends }
+  return Array.isArray(friends) ? friends : []
 }
 
 export default useFriends

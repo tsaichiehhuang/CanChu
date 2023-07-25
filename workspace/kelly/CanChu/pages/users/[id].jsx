@@ -35,6 +35,7 @@ export default function User() {
   //獲得用戶資料
 
   const { userState, updateUserState } = useFetchUserProfile(id)
+  const { userState: user } = useFetchUserProfile(userId) //登入者本人
 
   //顯示user貼文
   const url = new URL(`${apiUrl}/posts/search`)
@@ -184,6 +185,7 @@ export default function User() {
 
             {postData.map((data) => (
               <Post
+                userState={user}
                 showComments={false}
                 showImage={false}
                 showEditIcon={true}

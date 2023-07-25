@@ -24,8 +24,8 @@ function useDeleteAddFriend() {
       })
 
       if (response.ok) {
-        // 刪除成功後，將 friendRequestDeleted 設置為 true
         setFriendRequestDeleted(true)
+        window.location.reload()
       } else {
         console.error('刪除好友邀請失敗')
       }
