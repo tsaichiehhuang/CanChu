@@ -2,6 +2,7 @@ import styles from './Post.module.scss'
 import React, { useState, useEffect } from 'react'
 import getTimeDiff from '../getTimeDiff'
 import Cookies from 'js-cookie'
+import IsPictureUrlOk from '@/components/IsPictureUrlOk'
 const apiUrl = process.env.API_DOMAIN
 
 function Comment({ comment }) {
@@ -9,10 +10,9 @@ function Comment({ comment }) {
 
   return (
     <div className={styles.commentContainer}>
-      <img
+      <IsPictureUrlOk
         className={styles.commentUserImage}
-        src={comment.user.picture}
-        alt='User'
+        userState={comment.user}
       />
       <div className={styles.commentContent}>
         <div className={styles.commentContentSquare}>
@@ -36,7 +36,7 @@ export default function Post({
   const [leaveComment, setLeaveComment] = useState('')
   const [editedContent, setEditedContent] = useState(data.context || '')
   const [editing, setEditing] = useState(false) // 編輯模式的狀態
-
+  const userId = Cookies.get('userId')
   const handlePostClick = () => {
     Cookies.set('postId', data.id) // 將使用者 ID 儲存在 Cookie 中
     // 導航至該 post 頁面，使用 `Link` 元件
@@ -45,6 +45,7 @@ export default function Post({
   const handleUserClick = () => {
     window.location.href = `/users/${data.user_id}`
   }
+  const isCurrentUserPostOwner = userId === data.user_id
 
   // 編輯模式下的事件處理函式
   const handleEditClick = () => {
@@ -169,7 +170,7 @@ export default function Post({
       `}</style>
       <div className={styles.container}>
         <div className={postClassName}>
-          {showEditIcon && !editing && (
+          {showEditIcon && !editing && isCurrentUserPostOwner && (
             <img
               className={styles.editIcon}
               src='/edit.png'
