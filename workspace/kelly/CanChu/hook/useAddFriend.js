@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react'
 const apiUrl = process.env.API_DOMAIN
 
 function useAddFriend() {
-  const [friendRequestSent, setFriendRequestSent] = useState(false)
-
   const addFriend = async (otherUserId) => {
     try {
       const accessToken = Cookies.get('accessToken')
@@ -25,12 +23,8 @@ function useAddFriend() {
 
       if (response.ok) {
         const data = await response.json()
-        const friendshipId = data?.data?.friendship.id || {}
-        Cookies.set('friendshipId', friendshipId)
-        setFriendRequestSent(true)
       } else {
         console.error('重複寄出邀請')
-        setFriendRequestSent(true)
       }
     } catch (error) {
       console.error('網絡請求錯誤', error)

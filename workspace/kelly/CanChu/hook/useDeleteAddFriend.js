@@ -4,8 +4,6 @@ import { useState } from 'react'
 const apiUrl = process.env.API_DOMAIN
 
 function useDeleteAddFriend() {
-  const [friendRequestDeleted, setFriendRequestDeleted] = useState(false)
-
   const deleteFriendRequest = async (friendshipId) => {
     try {
       const accessToken = Cookies.get('accessToken')
@@ -23,10 +21,7 @@ function useDeleteAddFriend() {
         }
       })
 
-      if (response.ok) {
-        // 刪除成功後，將 friendRequestDeleted 設置為 true
-        setFriendRequestDeleted(true)
-      } else {
+      if (!response.ok) {
         console.error('刪除好友邀請失敗')
       }
     } catch (error) {
@@ -34,7 +29,7 @@ function useDeleteAddFriend() {
     }
   }
 
-  return { deleteFriendRequest, friendRequestDeleted }
+  return { deleteFriendRequest }
 }
 
 export default useDeleteAddFriend
