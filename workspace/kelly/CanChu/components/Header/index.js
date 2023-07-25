@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import styles from './Header.module.scss'
@@ -17,9 +18,6 @@ export default function Header() {
   const userId = Cookies.get('userId')
   const userState = useFetchUserProfile(userId)
 
-  // useEffect(() => {
-  //   fetchUserProfile(userId, setUserState)
-  // }, [userId])
   const id = userState.userState.id
 
   const handleProfileMouseEnter = () => {
@@ -36,11 +34,43 @@ export default function Header() {
     setIsNameHovered(false)
   }
   const handleLogout = () => {
-    // 登出，清除用户token
+    // 登出，清除token
     Cookies.remove('accessToken')
-
     // 重新回去登入頁面
     router.push('/login')
+  }
+
+  // 用於呼叫搜尋 API 並處理回傳的結果
+  const fetchUserSearchResultsAPI = async (keywords) => {
+    try {
+      const accessToken = Cookies.get('accessToken')
+      const res = await fetch(`${apiUrl}/users/search?keyword=${keywords}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+      const data = await res.json()
+      return data.data.users
+    } catch (error) {
+      console.error('Error fetching search results:', error)
+      return []
+    }
+  }
+  const [searchResults, setSearchResults] = useState([]) //保存搜尋結果
+  const [keywords, setKeywords] = useState([])
+  const handleSearchInputChange = async (event) => {
+    const keyword = event.target.value
+    setKeywords(keyword)
+
+    if (keyword.trim() !== '') {
+      const results = await fetchUserSearchResultsAPI(keyword)
+      setSearchResults(results)
+    } else {
+      // 如果關鍵字為空，清空搜尋結果
+
+      setSearchResults([])
+    }
   }
 
   return (
@@ -57,6 +87,7 @@ export default function Header() {
           flex-direction: row;
         }
       `}</style>
+
       <Link
         href='/'
         prefetch
@@ -64,9 +95,46 @@ export default function Header() {
       >
         <div className={styles.logo}>CanChu</div>
       </Link>
-      <div className={styles.search}>
-        <img style={{ marginRight: '10px' }} src='/search.png' />
-        搜尋
+      <div className={styles.searchContainer}>
+        <div className={styles.search}>
+          <img style={{ marginRight: '8px' }} src='/search.png' />
+          <input
+            className={styles.inputSearch}
+            placeholder='搜尋'
+            value={keywords}
+            onChange={handleSearchInputChange}
+          />
+        </div>
+
+        {searchResults.length > 0 && (
+          <div className={styles.searchResults}>
+            <ul>
+              {searchResults.map((user, index) => (
+                // eslint-disable-next-line react/jsx-key
+                <Link href='/users/[user.id]' as={`/users/${user.id}`} prefetch>
+                  <li
+                    key={user.id}
+                    className={
+                      searchResults.length === 1 // 判斷是否只有一個搜尋結果
+                        ? `${styles.searchResultsList} ${styles.singleResult}` // 只有一個結果時的 className
+                        : index === 0
+                        ? `${styles.searchResultsList} ${styles.firstItem}`
+                        : index === searchResults.length - 1
+                        ? `${styles.searchResultsList} ${styles.lastItem}`
+                        : styles.searchResultsList
+                    }
+                  >
+                    <IsPictureUrlOk
+                      className={styles.profileOptionPhoto}
+                      userState={user}
+                    />
+                    {user.name}
+                  </li>
+                </Link>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
       <div
         className={styles.profile}
@@ -98,6 +166,7 @@ export default function Header() {
                 {userState.userState.name}
               </div>
             </Link>
+
             <div
               style={{
                 width: '90%',
@@ -106,6 +175,7 @@ export default function Header() {
                 margin: '0px 10px'
               }}
             ></div>
+
             <Link
               href='/users/[id]'
               as={`/users/${id}`}
@@ -123,6 +193,7 @@ export default function Header() {
                 margin: '0px 10px'
               }}
             ></div>
+
             <div
               className={`${styles.profileOption} ${styles.profileLogOut}`}
               onClick={handleLogout}
@@ -134,24 +205,4 @@ export default function Header() {
       </div>
     </div>
   )
-}
-export async function getServerSideProps(context) {
-  const accessToken = Cookies.get('accessToken')
-
-  const { params } = context
-  const { id } = params
-
-  const res = await fetch(`${apiUrl}/users/${id}/profile`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`
-    }
-  })
-  const data = await res.json()
-
-  return {
-    props: {
-      profile: data.data.user
-    }
-  }
 }

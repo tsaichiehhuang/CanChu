@@ -8,6 +8,7 @@ import PostCreator from '@/components/PostCreator'
 import Profile from '@/components/Profile'
 import useFetchUserProfile from '@/hook/userFetchUserProfile'
 import IsPictureUrlOk from '@/components/IsPictureUrlOk'
+import { useRouter } from 'next/router'
 
 const apiUrl = process.env.API_DOMAIN
 const userId = Cookies.get('userId')
@@ -27,16 +28,17 @@ export async function getServerSideProps(context) {
 }
 
 export default function User() {
+  const router = useRouter()
+  const { id } = router.query
   const [selectedPicture, setSelectedPicture] = useState(null)
-
   const [postData, setPostData] = useState([]) // 改為空數組作為初始值
   //獲得用戶資料
 
-  const { userState, updateUserState } = useFetchUserProfile(userId)
+  const { userState, updateUserState } = useFetchUserProfile(id)
 
   //顯示user貼文
   const url = new URL(`${apiUrl}/posts/search`)
-  url.searchParams.append('user_id', userId)
+  url.searchParams.append('user_id', id)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,7 +68,7 @@ export default function User() {
     }
 
     fetchData()
-  }, [])
+  }, [id])
 
   //上傳圖片
   const uploadPicture = async (file) => {

@@ -7,6 +7,7 @@
 }
 
 .header {
+  position: relative;
   width: 100%;
   height: 100px;
   margin: 0;
@@ -17,30 +18,100 @@
   flex-direction: row;
 }
 .logo {
+  top: 40%;
+  left: 8%;
+  position: absolute;
   color: #7763fb;
   font-family: 'Pattaya';
-  font-size: 37px;
-  font-style: normal;
-  font-weight: 400;
+  font-size: 3vw;
   line-height: 24px;
 }
+.searchContainer {
+  width: 23%;
+  z-index: 999;
+  left: 20%;
+  top: 25%;
+  position: absolute;
+}
 .search {
-  color: #566470;
-  padding: 0px 15px;
-  margin-left: 2%;
-  margin-right: 40%;
-  width: 330px;
-  height: 48px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  border: 1px solid #d9d9d9;
-  background: #f0f2f5;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  border-radius: 10px;
+  border: 1px solid #d9d9d9;
+  background: #f0f2f5;
+
+  height: 48px;
+  padding: 0px 15px;
+  display: flex;
+  flex-direction: row;
 }
+.inputSearch {
+  font-size: 15px;
+  box-sizing: border-box;
+  color: #566470;
+  width: 95%;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: transparent;
+  background: transparent;
+  &:focus {
+    outline: none;
+  }
+}
+.searchResults {
+  max-height: 210px; /* 設置為您希望的高度 */
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  overflow-y: auto; /* 添加垂直滾動條 */
+}
+.searchResults::-webkit-scrollbar {
+  width: 8px; /* Adjust the width as needed */
+}
+
+/* Styles for the scrollbar thumb (the draggable handle) */
+.searchResults::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1; /* Adjust the color as needed */
+  border-radius: 4px; /* Adjust the border-radius to create rounded corners */
+}
+
+/* Styles for the scrollbar thumb when hovered over */
+.searchResults::-webkit-scrollbar-thumb:hover {
+  background-color: #a4a4a4; /* Adjust the hover color as needed */
+}
+
+.searchResultsList {
+  cursor: pointer;
+  color: #566470;
+  border-top: 1px solid #d1cace;
+  padding: 5% 10%;
+  gap: 8%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  &:hover {
+    color: #fff;
+    background: #5458f7;
+  }
+  &.singleResult {
+    border-radius: 20px;
+  }
+  &.firstItem {
+    border-top: 0px;
+    border-radius: 20px 20px 0px 0px;
+  }
+  &.lastItem {
+    border-radius: 0px 0px 20px 20px;
+  }
+}
+
 .profile {
-  position: relative;
+  right: 10%;
+  position: absolute;
   &:hover .profileOptions {
     display: flex;
   }

@@ -81,16 +81,3 @@ export default function Home() {
     </div>
   )
 }
-export async function getServerSideProps(context) {
-  const { req, res } = context
-  const accessToken = req.cookies.accessToken
-
-  // 如果未登入，重定向到登入頁面
-  if (!accessToken) {
-    res.writeHead(302, { Location: '/login' })
-    res.end()
-    return { props: {} }
-  }
-
-  return { props: {} }
-}

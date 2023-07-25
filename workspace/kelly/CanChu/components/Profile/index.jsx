@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 import styles from './Profile.module.scss'
-
+import { useRouter } from 'next/router'
 const apiUrl = process.env.API_DOMAIN
 
 export default function Profile() {
@@ -12,6 +12,8 @@ export default function Profile() {
   const tagRefs = useRef([])
   //獲得用戶資料
   const userId = Cookies.get('userId')
+  const router = useRouter()
+  const { id } = router.query
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -23,7 +25,7 @@ export default function Profile() {
           return
         }
 
-        const response = await fetch(`${apiUrl}/users/${userId}/profile`, {
+        const response = await fetch(`${apiUrl}/users/${id}/profile`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -53,7 +55,7 @@ export default function Profile() {
     }
 
     fetchUserProfile()
-  }, [userState.id]) // 當 user.id 發生變化時，重新獲取用戶資料
+  }, [userState.id, id]) // 當 user.id 發生變化時，重新獲取用戶資料
 
   useEffect(() => {
     // 確保 editedTags 有值後再進行 split
@@ -120,18 +122,23 @@ export default function Profile() {
   }
 
   const tagList = userState.tags ? userState.tags.split(',') : []
-
+  console.log(`id ${id}`)
+  console.log(`userid ${userId}`)
   return (
     <div className={styles.profileSquare}>
       {editing ? (
         // 如果在編輯模式下
         <>
-          <button
-            className={styles.profileButton}
-            style={{ background: '#D3D3D3' }}
-          >
-            編輯個人檔案
-          </button>
+          {userId === id ? (
+            <button
+              className={styles.profileButton}
+              style={{ background: '#D3D3D3' }}
+            >
+              編輯個人檔案
+            </button>
+          ) : (
+            ''
+          )}
           <div className={styles.profileContent}>
             <div className={styles.profileContentTitle}>自我介紹</div>
             <textarea
@@ -178,9 +185,16 @@ export default function Profile() {
       ) : (
         // 如果不在編輯模式下，顯示用戶的自我介紹和興趣
         <>
-          <button className={styles.profileButton} onClick={handleEditProfile}>
-            編輯個人檔案
-          </button>
+          {userId === id ? (
+            <button
+              className={styles.profileButton}
+              onClick={handleEditProfile}
+            >
+              編輯個人檔案
+            </button>
+          ) : (
+            ''
+          )}
           <div className={styles.profileContent}>
             <div className={styles.profileContentTitle}>自我介紹</div>
             <div className={styles.profileContentText}>
