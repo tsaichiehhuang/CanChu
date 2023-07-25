@@ -26,6 +26,7 @@ export default function Home() {
   const userId = Cookies.get('userId')
   const userState = useFetchUserProfile(userId)
   const friendsPending = useFriendsPending()
+
   const friends = useFriends()
 
   const renderFriendRequest = (friend) => (
@@ -35,7 +36,8 @@ export default function Home() {
           flexDirection: 'row',
           display: 'flex',
           width: '60%',
-          gap: '6%'
+          gap: '9%',
+          alignItems: 'center'
         }}
       >
         <IsPictureUrlOk
@@ -78,18 +80,7 @@ export default function Home() {
         <div className={styles.friendRequestText}>{text}</div>
       </div>
     )
-    const renderIconSection = (icon, text) => (
-      <div className={styles.friendListSection}>
-        {icon ? (
-          <img style={{ marginLeft: '1%', width: '10%' }} src={icon} />
-        ) : (
-          <div className={styles.friendListIcon}></div>
-        )}
-        <div style={{ color: '#767676' }} className={styles.friendRequestText}>
-          {text}
-        </div>
-      </div>
-    )
+
     return (
       <div className={styles.friendList}>
         {renderFriendSection(
@@ -105,7 +96,18 @@ export default function Home() {
             margin: '3% 0'
           }}
         ></div>
-        {renderIconSection('/friends.png', '我的好友')}
+
+        <div className={styles.friendListSection}>
+          <div style={{ margin: '0% 3.5%', width: '10%' }}>
+            <img style={{ width: '100%' }} src='/friends.png' />
+          </div>
+          <div
+            style={{ color: '#767676' }}
+            className={styles.friendRequestText}
+          >
+            我的好友
+          </div>
+        </div>
         <div className={styles.friendListMyFriend}>
           {friendsPending.map((friend) => renderFriendRequest(friend))}
           {friends.map((friend, index) => (
@@ -118,7 +120,16 @@ export default function Home() {
             </div>
           ))}
         </div>
-        {renderIconSection('/options.png', '查看全部')}
+        <div className={styles.friendListSection}>
+          <img style={{ margin: '0% 1.5%', width: '15%' }} src='/options.png' />
+
+          <div
+            style={{ color: '#767676' }}
+            className={styles.friendRequestText}
+          >
+            查看全部
+          </div>
+        </div>
       </div>
     )
   }

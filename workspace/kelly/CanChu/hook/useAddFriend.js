@@ -23,6 +23,7 @@ function useAddFriend() {
 
       if (response.ok) {
         const data = await response.json()
+        window.location.reload()
       } else {
         console.error('重複寄出邀請')
       }
