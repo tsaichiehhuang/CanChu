@@ -34,6 +34,8 @@ export default function Post({
   enableClick = true
 }) {
   const [leaveComment, setLeaveComment] = useState('')
+  const [editedContent, setEditedContent] = useState(data.context || '')
+  const [editing, setEditing] = useState(false) // 編輯模式的狀態
 
   const handlePostClick = () => {
     Cookies.set('postId', data.id) // 將使用者 ID 儲存在 Cookie 中
@@ -42,6 +44,42 @@ export default function Post({
   }
   const handleUserClick = () => {
     window.location.href = `/users/${data.user_id}`
+  }
+
+  // 編輯模式下的事件處理函式
+  const handleEditClick = () => {
+    setEditedContent(data.context || '') // 將原始貼文內容設置到編輯框
+    setEditing(true)
+  }
+
+  const handleCancelEdit = () => {
+    setEditing(false)
+  }
+  //編輯並發API
+  const handleConfirmEdit = async () => {
+    try {
+      const accessToken = Cookies.get('accessToken')
+      // 發送 PUT 請求來修改貼文內容
+      const response = await fetch(`${apiUrl}/posts/${data.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({ context: editedContent })
+      })
+
+      if (response.ok) {
+        setEditing(false) // 退出編輯模式
+        alert('貼文更新完成')
+        window.location.reload()
+      } else {
+        alert('更新貼文內容失敗')
+      }
+      setEditing(false) // 退出編輯模式
+    } catch (error) {
+      console.error('網絡請求錯誤', error)
+    }
   }
   //發表comment
   const handleLeaveComment = async () => {
@@ -131,7 +169,13 @@ export default function Post({
       `}</style>
       <div className={styles.container}>
         <div className={postClassName}>
-          {showEditIcon && <img className={styles.editIcon} src='/edit.png' />}
+          {showEditIcon && !editing && (
+            <img
+              className={styles.editIcon}
+              src='/edit.png'
+              onClick={handleEditClick}
+            />
+          )}
 
           <div className={`${styles.firstRow} ${styles.row}`}>
             <div className={styles.firstRowLeft}>
@@ -154,11 +198,38 @@ export default function Post({
               </div>
             </div>
           </div>
-          <article
-            className={`${styles.secondRow} ${styles['multiline-text']}`}
-          >
-            {context}
-          </article>
+          {/* 顯示貼文內容或可編輯 */}
+          {editing ? (
+            <div className={styles.editContainer}>
+              <textarea
+                className={styles.editTextarea}
+                value={editedContent}
+                onChange={(e) => setEditedContent(e.target.value)}
+              />
+              <div className={styles.editButtonGroup} style={{}}>
+                <button
+                  className={styles.editButton}
+                  onClick={handleConfirmEdit}
+                  style={{ background: '#5458F7' }}
+                >
+                  確定
+                </button>
+                <button
+                  className={styles.editButton}
+                  onClick={handleCancelEdit}
+                  style={{ background: '#D3D3D3' }}
+                >
+                  取消
+                </button>
+              </div>
+            </div>
+          ) : (
+            <article
+              className={`${styles.secondRow} ${styles['multiline-text']}`}
+            >
+              {data.context}
+            </article>
+          )}
           <div className={`${styles.thirdRow} ${styles.row}`}>
             {/* 愛心按讚 */}
             <img
