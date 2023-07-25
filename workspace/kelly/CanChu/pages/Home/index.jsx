@@ -42,7 +42,7 @@ export default function Home() {
           className={styles.friendRequestImg}
           userState={friend}
         />
-        <div>{friend.name}</div>
+        <div className={styles.friendRequestText}>{friend.name}</div>
       </div>
       <div
         style={{
@@ -69,17 +69,13 @@ export default function Home() {
     </div>
   )
   const friendList = () => {
-    const renderFriendSection = (icon, text) => (
+    const renderFriendSection = (img, text) => (
       <div className={styles.friendListSection}>
-        {icon ? (
-          <img
-            style={{ marginLeft: '1%', width: '28px', borderRadius: '50%' }}
-            src={icon}
-          />
-        ) : (
-          <div className={styles.friendListIcon}></div>
-        )}
-        <div>{text}</div>
+        <img
+          style={{ marginLeft: '1%', width: '40px', borderRadius: '50%' }}
+          src={img}
+        />
+        <div className={styles.friendRequestText}>{text}</div>
       </div>
     )
     const renderIconSection = (icon, text) => (
@@ -89,7 +85,9 @@ export default function Home() {
         ) : (
           <div className={styles.friendListIcon}></div>
         )}
-        <div style={{ color: '#767676', fontWeight: '700' }}>{text}</div>
+        <div style={{ color: '#767676' }} className={styles.friendRequestText}>
+          {text}
+        </div>
       </div>
     )
     return (
@@ -116,7 +114,7 @@ export default function Home() {
                 className={styles.friendRequestImg}
                 userState={friend}
               />
-              <div>{friend.name}</div>
+              <div className={styles.friendRequestText}>{friend.name}</div>
             </div>
           ))}
         </div>

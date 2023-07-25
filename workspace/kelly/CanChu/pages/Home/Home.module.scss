@@ -44,7 +44,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  margin: 3% 0px;
+  margin: 5% 0px;
   gap: 3%;
 }
 .friendListMyFriend {
@@ -59,8 +59,13 @@
 }
 .friendRequestImg {
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
+}
+.friendRequestText {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
 }
 .friendRequest {
   margin: 5% 0px;

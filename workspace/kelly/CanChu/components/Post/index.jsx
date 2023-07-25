@@ -205,8 +205,8 @@ export default function Post({
                 className={styles.person}
                 src={
                   userState.userState?.picture ||
-                  '/個人照片.png' ||
-                  userState.picture
+                  userState.picture ||
+                  '/個人照片.png'
                 }
                 alt='photo'
               />
@@ -221,8 +221,8 @@ export default function Post({
                 className={styles.person}
                 src={
                   userState.userState?.picture ||
-                  '/個人照片.png' ||
-                  userState.picture
+                  userState.picture ||
+                  '/個人照片.png'
                 }
                 alt='photo'
               />
