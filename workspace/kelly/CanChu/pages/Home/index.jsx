@@ -18,8 +18,10 @@ export default function Home() {
   const { agreeFriendRequest } = useAgreeFriend()
   const postData = useFetchPostsData()
   const handlePostClick = (postId) => {
-    // 將點擊的 post id 儲存到狀態，然後導航至對應頁面
     window.location.href = `/posts/${postId}`
+  }
+  const handleUserClick = (user_id) => {
+    window.location.href = `/users/${user_id}`
   }
   const userId = Cookies.get('userId')
   const userState = useFetchUserProfile(userId)
@@ -122,7 +124,7 @@ export default function Home() {
       </div>
     )
   }
-
+  const userPicutre = userState.userState.picture || '/個人照片.png'
   return (
     <div className={styles.body}>
       <style global jsx>{`
@@ -148,7 +150,11 @@ export default function Home() {
               showEditIcon={false}
               key={data.id}
               data={data}
-              onClick={() => handlePostClick(data.id)} // 傳遞點擊事件處理函式
+              userState={userState}
+              onClick={() => {
+                handlePostClick(data.id)
+                handleUserClick(data.user_id)
+              }}
             />
           ))}
         </div>

@@ -26,6 +26,7 @@ function Comment({ comment }) {
 }
 
 export default function Post({
+  userState,
   data,
   showComments = true,
   showImage = true,
@@ -40,9 +41,7 @@ export default function Post({
     window.location.href = `/posts/${data.id}`
   }
   const handleUserClick = () => {
-    const userId = Cookies.get('userId') // 將使用者 ID 儲存在 Cookie 中
-    // 導航至該 post 頁面，使用 `Link` 元件
-    window.location.href = `/users/${userId}`
+    window.location.href = `/users/${data.user_id}`
   }
   //發表comment
   const handleLeaveComment = async () => {
@@ -202,7 +201,15 @@ export default function Post({
               onClick={handlePostClick}
               style={{ cursor: 'pointer' }}
             >
-              <img className={styles.person} src={picture} alt='photo' />
+              <img
+                className={styles.person}
+                src={
+                  userState.userState?.picture ||
+                  '/個人照片.png' ||
+                  userState.picture
+                }
+                alt='photo'
+              />
               <div className={styles.selfComment}>
                 <div>留個言吧</div>
                 {showImage && <img src='/postButton.png' />}
@@ -210,7 +217,15 @@ export default function Post({
             </div>
           ) : (
             <div className={`${styles.fiveRow} ${styles.row}`}>
-              <img className={styles.person} src={picture} alt='photo' />
+              <img
+                className={styles.person}
+                src={
+                  userState.userState?.picture ||
+                  '/個人照片.png' ||
+                  userState.picture
+                }
+                alt='photo'
+              />
               <div className={styles.selfComment}>
                 <input
                   className={styles.inputComment}

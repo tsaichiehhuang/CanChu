@@ -184,6 +184,7 @@ export default function User() {
 
             {postData.map((data) => (
               <Post
+                userState={userState}
                 showComments={false}
                 showImage={false}
                 showEditIcon={true}
