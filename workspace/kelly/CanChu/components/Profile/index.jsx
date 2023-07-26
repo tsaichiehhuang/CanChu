@@ -111,7 +111,7 @@ export default function Profile() {
           Authorization: `Bearer ${accessToken}`
         },
         body: JSON.stringify({
-          name: userState.name, // 這裡的 userState.name 是用戶名稱，也可以修改成從表單獲取的新值
+          name: userState.name,
           introduction: editedIntroduction,
           tags: editedTags
         })
@@ -248,9 +248,7 @@ export default function Profile() {
         <>
           <button
             className={styles.profileButton}
-            onClick={
-              isSelf ? handleEditProfile : handleButtonClick // 如果是自己，則執行 handleEditProfile 函數；否則執行 handleButtonClick 函數
-            }
+            onClick={isSelf ? handleEditProfile : handleButtonClick}
           >
             {getButtonLabel()}
           </button>
