@@ -67,7 +67,6 @@ export default function Post({
 
     if (response.ok) {
       window.location.reload() // 自動重新整理頁面
-      setLeaveComment('')
     } else {
       throw new Error('留言失敗')
     }
@@ -87,7 +86,7 @@ export default function Post({
     comments
   } = data
   const formattedPicture = picture !== '' ? picture : '/個人照片.png'
-  const formattedCommentCount = comment_count !== undefined ? comment_count : 0
+  const formattedCommentCount = comment_count || 0
   const [liked, setLiked] = useState(data.is_liked || data.is_like || false)
   const [likeCount, setLikeCount] = useState(data.like_count || 0)
 

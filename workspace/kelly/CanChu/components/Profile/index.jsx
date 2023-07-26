@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 import styles from './Profile.module.scss'
 import { useRouter } from 'next/router'
+import useAddFriend from '@/hook/useAddFriend'
+import useDeleteAddFriend from '@/hook/useDeleteAddFriend'
 const apiUrl = process.env.API_DOMAIN
 
 export default function Profile() {
@@ -14,7 +16,18 @@ export default function Profile() {
   const userId = Cookies.get('userId')
   const router = useRouter()
   const { id } = router.query
+  // 獲取當前用戶是否為自己的個人頁面
+  const isSelf = userId === id
+  if (!isSelf) {
+    Cookies.set('otherUserId', id)
+  } else {
+    Cookies.remove('otherUserId')
+  }
+  const { addFriend } = useAddFriend()
+  const { deleteFriendRequest } = useDeleteAddFriend()
+  const [isFriendSent, setIsFriendSent] = useState(false)
 
+  const otherUserId = Cookies.get('otherUserId')
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -96,7 +109,7 @@ export default function Profile() {
           Authorization: `Bearer ${accessToken}`
         },
         body: JSON.stringify({
-          name: userState.name, // 這裡的 userState.name 是用戶名稱，也可以修改成從表單獲取的新值
+          name: userState.name,
           introduction: editedIntroduction,
           tags: editedTags
         })
@@ -122,23 +135,58 @@ export default function Profile() {
   }
 
   const tagList = userState.tags ? userState.tags.split(',') : []
-  console.log(`id ${id}`)
-  console.log(`userid ${userId}`)
+
+  useEffect(() => {
+    // 檢查目前顯示用戶是否已發送好友邀請
+    const checkFriendStatus = () => {
+      if (userState.friendship?.status === 'requested') {
+        setIsFriendSent(true)
+      } else {
+        setIsFriendSent(false)
+      }
+    }
+
+    checkFriendStatus()
+  }, [userState.friendship])
+
+  //按鈕功能切換
+  const handleButtonClick = async () => {
+    try {
+      if (!isFriendSent) {
+        // 目前還沒有發送好友邀請，按鈕文字是「邀請成為好友」，功能變成「邀請成為好友」
+        await addFriend(otherUserId)
+        setIsFriendSent(true)
+      } else {
+        // 已經發送好友邀請，則按鈕文字變成「刪除好友邀請」，功能變成「刪除好友邀請」
+        await deleteFriendRequest(userState.friendship?.id)
+        setIsFriendSent(false)
+      }
+    } catch (error) {
+      console.error('發生錯誤', error)
+    }
+  }
+  //按鈕的文字切換
+  const getButtonLabel = () => {
+    if (isSelf) {
+      return '編輯個人檔案'
+    } else if (isFriendSent) {
+      return '刪除好友邀請'
+    } else {
+      return '邀請成為好友'
+    }
+  }
   return (
     <div className={styles.profileSquare}>
       {editing ? (
         // 如果在編輯模式下
         <>
-          {userId === id ? (
-            <button
-              className={styles.profileButton}
-              style={{ background: '#D3D3D3' }}
-            >
-              編輯個人檔案
-            </button>
-          ) : (
-            ''
-          )}
+          <button
+            className={styles.profileButton}
+            style={{ background: '#D3D3D3' }}
+          >
+            編輯個人檔案
+          </button>
+
           <div className={styles.profileContent}>
             <div className={styles.profileContentTitle}>自我介紹</div>
             <textarea
@@ -185,16 +233,13 @@ export default function Profile() {
       ) : (
         // 如果不在編輯模式下，顯示用戶的自我介紹和興趣
         <>
-          {userId === id ? (
-            <button
-              className={styles.profileButton}
-              onClick={handleEditProfile}
-            >
-              編輯個人檔案
-            </button>
-          ) : (
-            ''
-          )}
+          <button
+            className={styles.profileButton}
+            onClick={isSelf ? handleEditProfile : handleButtonClick}
+          >
+            {getButtonLabel()}
+          </button>
+
           <div className={styles.profileContent}>
             <div className={styles.profileContentTitle}>自我介紹</div>
             <div className={styles.profileContentText}>
