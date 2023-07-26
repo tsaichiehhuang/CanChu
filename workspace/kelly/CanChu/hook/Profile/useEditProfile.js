@@ -3,12 +3,22 @@ import Cookies from 'js-cookie'
 
 const apiUrl = process.env.API_DOMAIN
 
-function useEditProfile() {
+const useEditProfile = (userState, updateUserState) => {
+  const [editing, setEditing] = useState(false)
   const [editedIntroduction, setEditedIntroduction] = useState('')
   const [editedTags, setEditedTags] = useState('')
 
-  // 更新用戶的自我介紹和興趣標籤
-  const updateUserProfile = async (introduction, tags) => {
+  const handleEditProfile = () => {
+    setEditing(true)
+    setEditedIntroduction(userState.introduction || '')
+    setEditedTags(userState.tags || '')
+  }
+
+  const handleCancelEdit = () => {
+    setEditing(false)
+  }
+
+  const handleUpdateProfile = async () => {
     try {
       const accessToken = Cookies.get('accessToken')
       if (!accessToken) {
@@ -16,7 +26,6 @@ function useEditProfile() {
         return
       }
 
-      // 發送 PUT 請求來更改用戶信息
       const response = await fetch(`${apiUrl}/users/profile`, {
         method: 'PUT',
         headers: {
@@ -24,17 +33,22 @@ function useEditProfile() {
           Authorization: `Bearer ${accessToken}`
         },
         body: JSON.stringify({
-          name: '', // 如果需要更改用戶名稱，可以在此處提供新的用戶名稱
-          introduction,
-          tags
+          name: userState.name,
+          introduction: editedIntroduction,
+          tags: editedTags
         })
       })
 
       if (response.ok) {
-        // 更新自我介紹和興趣標籤
-        setEditedIntroduction(introduction)
-        setEditedTags(tags)
+        const updatedUser = {
+          ...userState,
+          introduction: editedIntroduction,
+          tags: editedTags.split(',')
+        }
+        updateUserState(updatedUser)
+        setEditing(false) // 退出編輯模式
         alert('個人檔案更新完成')
+        window.location.reload()
       } else {
         alert('更新個人檔案失敗')
       }
@@ -43,7 +57,16 @@ function useEditProfile() {
     }
   }
 
-  return { editedIntroduction, editedTags, updateUserProfile }
+  return {
+    editing,
+    editedIntroduction,
+    editedTags,
+    handleEditProfile,
+    handleCancelEdit,
+    handleUpdateProfile,
+    setEditedIntroduction,
+    setEditedTags
+  }
 }
 
 export default useEditProfile

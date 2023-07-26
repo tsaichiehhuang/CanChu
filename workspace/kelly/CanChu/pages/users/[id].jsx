@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React from 'react'
 import Cookies from 'js-cookie'
 import styles from './user.module.scss'
 import Header from '@/components/Header'
@@ -9,8 +9,8 @@ import Profile from '@/components/Profile'
 import useFetchUserProfile from '@/hook/userFetchUserProfile'
 import IsPictureUrlOk from '@/components/IsPictureUrlOk'
 import { useRouter } from 'next/router'
-import useUpdateUserPicture from '../../hook/User/useUpdateUserPicture'
-import useUserPost from '../../hook/User/useUserPost'
+import useUpdateUserPicture from '@/hook/User/useUpdateUserPicture'
+import useUserPost from '@/hook/User/useUserPost'
 
 const userId = Cookies.get('userId')
 
@@ -90,7 +90,11 @@ export default function User() {
         </div>
         <div className={styles.container}>
           <div className={styles.containerLeft}>
-            <Profile />
+            <Profile
+              updateUserState={updateUserState}
+              userState={userState} // 將獲取到的 userState 傳遞給 Profile 元件
+              isSelf={isSelf}
+            />
             <div style={{ width: '274px', marginLeft: '10%' }}>
               <Copyright />
             </div>
@@ -118,7 +122,6 @@ export async function getServerSideProps(context) {
   const { req, res } = context
   const accessToken = req.cookies.accessToken
 
-  // 如果未登入，回login
   if (!accessToken) {
     res.writeHead(302, { Location: '/login' })
     res.end()
