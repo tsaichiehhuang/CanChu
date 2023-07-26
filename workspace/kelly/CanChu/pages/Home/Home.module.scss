@@ -44,18 +44,21 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  margin: 3% 0px;
-  gap: 3%;
+  margin: 5% 0px;
+  gap: 5%;
 }
 .friendListMyFriend {
   width: 100%;
   margin: 1%;
 }
-.friendListIcon {
-  width: 42px;
-  height: 42px;
-  background-color: #d9d9d9;
+.friendRequestImg {
   border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+.friendRequestText {
+  font-size: 18px;
+  font-weight: 700;
 }
 .friendRequest {
   margin: 5% 0px;
@@ -63,11 +66,6 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  .friendRequestImg {
-    border-radius: 50%;
-    width: 28px;
-    // height: 28px;
-  }
 
   .friendRequestButton {
     cursor: pointer;
