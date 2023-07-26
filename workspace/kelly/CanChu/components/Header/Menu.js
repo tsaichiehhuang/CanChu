@@ -32,7 +32,7 @@ export default function Menu() {
     // 登出，清除token
     Cookies.remove('accessToken')
     // 重新回去登入頁面
-    router.push('/login')
+    router.replace('/login')
   }
 
   return (
