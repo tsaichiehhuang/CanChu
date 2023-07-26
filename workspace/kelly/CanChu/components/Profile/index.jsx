@@ -24,21 +24,9 @@ export default function Profile() {
     Cookies.remove('otherUserId')
   }
   const { addFriend } = useAddFriend()
-  const [setFriendRequestSent] = useState(false)
   const { deleteFriendRequest } = useDeleteAddFriend()
-  const [setFriendRequestDeleted] = useState(false)
-
   const [isFriendSent, setIsFriendSent] = useState(false)
-  useEffect(() => {
-    // Read friend request status from localStorage (if available)
-    const storedFriendRequestStatus = window.localStorage.getItem(
-      'friendRequestStatus'
-    )
-    if (storedFriendRequestStatus !== null) {
-      setFriendRequestSent(storedFriendRequestStatus === 'true')
-      setFriendRequestDeleted(storedFriendRequestStatus === 'false')
-    }
-  }, [])
+
   const otherUserId = Cookies.get('otherUserId')
   useEffect(() => {
     const fetchUserProfile = async () => {

@@ -29,6 +29,8 @@ export async function getServerSideProps(context) {
 export default function User() {
   const router = useRouter()
   const { id } = router.query
+  // 獲取當前用戶是否為自己的個人頁面
+  const isSelf = userId === id
 
   const [selectedPicture, setSelectedPicture] = useState(null)
   const [postData, setPostData] = useState([]) // 改為空數組作為初始值
@@ -180,7 +182,7 @@ export default function User() {
             </div>
           </div>
           <div className={styles.containerRight}>
-            <PostCreator />
+            {isSelf && <PostCreator />}
 
             {postData.map((data) => (
               <Post
