@@ -40,16 +40,14 @@
     top: 1;
     right: 0;
     margin-right: 2%;
+    display: none;
+    cursor: pointer;
+  }
+  &:hover .editIcon {
+    display: block;
   }
 }
-.editIcon {
-  display: none;
-  cursor: pointer;
-}
 
-.post:hover .editIcon {
-  display: block;
-}
 .singlePost {
   padding: 10px 0px;
   display: flex;

@@ -45,7 +45,7 @@ export default function Post({
   const handleUserClick = () => {
     window.location.href = `/users/${data.user_id}`
   }
-  const isCurrentUserPostOwner = userId === data.user_id
+  const isCurrentUserPostOwner = +userId === data.user_id
 
   // 編輯模式下的事件處理函式
   const handleEditClick = () => {
@@ -179,6 +179,7 @@ export default function Post({
       <div className={styles.container}>
         <div className={postClassName}>
           {showEditIcon && !editing && isCurrentUserPostOwner && (
+            // {showEditIcon && (
             <img
               className={styles.editIcon}
               src='/edit.png'
