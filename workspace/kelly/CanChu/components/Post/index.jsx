@@ -1,5 +1,5 @@
 import styles from './Post.module.scss'
-import React, { useState } from 'react'
+import React from 'react'
 import getTimeDiff from '../getTimeDiff'
 import Cookies from 'js-cookie'
 import useLike from '@/hook/Post/useLike'

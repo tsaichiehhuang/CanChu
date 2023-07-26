@@ -29,11 +29,11 @@ const useFetchUserProfile = (userId) => {
           const userProfile = data?.data?.user || {}
           setUserState(userProfile)
 
-          // 確保 tags 被正確設置後再進行 split
-          if (userProfile.tags) {
-            const tagList = userProfile.tags.split(',')
-            setEditedTags(tagList.join(','))
-          }
+          // // 確保 tags 被正確設置後再進行 split
+          // if (userProfile.tags) {
+          //   const tagList = userProfile.tags.split(',')
+          //   setEditedTags(tagList.join(','))
+          // }
         } else {
           console.error('獲取用戶信息時出錯')
         }
@@ -48,7 +48,7 @@ const useFetchUserProfile = (userId) => {
     setUserState(updatedUser)
   }
 
-  return { userState, editedTags, updateUserState }
+  return { userState, updateUserState }
 }
 
 export default useFetchUserProfile
