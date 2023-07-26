@@ -41,6 +41,9 @@ export default function Post({
   const isCurrentUserPostOwner = +userId === data.user_id
 
   const postClassName = showComments ? styles.singlePost : styles.post
+  const editIconClassName = showComments
+    ? styles.singleEditIcon
+    : styles.editIcon
 
   const { picture, name, created_at, comment_count, comments } = data
   const formattedPicture = picture !== '' ? picture : '/個人照片.png'
@@ -58,7 +61,7 @@ export default function Post({
         <div className={postClassName}>
           {showEditIcon && !editing && isCurrentUserPostOwner && (
             <img
-              className={styles.editIcon}
+              className={editIconClassName}
               src='/edit.png'
               onClick={handleEditClick}
             />

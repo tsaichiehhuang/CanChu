@@ -72,7 +72,7 @@ export default function Demo() {
         userState={userState}
         showComments={true}
         showImage={true}
-        showEditIcon={false}
+        showEditIcon={true}
         enableClick={false}
         liked={liked} // 將愛心狀態傳遞給 Post 元件
         likeCount={likeCount} // 將愛心數量傳遞給 Post 元件
