@@ -1,13 +1,12 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Cookies from 'js-cookie'
 import styles from './Header.module.scss'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import useFetchUserProfile from '../../hook/userFetchUserProfile'
+import useFetchUserProfile from '@/hook/userFetchUserProfile'
+import useSearchUsers from '@/hook/useSearchUsers'
 import IsPictureUrlOk from '../IsPictureUrlOk'
-
-const apiUrl = process.env.API_DOMAIN
 
 export default function Header() {
   const router = useRouter()
@@ -17,6 +16,7 @@ export default function Header() {
   //獲得用戶資料
   const userId = Cookies.get('userId')
   const userState = useFetchUserProfile(userId)
+  const { searchUsers } = useSearchUsers()
 
   const id = userState.userState.id
 
@@ -40,39 +40,44 @@ export default function Header() {
     router.push('/login')
   }
 
-  // 用於呼叫搜尋 API 並處理回傳的結果
-  const fetchUserSearchResultsAPI = async (keywords) => {
-    try {
-      const accessToken = Cookies.get('accessToken')
-      const res = await fetch(`${apiUrl}/users/search?keyword=${keywords}`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
-      const data = await res.json()
-      return data.data.users
-    } catch (error) {
-      console.error('Error fetching search results:', error)
-      return []
-    }
-  }
-  const [searchResults, setSearchResults] = useState([]) //保存搜尋結果
-  const [keywords, setKeywords] = useState([])
-  const handleSearchInputChange = async (event) => {
-    const keyword = event.target.value
-    setKeywords(keyword)
-
-    if (keyword.trim() !== '') {
-      const results = await fetchUserSearchResultsAPI(keyword)
-      setSearchResults(results)
-    } else {
-      // 如果關鍵字為空，清空搜尋結果
-
+  const [searchResults, setSearchResults] = useState([])
+  const [isFocus, setIsFocus] = useState(false) //判斷是否點選input
+  const inputRef = useRef(null)
+  //如果滑鼠點了input框外，則搜尋取消
+  const handleClickOutside = (event) => {
+    if (inputRef.current && !inputRef.current.contains(event.target)) {
+      // 點擊的目標不在 input 元素範圍內，則關閉搜尋結果並清空 input 的值
+      setIsFocus(false)
       setSearchResults([])
+      inputRef.current.value = ''
+    }
+  }
+  useEffect(() => {
+    // window與document差異：前者是瀏覽器窗口的全局對象，後者代表載入網頁的文件，用於操作網頁內容的對象
+    // 在組件首次渲染時，添加點擊事件監聽器
+    document.addEventListener('click', handleClickOutside)
+    // 返回一個清理函數，在組件卸載時移除點擊事件監聽器，避免內存洩漏
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [])
+
+  const handleSearchInputChange = async (keyword) => {
+    if (isFocus) {
+      if (keyword !== '') {
+        const results = await searchUsers(keyword)
+        setSearchResults(results)
+      } else {
+        setSearchResults([])
+      }
     }
   }
 
+  function debounce(keyword, delay) {
+    let timer = null
+    clearTimeout(timer)
+    timer = setTimeout(() => handleSearchInputChange(keyword), delay)
+  }
   return (
     <div className={styles.header}>
       <style global jsx>{`
@@ -99,10 +104,11 @@ export default function Header() {
         <div className={styles.search}>
           <img style={{ marginRight: '8px' }} src='/search.png' />
           <input
+            ref={inputRef}
             className={styles.inputSearch}
             placeholder='搜尋'
-            value={keywords}
-            onChange={handleSearchInputChange}
+            onChange={(e) => debounce(e.target.value, 500)}
+            onFocus={() => setIsFocus(true)}
           />
         </div>
 
