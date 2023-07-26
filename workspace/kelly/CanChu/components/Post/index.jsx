@@ -127,6 +127,7 @@ export default function Post({
   const formattedCommentCount = comment_count || 0
   const [liked, setLiked] = useState(data.is_liked || data.is_like || false)
   const [likeCount, setLikeCount] = useState(data.like_count || 0)
+  const [clickTime, setClickTime] = useState(0)
 
   // 新增 useEffect 用於更新愛心相關狀態
   useEffect(() => {
@@ -135,6 +136,13 @@ export default function Post({
   }, [data])
   //當點愛心時，愛心會變色且讚的數量+1
   const handleHeartClick = async () => {
+    //throttle
+    const nowTime = new Date().getSeconds()
+    if (nowTime - clickTime < 1) {
+      return
+    }
+    setClickTime(nowTime)
+
     // 在點擊愛心後立即更新前端狀態，不需等待後端 API 回應
     setLiked((prevLiked) => !prevLiked)
     setLikeCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1))
