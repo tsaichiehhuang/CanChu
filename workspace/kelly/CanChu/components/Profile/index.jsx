@@ -2,8 +2,8 @@ import React, { useRef, useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 import styles from './Profile.module.scss'
 import { useRouter } from 'next/router'
-import useAddFriend from '@/hook/useAddFriend'
-import useDeleteAddFriend from '@/hook/useDeleteAddFriend'
+import useAddFriend from '@/hook/Friends/useAddFriend'
+import useDeleteAddFriend from '@/hook/Friends/useDeleteAddFriend'
 const apiUrl = process.env.API_DOMAIN
 
 export default function Profile() {
