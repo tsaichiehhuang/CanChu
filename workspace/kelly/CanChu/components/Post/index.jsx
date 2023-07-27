@@ -3,10 +3,9 @@ import React from 'react'
 import getTimeDiff from '../getTimeDiff'
 import Cookies from 'js-cookie'
 import useLike from '@/hook/Post/useLike'
-import Comment from './Comment'
 import useEditPost from '@/hook/Post/useEditPost'
-import useComment from '@/hook/Post/useComment'
 import PostContent from './PostContent'
+import LeaveComment from './LeaveComment'
 
 export default function Post({
   userState,
@@ -25,14 +24,10 @@ export default function Post({
     handleCancelEdit,
     handleConfirmEdit
   } = useEditPost(data)
-  const { leaveComment, setLeaveComment, handleLeaveComment } = useComment(
-    data.id
-  )
 
   const userId = Cookies.get('userId')
   const handlePostClick = () => {
-    Cookies.set('postId', data.id) // 將使用者 ID 儲存在 Cookie 中
-    // 導航至該 post 頁面，使用 `Link` 元件
+    Cookies.set('postId', data.id)
     window.location.href = `/posts/${data.id}`
   }
   const handleUserClick = () => {
@@ -49,6 +44,7 @@ export default function Post({
   const formattedPicture = picture !== '' ? picture : '/個人照片.png'
   const formattedCommentCount = comment_count || 0
   const formattedLikeCount = likeCount === 0 ? 0 : likeCount
+
   return (
     <div className={styles.body}>
       <style global jsx>{`
@@ -123,64 +119,14 @@ export default function Post({
             </div>
           </div>
           <div style={{ borderTop: '1px solid #bfbfbf', width: '100%' }}></div>
-          {/* 網友留言 */}
-          {showComments && (
-            <div className={styles.comments}>
-              {comments &&
-                Array.isArray(comments) &&
-                comments.map((comment) => (
-                  <Comment key={comment.id} comment={comment} />
-                ))}
-            </div>
-          )}
-          {enableClick ? (
-            <div
-              className={`${styles.fiveRow} ${styles.row}`}
-              onClick={handlePostClick}
-              style={{ cursor: 'pointer' }}
-            >
-              <img
-                className={styles.person}
-                src={
-                  userState.userState?.picture ||
-                  userState.picture ||
-                  '/個人照片.png'
-                }
-                alt='photo'
-              />
-              <div className={styles.selfComment}>
-                <div>留個言吧</div>
-                {showImage && <img src='/postButton.png' />}
-              </div>
-            </div>
-          ) : (
-            <div className={`${styles.fiveRow} ${styles.row}`}>
-              <img
-                className={styles.person}
-                src={
-                  userState.userState?.picture ||
-                  userState.picture ||
-                  '/個人照片.png'
-                }
-                alt='photo'
-              />
-              <div className={styles.selfComment}>
-                <input
-                  className={styles.inputComment}
-                  value={leaveComment}
-                  placeholder='留個言吧'
-                  onChange={(event) => setLeaveComment(event.target.value)}
-                />
-                {showImage && (
-                  <img
-                    src='/postButton.png'
-                    onClick={handleLeaveComment}
-                    style={{ cursor: 'pointer' }}
-                  />
-                )}
-              </div>
-            </div>
-          )}
+          <LeaveComment
+            showComments={showComments}
+            data={data}
+            userState={userState}
+            enableClick={enableClick}
+            showImage={showImage}
+            handlePostClick={handlePostClick}
+          />
         </div>
       </div>
     </div>
