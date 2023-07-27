@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie'
-import { useState } from 'react'
 
 const apiUrl = process.env.API_DOMAIN
 

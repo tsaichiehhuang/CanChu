@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './Header.module.scss'
 import Link from 'next/link'
-import SearchUser from './searchUser'
+import SearchUser from './SearchUser'
 import Menu from './Menu'
 
 export default function Header() {
