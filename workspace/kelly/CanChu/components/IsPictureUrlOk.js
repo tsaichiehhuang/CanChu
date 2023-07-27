@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import styles from './PostCreator/PostCreator.module.scss'
+
 const IsPictureUrlOk = ({ userState, className }) => {
   // 獲得資料之後再判斷圖片網址
   const [userDataLoaded, setUserDataLoaded] = useState(false) //用於標記是否已獲取用戶資料

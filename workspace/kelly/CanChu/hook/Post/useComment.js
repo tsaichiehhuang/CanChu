@@ -5,14 +5,11 @@ const apiUrl = process.env.API_DOMAIN
 
 export default function useComment(postId) {
   const [leaveComment, setLeaveComment] = useState('')
-
-  // 發表comment
   const handleLeaveComment = useCallback(async () => {
     if (!leaveComment) {
       alert('請輸入內容')
       return
     }
-    // 構造請求體
     const requestBody = {
       content: leaveComment
     }
@@ -28,7 +25,7 @@ export default function useComment(postId) {
     })
 
     if (response.ok) {
-      window.location.reload() // 自動重新整理頁面
+      window.location.reload()
     } else {
       throw new Error('留言失敗')
     }

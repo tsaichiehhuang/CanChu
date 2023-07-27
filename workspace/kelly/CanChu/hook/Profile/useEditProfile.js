@@ -46,7 +46,7 @@ const useEditProfile = (userState, updateUserState) => {
           tags: editedTags.split(',')
         }
         updateUserState(updatedUser)
-        setEditing(false) // 退出編輯模式
+        setEditing(false)
         alert('個人檔案更新完成')
         window.location.reload()
       } else {

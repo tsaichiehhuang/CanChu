@@ -22,7 +22,6 @@ export default function useEditPost(data) {
   const handleConfirmEdit = async () => {
     try {
       const accessToken = Cookies.get('accessToken')
-      // 發送 PUT 請求來修改貼文內容
       const response = await fetch(`${apiUrl}/posts/${data.id}`, {
         method: 'PUT',
         headers: {
@@ -33,13 +32,13 @@ export default function useEditPost(data) {
       })
 
       if (response.ok) {
-        setEditing(false) // 退出編輯模式
+        setEditing(false)
         alert('貼文更新完成')
         window.location.reload()
       } else {
         alert('更新貼文內容失敗')
       }
-      setEditing(false) // 退出編輯模式
+      setEditing(false)
     } catch (error) {
       console.error('網絡請求錯誤', error)
     }

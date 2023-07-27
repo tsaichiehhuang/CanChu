@@ -7,19 +7,14 @@ const apiUrl = process.env.API_DOMAIN
 
 export default function PostCreator() {
   const [postContent, setPostContent] = useState('')
-
-  //獲得用戶資料
   const userId = Cookies.get('userId')
   const userState = useFetchUserProfile(userId)
 
   const handlePostSubmit = async () => {
-    // 檢查字段值是否存在且不為空
     if (!postContent) {
       alert('請輸入內容')
       return
     }
-
-    // 構造請求體
     const requestBody = {
       context: postContent
     }
@@ -32,7 +27,6 @@ export default function PostCreator() {
     }
 
     try {
-      // 發送 POST 請求到 API
       const response = await fetch(`${apiUrl}/posts`, {
         method: 'POST',
         headers: {
@@ -43,10 +37,9 @@ export default function PostCreator() {
       })
 
       if (response.ok) {
-        window.location.reload() // 自動重新整理頁面
+        window.location.reload()
         alert('貼文發布成功')
-
-        setPostContent('') // 發布後清空輸入框內容
+        setPostContent('')
       } else {
         throw new Error('發布貼文失敗')
       }

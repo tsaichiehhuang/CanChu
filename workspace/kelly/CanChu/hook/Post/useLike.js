@@ -25,7 +25,6 @@ export default function useLike(data) {
     setLikeCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1))
     try {
       const accessToken = Cookies.get('accessToken')
-      // 如果已經點讚，則發送 DELETE 請求，否則發送 POST 請求
       const method = liked ? 'DELETE' : 'POST'
       const response = await fetch(`${apiUrl}/posts/${data.id}/like`, {
         method,
