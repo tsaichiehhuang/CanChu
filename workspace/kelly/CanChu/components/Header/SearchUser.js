@@ -7,7 +7,7 @@ import IsPictureUrlOk from '@/components/IsPictureUrlOk'
 export default function SearchUser() {
   const { searchUsers } = useSearchUsers()
   const [searchResults, setSearchResults] = useState([])
-  const [isFocus, setIsFocus] = useState(false) //判斷是否點選input
+  const [isFocus, setIsFocus] = useState(false)
   const inputRef = useRef(null)
   //如果滑鼠點了input框外，則搜尋取消
   const handleClickOutside = (event) => {

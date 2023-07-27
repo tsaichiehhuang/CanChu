@@ -6,7 +6,7 @@ import Post from '@/components/Post'
 import Copyright from '@/components/Copyright'
 import PostCreator from '@/components/PostCreator'
 import Profile from '@/components/Profile'
-import useFetchUserProfile from '@/hook/userFetchUserProfile'
+import useFetchUserProfile from '@/hook/useFetchUserProfile'
 import IsPictureUrlOk from '@/components/IsPictureUrlOk'
 import { useRouter } from 'next/router'
 import useUpdateUserPicture from '@/hook/User/useUpdateUserPicture'
@@ -33,7 +33,6 @@ export default function User() {
     if (pictureUrl) {
       // 更新用戶的圖片
       const updatedUser = { ...userState, picture: pictureUrl }
-      // 更新用戶數據
       updateUserState(updatedUser)
       // 更新頭像的 src 屬性
       const headshotImage = document.querySelector(`.${styles.userHeadshot}`)

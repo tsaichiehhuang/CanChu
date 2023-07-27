@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 import styles from './Header.module.scss'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import useFetchUserProfile from '@/hook/userFetchUserProfile'
+import useFetchUserProfile from '@/hook/useFetchUserProfile'
 import IsPictureUrlOk from '../IsPictureUrlOk'
 
 export default function Menu() {

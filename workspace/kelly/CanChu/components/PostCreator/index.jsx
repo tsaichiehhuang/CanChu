@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import styles from './PostCreator.module.scss'
 import Cookies from 'js-cookie'
-import useFetchUserProfile from '@/hook/userFetchUserProfile'
+import useFetchUserProfile from '@/hook/useFetchUserProfile'
 import IsPictureUrlOk from '../IsPictureUrlOk'
 const apiUrl = process.env.API_DOMAIN
 
 export default function PostCreator() {
   const [postContent, setPostContent] = useState('')
-  const [postData, setPostData] = useState([]) // 改為空數組作為初始值
 
   //獲得用戶資料
   const userId = Cookies.get('userId')
