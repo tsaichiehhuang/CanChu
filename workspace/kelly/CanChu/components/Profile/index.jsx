@@ -23,11 +23,13 @@ export default function Profile() {
   } else {
     Cookies.remove('otherUserId')
   }
-  const { addFriend } = useAddFriend()
-  const { deleteFriendRequest } = useDeleteAddFriend()
-  const [isFriendSent, setIsFriendSent] = useState(false)
 
   const otherUserId = Cookies.get('otherUserId')
+  const { addFriend } = useAddFriend()
+  const { deleteFriendRequest } = useDeleteAddFriend()
+  const [isFriend, setIsFriend] = useState(false) //是否為朋友
+  const [isFriendSent, setIsFriendSent] = useState(false) //是否發邀請
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -133,12 +135,17 @@ export default function Profile() {
       console.error('網絡請求錯誤', error)
     }
   }
-
+  //興趣的樣式
   const tagList = userState.tags ? userState.tags.split(',') : []
 
   useEffect(() => {
-    // 檢查目前顯示用戶是否已發送好友邀請
+    // 檢查目前顯示用戶是否是好友或已發送好友邀請
     const checkFriendStatus = () => {
+      if (userState.friendship?.status === 'friend') {
+        setIsFriend(true)
+      } else {
+        setIsFriend(false)
+      }
       if (userState.friendship?.status === 'requested') {
         setIsFriendSent(true)
       } else {
@@ -149,17 +156,21 @@ export default function Profile() {
     checkFriendStatus()
   }, [userState.friendship])
 
-  //按鈕功能切換
+  //按鈕的功能切換
   const handleButtonClick = async () => {
     try {
-      if (!isFriendSent) {
-        // 目前還沒有發送好友邀請，按鈕文字是「邀請成為好友」，功能變成「邀請成為好友」
+      if (isFriend) {
+        // 如果是好友，則按鈕文字變成「刪除好友」，功能變成「刪除好友」
+        await deleteFriendRequest(userState.friendship.id)
+
+        setIsFriend(false)
+      } else if (!isFriendSent) {
+        // 如果不是好友、還沒有發送好友邀請，則按鈕文字變成「邀請成為好友」，功能變成「邀請成為好友」
         await addFriend(otherUserId)
-        setIsFriendSent(true)
-      } else {
-        // 已經發送好友邀請，則按鈕文字變成「刪除好友邀請」，功能變成「刪除好友邀請」
-        await deleteFriendRequest(userState.friendship?.id)
         setIsFriendSent(false)
+      } else {
+        // 如果不是好友、已經發送好友邀請，則按鈕文字變成「刪除好友邀請」，功能變成「刪除好友邀請」
+        await deleteFriendRequest(userState.friendship.id)
       }
     } catch (error) {
       console.error('發生錯誤', error)
@@ -169,6 +180,8 @@ export default function Profile() {
   const getButtonLabel = () => {
     if (isSelf) {
       return '編輯個人檔案'
+    } else if (isFriend) {
+      return '刪除好友'
     } else if (isFriendSent) {
       return '刪除好友邀請'
     } else {

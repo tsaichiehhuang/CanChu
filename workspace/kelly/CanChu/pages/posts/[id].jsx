@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Post from '@/components/Post'
 import Header from '@/components/Header'
 import Cookies from 'js-cookie'
+import useFetchUserProfile from '@/hook/userFetchUserProfile'
 
 const apiUrl = process.env.API_DOMAIN
 
@@ -22,6 +23,8 @@ export async function getServerSideProps(context) {
 }
 
 export default function Demo() {
+  const userId = Cookies.get('userId')
+  const userState = useFetchUserProfile(userId)
   const postId = Cookies.get('postId')
   const accessToken = Cookies.get('accessToken')
   const [postData, setPostData] = useState({
@@ -66,6 +69,7 @@ export default function Demo() {
       <Header />
       <Post
         data={data}
+        userState={userState}
         showComments={true}
         showImage={true}
         showEditIcon={false}

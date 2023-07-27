@@ -21,7 +21,9 @@ function useDeleteAddFriend() {
         }
       })
 
-      if (!response.ok) {
+      if (response.ok) {
+        window.location.reload()
+      } else {
         console.error('刪除好友邀請失敗')
       }
     } catch (error) {

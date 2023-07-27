@@ -37,7 +37,7 @@ function useFriendsPending() {
 
   useEffect(() => {
     fetchFriendsPending()
-  }, []) // 只在組件加載時執行一次
+  }, [])
 
   return friendsPending
 }

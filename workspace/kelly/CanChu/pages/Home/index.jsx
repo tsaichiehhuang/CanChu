@@ -8,20 +8,27 @@ import useFetchPostsData from '@/hook/useFetchPostsData'
 import useFriends from '@/hook/useFriends'
 import useFetchUserProfile from '@/hook/userFetchUserProfile'
 import useFriendsPending from '@/hook/useFriendsPending'
+import useDeleteAddFriend from '@/hook/useDeleteAddFriend'
+import useAgreeFriend from '@/hook/useAgreeFriend'
 import Cookies from 'js-cookie'
 import IsPictureUrlOk from '@/components/IsPictureUrlOk'
 import Link from 'next/link'
 
 export default function Home() {
+  const { deleteFriendRequest } = useDeleteAddFriend()
+  const { agreeFriendRequest } = useAgreeFriend()
   const postData = useFetchPostsData()
   const handlePostClick = (postId) => {
-    // 將點擊的 post id 儲存到狀態，然後導航至對應頁面
     window.location.href = `/posts/${postId}`
+  }
+  const handleUserClick = (user_id) => {
+    window.location.href = `/users/${user_id}`
   }
   const userId = Cookies.get('userId')
   const userState = useFetchUserProfile(userId)
-  const friends = useFriends()
   const friendsPending = useFriendsPending()
+
+  const friends = useFriends()
 
   const renderFriendRequest = (friend) => (
     <div key={friend.id} className={styles.friendRequest}>
@@ -30,32 +37,34 @@ export default function Home() {
           flexDirection: 'row',
           display: 'flex',
           width: '60%',
-          gap: '6%'
+          gap: '9%',
+          alignItems: 'center'
         }}
       >
         <IsPictureUrlOk
           className={styles.friendRequestImg}
           userState={friend}
         />
-        <div>{friend.name}</div>
+        <div className={styles.friendRequestText}>{friend.name}</div>
       </div>
       <div
         style={{
           flexDirection: 'row',
           display: 'flex',
-
           gap: '5%'
         }}
       >
         <button
           className={styles.friendRequestButton}
           style={{ background: '#5458F7' }}
+          onClick={() => agreeFriendRequest(friend.friendship.id)}
         >
           確定
         </button>
         <button
           className={styles.friendRequestButton}
           style={{ background: '#BFBFBF' }}
+          onClick={() => deleteFriendRequest(friend.friendship.id)}
         >
           取消
         </button>
@@ -72,6 +81,7 @@ export default function Home() {
         <div className={styles.friendRequestText}>{text}</div>
       </div>
     )
+
     return (
       <div className={styles.friendList}>
         {renderFriendSection(
@@ -100,6 +110,7 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.friendListMyFriend}>
+          {friendsPending.map((friend) => renderFriendRequest(friend))}
           {friends.map((friend, index) => (
             <div key={index}>
               <Link
@@ -116,9 +127,7 @@ export default function Home() {
               </Link>
             </div>
           ))}
-          {friendsPending.map((friend) => renderFriendRequest(friend))}
         </div>
-
         <div className={styles.friendListSection}>
           <img style={{ margin: '0% 1.5%', width: '15%' }} src='/options.png' />
 
@@ -132,7 +141,7 @@ export default function Home() {
       </div>
     )
   }
-
+  const userPicutre = userState.userState.picture || '/個人照片.png'
   return (
     <div className={styles.body}>
       <style global jsx>{`
@@ -158,7 +167,11 @@ export default function Home() {
               showEditIcon={false}
               key={data.id}
               data={data}
-              onClick={() => handlePostClick(data.id)} // 傳遞點擊事件處理函式
+              userState={userState}
+              onClick={() => {
+                handlePostClick(data.id)
+                handleUserClick(data.user_id)
+              }}
             />
           ))}
         </div>
