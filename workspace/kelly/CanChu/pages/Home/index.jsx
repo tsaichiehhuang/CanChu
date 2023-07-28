@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './Home.module.scss'
 import Header from '@/components/Header'
 import PostCreator from '@/components/PostCreator'
@@ -11,6 +11,7 @@ import FriendList from './FriendList'
 
 export default function Home() {
   const { postData, fetchNextPosts } = useFetchPostsData()
+  const [reachedBottom, setReachedBottom] = useState(false)
   const handlePostClick = (postId) => {
     window.location.href = `/posts/${postId}`
   }
@@ -19,6 +20,31 @@ export default function Home() {
   }
   const userId = Cookies.get('userId')
   const userState = useFetchUserProfile(userId)
+
+  // 滾動事件處理函式
+  const handleScroll = () => {
+    const docHeight = document.documentElement.scrollHeight
+    const windowHeight = window.innerHeight
+    const scrollY = window.scrollY || document.body.scrollTop || 0
+    if (docHeight - (windowHeight + scrollY) < 100) {
+      setReachedBottom(true)
+    } else {
+      setReachedBottom(false)
+    }
+  }
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (reachedBottom) {
+      console.log('get the posts!')
+      fetchNextPosts()
+    }
+  }, [reachedBottom])
   return (
     <div className={styles.body}>
       <style global jsx>{`
@@ -52,7 +78,6 @@ export default function Home() {
             />
           ))}
         </div>
-        <button onClick={fetchNextPosts}>Load More</button>
       </div>
     </div>
   )
