@@ -14,6 +14,7 @@ function useInfiniteScroll(callback, distance) {
       ) {
         isFetchingRef.current = true
         callback()
+        console.log('get the posts!')
       }
     }
 
