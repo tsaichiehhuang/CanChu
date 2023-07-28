@@ -13,6 +13,16 @@ export default function getTimeDiff(date) {
     return `${diffInHours}小時前`
   } else {
     const diffInDays = Math.floor(diffInSeconds / 86400)
-    return `${diffInDays}天前`
+    if (diffInDays > 6) {
+      // 超過六天，返回完整的原本時間
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const hours = String(date.getHours()).padStart(2, '0')
+      const minutes = String(date.getMinutes()).padStart(2, '0')
+      return `${year}-${month}-${day} ${hours}:${minutes}`
+    } else {
+      return `${diffInDays}天前`
+    }
   }
 }

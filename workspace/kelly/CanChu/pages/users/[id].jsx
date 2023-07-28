@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import styles from './user.module.scss'
 import Header from '@/components/Header'
@@ -23,7 +23,8 @@ export default function User() {
   const { userState, updateUserState } = useFetchUserProfile(id)
   const { userState: user } = useFetchUserProfile(userId) //登入者本人
   const { setSelectedPicture, uploadPicture } = useUpdateUserPicture()
-  const postData = useUserPost(id)
+  const { postData, fetchNextUserPosts, nextCursor } = useUserPost(id)
+  const [reachedBottom, setReachedBottom] = useState(false)
 
   //上傳圖片
   const handlePictureUpload = async (event) => {
@@ -42,7 +43,31 @@ export default function User() {
       alert('圖片上傳成功')
     }
   }
+  // 處理滾動事件
+  const handleScroll = () => {
+    const docHeight = document.documentElement.scrollHeight
+    const windowHeight = window.innerHeight
+    const scrollY = window.scrollY
+    if (docHeight - (windowHeight + scrollY) < 100 && nextCursor !== null) {
+      setReachedBottom(true)
+    }
+  }
 
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [nextCursor])
+
+  useEffect(() => {
+    // 確保滾動到底部時僅執行一次 GET API 請求
+    if (reachedBottom) {
+      console.log('get the posts!')
+      fetchNextUserPosts()
+      setReachedBottom(false) // 避免重複觸發 fetchNextUserPosts()
+    }
+  }, [reachedBottom, fetchNextUserPosts])
   return (
     <div className={styles.body}>
       <style global jsx>{`
