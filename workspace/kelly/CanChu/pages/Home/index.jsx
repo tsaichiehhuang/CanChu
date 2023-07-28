@@ -10,7 +10,7 @@ import Cookies from 'js-cookie'
 import FriendList from './FriendList'
 
 export default function Home() {
-  const postData = useFetchPostsData()
+  const { postData, fetchNextPosts } = useFetchPostsData()
   const handlePostClick = (postId) => {
     window.location.href = `/posts/${postId}`
   }
@@ -52,6 +52,7 @@ export default function Home() {
             />
           ))}
         </div>
+        <button onClick={fetchNextPosts}>Load More</button>
       </div>
     </div>
   )
