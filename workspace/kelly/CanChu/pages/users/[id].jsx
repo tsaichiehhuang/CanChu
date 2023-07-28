@@ -10,6 +10,7 @@ import useFetchUserProfile from '@/hook/useFetchUserProfile'
 import IsPictureUrlOk from '@/components/IsPictureUrlOk'
 import { useRouter } from 'next/router'
 import useUpdateUserPicture from '@/hook/User/useUpdateUserPicture'
+import useInfiniteScroll from '@/hook/useInfiniteScroll'
 import useUserPost from '@/hook/User/useUserPost'
 
 const userId = Cookies.get('userId')
@@ -23,8 +24,7 @@ export default function User() {
   const { userState, updateUserState } = useFetchUserProfile(id)
   const { userState: user } = useFetchUserProfile(userId) //登入者本人
   const { setSelectedPicture, uploadPicture } = useUpdateUserPicture()
-  const { postData, fetchNextUserPosts, nextCursor } = useUserPost(id)
-  const [reachedBottom, setReachedBottom] = useState(false)
+  const { postData, fetchNextUserPosts } = useUserPost(id)
 
   //上傳圖片
   const handlePictureUpload = async (event) => {
@@ -43,31 +43,7 @@ export default function User() {
       alert('圖片上傳成功')
     }
   }
-  // 處理滾動事件
-  const handleScroll = () => {
-    const docHeight = document.documentElement.scrollHeight
-    const windowHeight = window.innerHeight
-    const scrollY = window.scrollY
-    if (docHeight - (windowHeight + scrollY) < 100 && nextCursor !== null) {
-      setReachedBottom(true)
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [nextCursor])
-
-  useEffect(() => {
-    // 確保滾動到底部時僅執行一次 GET API 請求
-    if (reachedBottom) {
-      console.log('get the posts!')
-      fetchNextUserPosts()
-      setReachedBottom(false) // 避免重複觸發 fetchNextUserPosts()
-    }
-  }, [reachedBottom, fetchNextUserPosts])
+  useInfiniteScroll(fetchNextUserPosts, 100)
   return (
     <div className={styles.body}>
       <style global jsx>{`

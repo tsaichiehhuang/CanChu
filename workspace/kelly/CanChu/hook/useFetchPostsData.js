@@ -48,7 +48,7 @@ function useFetchPostsData() {
     } catch (error) {
       console.error('網絡請求錯誤', error)
     } finally {
-      setIsFetching(false) // API 呼叫結束，設置回 false
+      setIsFetching(false)
     }
   }
 

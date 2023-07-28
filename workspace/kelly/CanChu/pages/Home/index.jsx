@@ -6,12 +6,12 @@ import Post from '@/components/Post'
 import Copyright from '@/components/Copyright'
 import useFetchPostsData from '@/hook/useFetchPostsData'
 import useFetchUserProfile from '@/hook/useFetchUserProfile'
+import useInfiniteScroll from '@/hook/useInfiniteScroll'
 import Cookies from 'js-cookie'
 import FriendList from './FriendList'
 
 export default function Home() {
-  const { postData, fetchNextPosts, nextCursor } = useFetchPostsData()
-  const [reachedBottom, setReachedBottom] = useState(false)
+  const { postData, fetchNextPosts } = useFetchPostsData()
   const handlePostClick = (postId) => {
     window.location.href = `/posts/${postId}`
   }
@@ -20,30 +20,8 @@ export default function Home() {
   }
   const userId = Cookies.get('userId')
   const userState = useFetchUserProfile(userId)
+  useInfiniteScroll(fetchNextPosts, 100)
 
-  // 滾動事件處理函式
-  const handleScroll = () => {
-    const docHeight = document.documentElement.scrollHeight
-    const windowHeight = window.innerHeight
-    const scrollY = window.scrollY
-    if (docHeight - (windowHeight + scrollY) < 100 && nextCursor !== null) {
-      setReachedBottom(true)
-    }
-  }
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [nextCursor])
-
-  useEffect(() => {
-    if (reachedBottom) {
-      console.log('get the posts!')
-      fetchNextPosts()
-      setReachedBottom(false)
-    }
-  }, [reachedBottom, fetchNextPosts])
   return (
     <div className={styles.body}>
       <style global jsx>{`
