@@ -23,15 +23,12 @@ const usePosts = (userId) => {
       }
 
       let url = `${process.env.API_DOMAIN}/posts/search`
-      if (cursor && !id) {
+      if (cursor) {
         url += `?cursor=${encodeURIComponent(cursor)}`
       }
-      if (cursor && id) {
-        url += `?user_id=${encodeURIComponent(id)}&cursor=${encodeURIComponent(
-          cursor
-        )}`
-      }
-      if (id && !cursor) {
+      if (id && cursor) {
+        url += `&user_id=${encodeURIComponent(id)}`
+      } else if (id) {
         url += `?user_id=${encodeURIComponent(id)}`
       }
 
@@ -45,17 +42,12 @@ const usePosts = (userId) => {
 
       if (response.ok) {
         const data = await response.json()
-        if (!data?.data?.next_cursor) {
-          setNextCursor(null)
-        } else {
-          setNextCursor(data?.data?.next_cursor)
-        }
-
-        if (cursor) {
-          setPostData((prevData) => [...prevData, ...(data?.data?.posts || [])])
-        } else {
-          setPostData(data?.data?.posts || [])
-        }
+        setNextCursor(data?.data?.next_cursor || null)
+        setPostData((prevData) =>
+          cursor
+            ? [...prevData, ...(data?.data?.posts || [])]
+            : data?.data?.posts || []
+        )
 
         console.log('Next Cursor:', data?.data?.next_cursor)
       } else {

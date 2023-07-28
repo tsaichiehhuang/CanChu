@@ -28,10 +28,9 @@ function useInfiniteScroll(callback, distance) {
     const resetIsFetching = () => {
       isFetchingRef.current = false
     }
-
+    let timeoutId
     // 在滾動停止後，重新設置 isFetchingRef 狀態
     const handleScrollStop = () => {
-      let timeoutId
       clearTimeout(timeoutId)
       timeoutId = setTimeout(resetIsFetching, 200) //延遲
     }
