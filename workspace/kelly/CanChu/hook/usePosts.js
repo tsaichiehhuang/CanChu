@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
-import { useRouter } from 'next/router'
 
 const usePosts = (userId) => {
-  const router = useRouter()
-  const { id } = router.query
   const [postData, setPostData] = useState([])
   const [nextCursor, setNextCursor] = useState(null)
   const [isFetching, setIsFetching] = useState(false)
@@ -26,10 +23,10 @@ const usePosts = (userId) => {
       if (cursor) {
         url += `?cursor=${encodeURIComponent(cursor)}`
       }
-      if (id && cursor) {
-        url += `&user_id=${encodeURIComponent(id)}`
-      } else if (id) {
-        url += `?user_id=${encodeURIComponent(id)}`
+      if (userId && cursor) {
+        url += `&user_id=${encodeURIComponent(userId)}`
+      } else if (userId) {
+        url += `?user_id=${encodeURIComponent(userId)}`
       }
 
       const response = await fetch(url, {
