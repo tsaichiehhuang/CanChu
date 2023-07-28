@@ -10,7 +10,7 @@ import Cookies from 'js-cookie'
 import FriendList from './FriendList'
 
 export default function Home() {
-  const { postData, fetchNextPosts } = useFetchPostsData()
+  const { postData, fetchNextPosts, nextCursor } = useFetchPostsData()
   const [reachedBottom, setReachedBottom] = useState(false)
   const handlePostClick = (postId) => {
     window.location.href = `/posts/${postId}`
@@ -25,11 +25,9 @@ export default function Home() {
   const handleScroll = () => {
     const docHeight = document.documentElement.scrollHeight
     const windowHeight = window.innerHeight
-    const scrollY = window.scrollY || document.body.scrollTop || 0
-    if (docHeight - (windowHeight + scrollY) < 100) {
+    const scrollY = window.scrollY
+    if (docHeight - (windowHeight + scrollY) < 100 && nextCursor !== null) {
       setReachedBottom(true)
-    } else {
-      setReachedBottom(false)
     }
   }
   useEffect(() => {
@@ -37,14 +35,15 @@ export default function Home() {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [])
+  }, [nextCursor])
 
   useEffect(() => {
     if (reachedBottom) {
       console.log('get the posts!')
       fetchNextPosts()
+      setReachedBottom(false)
     }
-  }, [reachedBottom])
+  }, [reachedBottom, fetchNextPosts])
   return (
     <div className={styles.body}>
       <style global jsx>{`
