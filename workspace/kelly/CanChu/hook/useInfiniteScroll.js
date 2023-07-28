@@ -24,7 +24,6 @@ function useInfiniteScroll(callback, distance) {
   }, [callback, distance])
 
   useEffect(() => {
-    // 重置 isFetchingRef 狀態，以便下次可以再次觸發 API 呼叫
     const resetIsFetching = () => {
       isFetchingRef.current = false
     }
@@ -33,7 +32,7 @@ function useInfiniteScroll(callback, distance) {
     const handleScrollStop = () => {
       let timeoutId
       clearTimeout(timeoutId)
-      timeoutId = setTimeout(resetIsFetching, 200) // 設置一個 200ms 的延遲
+      timeoutId = setTimeout(resetIsFetching, 200) //延遲
     }
 
     window.addEventListener('scroll', handleScrollStop)

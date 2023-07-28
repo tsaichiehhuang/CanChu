@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 const usePosts = (userId) => {
   const router = useRouter()
   const { id } = router.query
-  console.log(id)
   const [postData, setPostData] = useState([])
   const [nextCursor, setNextCursor] = useState(null)
   const [isFetching, setIsFetching] = useState(false)
@@ -45,7 +44,6 @@ const usePosts = (userId) => {
       })
 
       if (response.ok) {
-        console.log(url)
         const data = await response.json()
         if (!data?.data?.next_cursor) {
           setNextCursor(null)

@@ -11,7 +11,6 @@ const PictureUpload = ({ userState, updateUserState }) => {
     setSelectedPicture(file)
     const pictureUrl = await uploadPicture(file)
     if (pictureUrl) {
-      // 更新用戶的圖片
       const updatedUser = { ...userState, picture: pictureUrl }
       updateUserState(updatedUser)
       // 更新頭像的 src 屬性
