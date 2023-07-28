@@ -9,8 +9,8 @@ import Profile from '@/components/Profile'
 import useFetchUserProfile from '@/hook/useFetchUserProfile'
 import { useRouter } from 'next/router'
 import useInfiniteScroll from '@/hook/useInfiniteScroll'
-import useUserPost from '@/hook/User/useUserPost'
 import PictureUpload from './PictureUpload'
+import usePosts from '@/hook/usePosts'
 
 const userId = Cookies.get('userId')
 
@@ -18,12 +18,12 @@ export default function User() {
   const router = useRouter()
   const { id } = router.query
   const isSelf = userId === id
-
+  const isUserPage = !!id
   const { userState, updateUserState } = useFetchUserProfile(id)
   const { userState: user } = useFetchUserProfile(userId) //登入者本人
-  const { postData, fetchNextUserPosts } = useUserPost(id)
+  const { postData, fetchNextPosts } = usePosts(isUserPage ? id : null)
 
-  useInfiniteScroll(fetchNextUserPosts, 100)
+  useInfiniteScroll(fetchNextPosts, 100)
   return (
     <div className={styles.body}>
       <style global jsx>{`

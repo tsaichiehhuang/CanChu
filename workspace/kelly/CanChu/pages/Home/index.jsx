@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styles from './Home.module.scss'
 import Header from '@/components/Header'
 import PostCreator from '@/components/PostCreator'
 import Post from '@/components/Post'
 import Copyright from '@/components/Copyright'
-import useFetchPostsData from '@/hook/useFetchPostsData'
 import useFetchUserProfile from '@/hook/useFetchUserProfile'
 import useInfiniteScroll from '@/hook/useInfiniteScroll'
 import Cookies from 'js-cookie'
 import FriendList from './FriendList'
+import usePosts from '@/hook/usePosts'
 
 export default function Home() {
-  const { postData, fetchNextPosts } = useFetchPostsData()
+  const { postData, fetchNextPosts } = usePosts()
   const handlePostClick = (postId) => {
     window.location.href = `/posts/${postId}`
   }
