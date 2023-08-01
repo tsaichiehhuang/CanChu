@@ -41,6 +41,10 @@ export default function Notification() {
       setDisplayedNotifications(notifyData.slice(0, 4))
     }
   }, [showAllNotifications, notifyData])
+  const newNotificationCount = notifyData.reduce(
+    (count, notification) => (notification.is_read === 0 ? count + 1 : count),
+    0
+  )
   return (
     <div
       className={styles.notification}
@@ -48,6 +52,9 @@ export default function Notification() {
       onMouseLeave={handleProfileMouseLeave}
     >
       <img src='./通知.png' />
+      {newNotificationCount > 0 && (
+        <div className={styles.notificationCount}>{newNotificationCount}</div>
+      )}
       {showProfileOptions && (
         <div className={styles.notifyOptions}>
           <div className={styles.notifyFirst}>
@@ -84,9 +91,10 @@ export default function Notification() {
                         {notification.summary}
                       </div>
                       <div
+                        className={styles.notifyTime}
                         style={{
                           color:
-                            notification.is_read === 1 ? 'lightgray' : 'inherit'
+                            notification.is_read === 1 ? 'lightgray' : '#5458f7'
                         }}
                       >
                         {getTimeDiff(new Date(notification.created_at))}
