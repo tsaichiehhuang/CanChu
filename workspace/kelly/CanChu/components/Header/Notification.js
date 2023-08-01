@@ -14,8 +14,14 @@ export default function Notification() {
     setShowProfileOptions(true)
   }
 
-  const handleProfileMouseLeave = () => {
-    setShowProfileOptions(false)
+  const handleProfileMouseLeave = (event) => {
+    if (
+      event.relatedTarget &&
+      !event.currentTarget.contains(event.relatedTarget)
+    ) {
+      setShowProfileOptions(false)
+      setShowAllNotifications(false)
+    }
   }
   const handleShowAllNotifications = () => {
     setShowAllNotifications(!showAllNotifications)
@@ -103,7 +109,7 @@ export default function Notification() {
                     {notification.is_read === 0 && (
                       <img
                         src='./checkCircle.png'
-                        style={{ width: '20px', height: '20px' }}
+                        style={{ width: '16px', height: '16px' }}
                         onClick={() => handleNotificationClick(notification.id)}
                       />
                     )}
