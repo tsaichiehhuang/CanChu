@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
-import Cookies from 'js-cookie'
+import React, { useState, useEffect } from 'react'
 import styles from './Header.module.scss'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
 import useNotify from '@/hook/Header/useNotify'
+import useRead from '@/hook/Header/useRead'
 import getTimeDiff from '../getTimeDiff'
 
 export default function Notification() {
-  const { notifyData } = useNotify()
+  const { notifyData, setNotifyData } = useNotify()
   const [showAllNotifications, setShowAllNotifications] = useState(false)
   const [showProfileOptions, setShowProfileOptions] = useState(false)
+  const [displayedNotifications, setDisplayedNotifications] = useState([])
+  const { markAsRead } = useRead()
   const handleProfileMouseEnter = () => {
     setShowProfileOptions(true)
   }
@@ -20,6 +20,27 @@ export default function Notification() {
   const handleShowAllNotifications = () => {
     setShowAllNotifications(!showAllNotifications)
   }
+  const handleNotificationClick = async (eventId) => {
+    try {
+      await markAsRead(eventId)
+      setNotifyData((prevNotifyData) =>
+        prevNotifyData.map((notification) =>
+          notification.id === eventId
+            ? { ...notification, is_read: 1 }
+            : notification
+        )
+      )
+    } catch (error) {
+      console.error('標記通知為已讀時發生錯誤：', error)
+    }
+  }
+  useEffect(() => {
+    if (showAllNotifications) {
+      setDisplayedNotifications(notifyData)
+    } else {
+      setDisplayedNotifications(notifyData.slice(0, 4))
+    }
+  }, [showAllNotifications, notifyData])
   return (
     <div
       className={styles.notification}
@@ -35,53 +56,52 @@ export default function Notification() {
           </div>
           <div
             className={`${showAllNotifications ? styles.notifyContainer : ''}`}
-            // style={{ maxHeight: showAllNotifications ? '260px' : '108px' }}
           >
-            {showAllNotifications
-              ? Array.isArray(notifyData) &&
-                notifyData.map((notification) => (
-                  <>
+            {Array.isArray(displayedNotifications) &&
+              displayedNotifications.map((notification) => (
+                <>
+                  <div
+                    style={{
+                      width: '90%',
+                      height: '1px',
+                      background: '#D1CACE',
+                      margin: '0px 10px'
+                    }}
+                  ></div>
+                  <div key={notification.id} className={styles.notifyOption}>
                     <div
                       style={{
-                        width: '90%',
-                        height: '1px',
-                        background: '#D1CACE',
-                        margin: '0px 10px'
+                        display: 'flex',
+                        flexDirection: 'column'
                       }}
-                    ></div>
-                    <div key={notification.id} className={styles.notifyOption}>
-                      <div className={styles.notifyText}>
-                        {' '}
+                    >
+                      <div
+                        style={{
+                          color:
+                            notification.is_read === 1 ? 'lightgray' : 'inherit'
+                        }}
+                      >
                         {notification.summary}
                       </div>
-                      <div className={styles.notifyTime}>
+                      <div
+                        style={{
+                          color:
+                            notification.is_read === 1 ? 'lightgray' : 'inherit'
+                        }}
+                      >
                         {getTimeDiff(new Date(notification.created_at))}
                       </div>
                     </div>
-                  </>
-                ))
-              : Array.isArray(notifyData) &&
-                notifyData.slice(0, 4).map((notification) => (
-                  <>
-                    <div
-                      style={{
-                        width: '90%',
-                        height: '1px',
-                        background: '#D1CACE',
-                        margin: '0px 10px'
-                      }}
-                    ></div>
-                    <div key={notification.id} className={styles.notifyOption}>
-                      <div className={styles.notifyText}>
-                        {' '}
-                        {notification.summary}
-                      </div>
-                      <div className={styles.notifyTime}>
-                        {getTimeDiff(new Date(notification.created_at))}
-                      </div>
-                    </div>
-                  </>
-                ))}
+                    {notification.is_read === 0 && (
+                      <img
+                        src='./checkCircle.png'
+                        style={{ width: '20px', height: '20px' }}
+                        onClick={() => handleNotificationClick(notification.id)}
+                      />
+                    )}
+                  </div>
+                </>
+              ))}
           </div>
           <div
             style={{

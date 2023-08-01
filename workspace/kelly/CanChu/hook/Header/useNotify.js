@@ -25,7 +25,7 @@ function useNotify() {
     }
     fetchNotify()
   }, [])
-  return { notifyData }
+  return { notifyData, setNotifyData }
 }
 
 export default useNotify
