@@ -55,7 +55,7 @@ export default function Menu() {
             style={{ textDecorationLine: 'none', color: '#000' }}
           >
             <div
-              className={`${styles.profileOption} ${styles.profileName}`}
+              className={`${styles.profileOption} ${styles.profileFirst}`}
               onMouseEnter={handlePhotoMouseEnter}
               onMouseLeave={handlePhotoMouseLeave}
             >
@@ -95,7 +95,7 @@ export default function Menu() {
           ></div>
 
           <div
-            className={`${styles.profileOption} ${styles.profileLogOut}`}
+            className={`${styles.profileOption} ${styles.profileLast}`}
             onClick={handleLogout}
           >
             登出

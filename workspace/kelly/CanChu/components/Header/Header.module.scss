@@ -1,9 +1,6 @@
-// @import url(https://fonts.googleapis.com/css?family=Pattaya&display=swap);
-
 @font-face {
   font-family: 'Pattaya';
   src: url('../../public/Pattaya-Regular.ttf') format('truetype');
-  /* 添加其他字体格式（如 woff、woff2）的源文件 */
 }
 
 .header {
@@ -113,7 +110,7 @@
 
 .profileOption {
   padding: 18px;
-  &.profileName {
+  &.profileFirst {
     cursor: pointer;
     gap: 5%;
     padding: 14px;
@@ -122,21 +119,21 @@
     align-items: center;
     justify-content: flex-start;
   }
+  &.profileLast {
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 0px 0px 20px 20px;
+  }
+  &:hover {
+    color: #fff;
+    background: #5458f7;
+  }
 }
 .profileOptionPhoto {
   cursor: pointer;
   width: 28px;
   height: 28px;
   border-radius: 50%;
-}
-.profileOption.profileLogOut {
-  cursor: pointer;
-  padding: 15px;
-  border-radius: 0px 0px 20px 20px;
-}
-.profileOption:hover {
-  color: #fff;
-  background: #5458f7;
 }
 
 .profileOptions {
@@ -163,4 +160,76 @@
   height: 36px;
   flex-shrink: 0;
   border-radius: 50%;
+}
+.notification {
+  right: 15%;
+  position: absolute;
+  &:hover .notifyOptions {
+    display: flex;
+  }
+}
+
+.notifyOption {
+  padding: 10px;
+  &:hover {
+    background: #dfdfdf;
+  }
+  .notifyText {
+    font-family: Outfit;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .notifyTime {
+    color: #5458f7;
+    font-family: Outfit;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 24px;
+  }
+}
+.notifyFirst {
+  background: #5458f7;
+  color: white;
+  cursor: pointer;
+  gap: 5%;
+  padding: 14px;
+  border-radius: 20px 20px 0px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.notifyLast {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 0px 0px 20px 20px;
+}
+.notifyOptions {
+  cursor: pointer;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 280px;
+  background: #f6f6f6;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: none;
+  flex-direction: column;
+  z-index: 999;
+}
+.notifyContainer {
+  max-height: 400px;
+
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 8px;
+    background-color: #c1c1c1;
+    border-radius: 4px;
+    &:hover {
+      background-color: #a4a4a4;
+    }
+  }
 }
