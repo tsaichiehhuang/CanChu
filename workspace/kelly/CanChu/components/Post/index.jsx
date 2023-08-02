@@ -13,7 +13,8 @@ export default function Post({
   showComments = true,
   showImage = true,
   showEditIcon = true,
-  enableClick = true
+  enableClick = true,
+  showFullArticle = false
 }) {
   const { liked, likeCount, handleHeartClick } = useLike(data)
   const {
@@ -85,6 +86,7 @@ export default function Post({
             </div>
           </div>
           <PostContent
+            showFullArticle={showFullArticle}
             data={data}
             editing={editing}
             editedContent={editedContent}

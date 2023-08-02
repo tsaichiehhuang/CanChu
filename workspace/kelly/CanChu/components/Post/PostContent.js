@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './Post.module.scss'
 
 export default function PostContent({
@@ -7,8 +7,31 @@ export default function PostContent({
   editedContent,
   setEditedContent,
   handleConfirmEdit,
-  handleCancelEdit
+  handleCancelEdit,
+  showFullArticle
 }) {
+  const maxCharsToShow = 200
+  const maxLinesToShow = 3
+  const [showMore, setShowMore] = useState(false)
+  const [showFullContent, setShowFullContent] = useState(false)
+
+  let contentToShow = data.context
+  let shouldShowReadMoreButton = false
+
+  if (!showFullContent && !showMore && !showFullArticle) {
+    const lines = data?.context?.split('\n')
+    if (lines?.length > maxLinesToShow) {
+      contentToShow = lines.slice(0, maxLinesToShow).join('\n')
+      shouldShowReadMoreButton = true
+    } else if (data?.context?.length > maxCharsToShow) {
+      contentToShow = data.context.slice(0, maxCharsToShow)
+      shouldShowReadMoreButton = true
+    }
+  }
+  const handleReadMoreClick = () => {
+    setShowMore(!showMore)
+    setShowFullContent(!showMore)
+  }
   return (
     <React.Fragment>
       {editing ? (
@@ -37,7 +60,15 @@ export default function PostContent({
         </div>
       ) : (
         <article className={`${styles.secondRow} ${styles['multiline-text']}`}>
-          {data.context}
+          {contentToShow}
+          {shouldShowReadMoreButton && (
+            <span
+              className={styles.readMoreButton}
+              onClick={handleReadMoreClick}
+            >
+              ......閱讀更多
+            </span>
+          )}
         </article>
       )}
     </React.Fragment>

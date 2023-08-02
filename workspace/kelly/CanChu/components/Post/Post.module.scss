@@ -123,11 +123,10 @@
 }
 .secondRow {
   margin-top: 17.19px;
+  margin-bottom: 17.19px;
   width: 700px;
-  height: 100px;
+  min-height: 100px;
   font-family: 'Outfit';
-  font-style: normal;
-  font-weight: 500;
   font-size: 16px;
   line-height: 24px;
   color: #000000;
@@ -162,9 +161,17 @@
   border: 0px;
   border-radius: 6px;
 }
+
 .multiline-text {
   white-space: pre-line;
 }
+
+.readMoreButton {
+  color: #000;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .thirdRow {
   width: 700px;
   height: 50px;

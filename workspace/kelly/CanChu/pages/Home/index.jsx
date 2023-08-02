@@ -42,6 +42,7 @@ export default function Home() {
           <PostCreator />
           {postData.map((data) => (
             <Post
+              showFullArticle={false}
               showComments={false}
               showImage={false}
               showEditIcon={false}

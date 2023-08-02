@@ -71,6 +71,7 @@ export default function User() {
 
             {postData.map((data) => (
               <Post
+                showFullArticle={false}
                 userState={user}
                 showComments={false}
                 showImage={false}
