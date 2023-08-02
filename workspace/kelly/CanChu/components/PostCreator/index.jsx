@@ -38,8 +38,15 @@ export default function PostCreator() {
       })
 
       if (response.ok) {
-        Swal.fire('貼文發布成功', '', 'success')
-        window.location.reload()
+        Swal.fire({
+          icon: 'success',
+          title: '貼文發布成功',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
         setPostContent('')
       } else {
         throw new Error('發布貼文失敗')

@@ -47,6 +47,12 @@ export default function ProfileButton({
         if (result.isConfirmed) {
           await deleteFriendRequest(userState.friendship.id)
           setIsFriend(false)
+          Swal.fire({
+            icon: 'success',
+            title: '已刪除好友',
+            showConfirmButton: false,
+            timer: 1500
+          })
         }
       } else if (!isFriendSent) {
         // 如果不是好友、還沒有發送好友邀請，則按鈕文字變成「邀請成為好友」，功能變成「邀請成為好友」
@@ -61,6 +67,12 @@ export default function ProfileButton({
       } else {
         // 如果不是好友、已經發送好友邀請，則按鈕文字變成「刪除好友邀請」，功能變成「刪除好友邀請」
         await deleteFriendRequest(userState.friendship.id)
+        Swal.fire({
+          icon: 'success',
+          title: '已刪除好友邀請',
+          showConfirmButton: false,
+          timer: 1500
+        })
       }
     } catch (error) {
       console.error('發生錯誤', error)
