@@ -57,14 +57,14 @@ export default function Notification() {
       onMouseEnter={handleProfileMouseEnter}
       onMouseLeave={handleProfileMouseLeave}
     >
-      <img src='./通知.png' />
+      <img src='/通知.png' />
       {newNotificationCount > 0 && (
         <div className={styles.notificationCount}>{newNotificationCount}</div>
       )}
       {showProfileOptions && (
         <div className={styles.notifyOptions}>
           <div className={styles.notifyFirst}>
-            <img src='./通知反白.png' />
+            <img src='/通知反白.png' />
             我的通知
           </div>
           <div
@@ -108,7 +108,7 @@ export default function Notification() {
                     </div>
                     {notification.is_read === 0 && (
                       <img
-                        src='./checkCircle.png'
+                        src='/checkCircle.png'
                         style={{ width: '16px', height: '16px' }}
                         onClick={() => handleNotificationClick(notification.id)}
                       />
