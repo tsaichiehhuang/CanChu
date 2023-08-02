@@ -1,16 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styles from './PostCreator.module.scss'
 import Cookies from 'js-cookie'
 import useFetchUserProfile from '@/hook/useFetchUserProfile'
 import IsPictureUrlOk from '../IsPictureUrlOk'
 import Swal from 'sweetalert2'
+import dynamic from 'next/dynamic'
+import 'react-quill/dist/quill.snow.css'
 const apiUrl = process.env.API_DOMAIN
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 export default function PostCreator() {
   const [postContent, setPostContent] = useState('')
   const userId = Cookies.get('userId')
   const userState = useFetchUserProfile(userId)
-
+  const quillRef = useRef(null) // 使用 useRef 創建一個 ref
   const handlePostSubmit = async () => {
     if (!postContent) {
       Swal.fire('請輸入內容', '', 'warning')
@@ -55,6 +58,21 @@ export default function PostCreator() {
       console.error('網絡請求錯誤', error)
     }
   }
+  const handleCustomButtonClick = () => {
+    alert('Custom button clicked!')
+  }
+  const modules = {
+    toolbar: [
+      [{ header: '1' }, { header: '2' }],
+      [{ size: [] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['clean']
+    ],
+    clipboard: {
+      matchVisual: false
+    }
+  }
 
   return (
     <div className={styles.posting}>
@@ -69,13 +87,23 @@ export default function PostCreator() {
           className={styles.postingPhoto}
           userState={userState.userState}
         />
-        <textarea
+
+        <ReactQuill
+          ref={quillRef} // 將 ReactQuill 實例存入 quillRef
+          modules={modules}
+          className={styles.postingText}
+          placeholder='說點什麼嗎？'
+          value={postContent}
+          onChange={setPostContent}
+        />
+
+        {/* <textarea
           className={styles.postingText}
           placeholder='說點什麼嗎？'
           style={{ resize: 'none' }}
           value={postContent}
           onChange={(event) => setPostContent(event.target.value)}
-        ></textarea>
+        ></textarea> */}
       </div>
       <div
         style={{

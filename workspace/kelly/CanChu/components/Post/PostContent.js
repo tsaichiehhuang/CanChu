@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styles from './Post.module.scss'
+import ReactHtmlParser from 'react-html-parser'
 
 export default function PostContent({
   data,
@@ -14,20 +15,26 @@ export default function PostContent({
   const maxLinesToShow = 3
   const [showMore, setShowMore] = useState(false)
   const [showFullContent, setShowFullContent] = useState(false)
-
-  let contentToShow = data.context
+  const parsedContent = ReactHtmlParser(data.context)
+  let contentToShow = parsedContent
   let shouldShowReadMoreButton = false
 
   if (!showFullContent && !showMore && !showFullArticle) {
-    const lines = data?.context?.split('\n')
-    if (lines?.length > maxLinesToShow) {
+    const textContent = parsedContent
+      .map((item) => (typeof item === 'string' ? item : item.props.children))
+      .join('') // 將處理後的元素陣列轉為字串
+
+    const lines = textContent.split('\n')
+
+    if (lines.length > maxLinesToShow) {
       contentToShow = lines.slice(0, maxLinesToShow).join('\n')
       shouldShowReadMoreButton = true
-    } else if (data?.context?.length > maxCharsToShow) {
-      contentToShow = data.context.slice(0, maxCharsToShow)
+    } else if (textContent.length > maxCharsToShow) {
+      contentToShow = textContent.slice(0, maxCharsToShow)
       shouldShowReadMoreButton = true
     }
   }
+
   const handleReadMoreClick = () => {
     setShowMore(!showMore)
     setShowFullContent(!showMore)
