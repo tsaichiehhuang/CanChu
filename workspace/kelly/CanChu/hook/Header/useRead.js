@@ -1,5 +1,3 @@
-// useRead.js
-import { useState } from 'react'
 import Cookies from 'js-cookie'
 
 const apiUrl = process.env.API_DOMAIN

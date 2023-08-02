@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Cookies from 'js-cookie'
+import Swal from 'sweetalert2'
 
 const apiUrl = process.env.API_DOMAIN
 
@@ -34,7 +35,7 @@ const useUpdateUserPicture = () => {
         // eslint-disable-next-line consistent-return
         return pictureUrl
       } else {
-        alert('上傳圖片失敗')
+        Swal.fire('上傳圖片失敗', '', 'error')
         // eslint-disable-next-line consistent-return
         return null
       }

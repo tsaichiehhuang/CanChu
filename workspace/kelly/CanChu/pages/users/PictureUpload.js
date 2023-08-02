@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './user.module.scss'
 import useUpdateUserPicture from '@/hook/User/useUpdateUserPicture'
 import IsPictureUrlOk from '@/components/IsPictureUrlOk'
+import Swal from 'sweetalert2'
 
 const PictureUpload = ({ userState, updateUserState }) => {
   const { setSelectedPicture, uploadPicture } = useUpdateUserPicture()
@@ -18,7 +19,7 @@ const PictureUpload = ({ userState, updateUserState }) => {
       if (headshotImage) {
         headshotImage.src = pictureUrl
       }
-      alert('圖片上傳成功')
+      Swal.fire('圖片上傳成功', '', 'success')
     }
   }
 

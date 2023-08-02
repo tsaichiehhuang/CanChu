@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import Cookies from 'js-cookie'
+import Swal from 'sweetalert2'
 
 const apiUrl = process.env.API_DOMAIN
 
@@ -7,7 +8,7 @@ export default function useComment(postId) {
   const [leaveComment, setLeaveComment] = useState('')
   const handleLeaveComment = useCallback(async () => {
     if (!leaveComment) {
-      alert('請輸入內容')
+      Swal.fire('請輸入內容', '', 'warning')
       return
     }
     const requestBody = {
