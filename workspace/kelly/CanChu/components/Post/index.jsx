@@ -98,7 +98,7 @@ export default function Post({
           <div className={`${styles.thirdRow} ${styles.row}`}>
             {/* 愛心按讚 */}
             <img
-              className={styles.heartIcon}
+              className={liked ? styles.likedHeart : ''}
               src={liked ? '/heart.png' : '/notHeart.png'}
               onClick={handleHeartClick}
               style={{ cursor: 'pointer' }}
