@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React from 'react'
 import Cookies from 'js-cookie'
 import styles from './user.module.scss'
 import Header from '@/components/Header'
@@ -6,25 +6,13 @@ import Post from '@/components/Post'
 import Copyright from '@/components/Copyright'
 import PostCreator from '@/components/PostCreator'
 import Profile from '@/components/Profile'
-import useFetchUserProfile from '@/hook/userFetchUserProfile'
+import useFetchUserProfile from '@/hook/useFetchUserProfile'
 import IsPictureUrlOk from '@/components/IsPictureUrlOk'
 import { useRouter } from 'next/router'
+import useUpdateUserPicture from '@/hook/User/useUpdateUserPicture'
+import useUserPost from '@/hook/User/useUserPost'
 
-const apiUrl = process.env.API_DOMAIN
 const userId = Cookies.get('userId')
-export async function getServerSideProps(context) {
-  const { req, res } = context
-  const accessToken = req.cookies.accessToken
-
-  // 如果未登入，回login
-  if (!accessToken) {
-    res.writeHead(302, { Location: '/login' })
-    res.end()
-    return { props: {} }
-  }
-
-  return { props: {} }
-}
 
 export default function User() {
   const router = useRouter()
@@ -32,103 +20,27 @@ export default function User() {
   // 獲取當前用戶是否為自己的個人頁面
   const isSelf = userId === id
 
-  const [selectedPicture, setSelectedPicture] = useState(null)
-  const [postData, setPostData] = useState([]) // 改為空數組作為初始值
-  //獲得用戶資料
-
   const { userState, updateUserState } = useFetchUserProfile(id)
   const { userState: user } = useFetchUserProfile(userId) //登入者本人
-
-  //顯示user貼文
-  const url = new URL(`${apiUrl}/posts/search`)
-  url.searchParams.append('user_id', id)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const accessToken = Cookies.get('accessToken')
-
-        if (!accessToken) {
-          console.error('未找到accessToken')
-          return
-        }
-
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
-
-        if (response.ok) {
-          const data = await response.json()
-          setPostData(data?.data?.posts || [])
-        }
-      } catch (error) {
-        console.error('網絡請求錯誤', error)
-      }
-    }
-
-    fetchData()
-  }, [id])
+  const { setSelectedPicture, uploadPicture } = useUpdateUserPicture()
+  const postData = useUserPost(id)
 
   //上傳圖片
-  const uploadPicture = async (file) => {
-    try {
-      const accessToken = Cookies.get('accessToken')
-
-      if (!accessToken) {
-        console.error('未找到accessToken')
-        return
-      }
-
-      const formData = new FormData()
-      formData.append('picture', file)
-
-      const response = await fetch(`${apiUrl}/users/picture`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        },
-        body: formData
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        const pictureUrl = data?.data?.picture
-        // 更新用戶的圖片
-        const updatedUser = { ...userState.userState, picture: pictureUrl }
-        // 更新用戶數據
-        updateUserState(updatedUser)
-        // 將新上傳的頭像 URL 存儲在 cookies
-        Cookies.set('uploadedPicture', pictureUrl)
-        window.location.reload() // 自動重新整理頁面
-        alert('圖片上傳成功')
-      } else {
-        alert('上傳圖片失敗')
-      }
-    } catch (error) {
-      console.error('網絡請求錯誤', error)
-    }
-  }
-  useEffect(() => {
-    // 檢查 cookies 是否有保存的頭像 URL
-    const uploadedPictureUrl = Cookies.get('uploadedPicture')
-    if (uploadedPictureUrl) {
-      // 更新頭像的 src 屬性為上傳的頭像 URL
-      const headshotImage = document.querySelector(`.${styles.userHeadshot}`)
-      if (headshotImage) {
-        headshotImage.src = uploadedPictureUrl
-      }
-    }
-  }, [])
-
-  const handlePictureUpload = (event) => {
+  const handlePictureUpload = async (event) => {
     const file = event.target.files[0]
     setSelectedPicture(file)
-    // 調用上傳圖片的 API 函式，並將 `file` 作為參數傳遞
-    uploadPicture(file)
+    const pictureUrl = await uploadPicture(file)
+    if (pictureUrl) {
+      // 更新用戶的圖片
+      const updatedUser = { ...userState, picture: pictureUrl }
+      updateUserState(updatedUser)
+      // 更新頭像的 src 屬性
+      const headshotImage = document.querySelector(`.${styles.userHeadshot}`)
+      if (headshotImage) {
+        headshotImage.src = pictureUrl
+      }
+      alert('圖片上傳成功')
+    }
   }
 
   return (
@@ -177,7 +89,11 @@ export default function User() {
         </div>
         <div className={styles.container}>
           <div className={styles.containerLeft}>
-            <Profile />
+            <Profile
+              updateUserState={updateUserState}
+              userState={userState} // 將獲取到的 userState 傳遞給 Profile 元件
+              isSelf={isSelf}
+            />
             <div style={{ width: '274px', marginLeft: '10%' }}>
               <Copyright />
             </div>
@@ -200,4 +116,16 @@ export default function User() {
       </div>
     </div>
   )
+}
+export async function getServerSideProps(context) {
+  const { req, res } = context
+  const accessToken = req.cookies.accessToken
+
+  if (!accessToken) {
+    res.writeHead(302, { Location: '/login' })
+    res.end()
+    return { props: {} }
+  }
+
+  return { props: {} }
 }

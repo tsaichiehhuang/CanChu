@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react'
 import Post from '@/components/Post'
 import Header from '@/components/Header'
 import Cookies from 'js-cookie'
-import useFetchUserProfile from '@/hook/userFetchUserProfile'
+import useFetchUserProfile from '@/hook/useFetchUserProfile'
 
 const apiUrl = process.env.API_DOMAIN
 
 export async function getServerSideProps(context) {
   const { req, res } = context
   const accessToken = req.cookies.accessToken
-
-  // 如果未登入，重定向到登入頁面
   if (!accessToken) {
     res.writeHead(302, { Location: '/login' })
     res.end()
@@ -72,11 +70,11 @@ export default function Demo() {
         userState={userState}
         showComments={true}
         showImage={true}
-        showEditIcon={false}
+        showEditIcon={true}
         enableClick={false}
-        liked={liked} // 將愛心狀態傳遞給 Post 元件
-        likeCount={likeCount} // 將愛心數量傳遞給 Post 元件
-        formattedLikeCount={formattedLikeCount} // 將格式化後的愛心數量傳遞給 Post 元件
+        liked={liked}
+        likeCount={likeCount}
+        formattedLikeCount={formattedLikeCount}
       />
     </div>
   )

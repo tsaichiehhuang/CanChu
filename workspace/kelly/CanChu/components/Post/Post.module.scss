@@ -43,12 +43,14 @@
     display: none;
     cursor: pointer;
   }
+
   &:hover .editIcon {
     display: block;
   }
 }
 
 .singlePost {
+  position: relative;
   padding: 10px 0px;
   display: flex;
   align-items: center;
@@ -62,6 +64,17 @@
   // margin-top: 56px;
   margin-bottom: 3%;
   margin-top: 3%;
+  .singleEditIcon {
+    position: absolute;
+    top: 1;
+    right: 0;
+    margin-right: 2%;
+    display: none;
+    cursor: pointer;
+  }
+  &:hover .singleEditIcon {
+    display: block;
+  }
 }
 .firstRow {
   margin-top: 20px;

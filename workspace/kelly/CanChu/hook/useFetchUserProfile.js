@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 const apiUrl = process.env.API_DOMAIN
 const useFetchUserProfile = (userId) => {
   const [userState, setUserState] = useState([])
-  const [editedTags, setEditedTags] = useState('')
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -28,12 +27,6 @@ const useFetchUserProfile = (userId) => {
           const data = await response.json()
           const userProfile = data?.data?.user || {}
           setUserState(userProfile)
-
-          // 確保 tags 被正確設置後再進行 split
-          if (userProfile.tags) {
-            const tagList = userProfile.tags.split(',')
-            setEditedTags(tagList.join(','))
-          }
         } else {
           console.error('獲取用戶信息時出錯')
         }
@@ -47,8 +40,7 @@ const useFetchUserProfile = (userId) => {
   const updateUserState = (updatedUser) => {
     setUserState(updatedUser)
   }
-
-  return { userState, editedTags, updateUserState }
+  return { userState, updateUserState }
 }
 
 export default useFetchUserProfile

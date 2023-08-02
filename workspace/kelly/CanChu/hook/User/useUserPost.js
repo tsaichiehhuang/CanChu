@@ -1,13 +1,13 @@
+import { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
-import { useState, useEffect } from 'react'
 
 const apiUrl = process.env.API_DOMAIN
 
-function useFetchPostsData() {
+const useUserPost = (userId) => {
   const [postData, setPostData] = useState([])
 
   useEffect(() => {
-    const fetchPostsData = async () => {
+    const fetchUserPosts = async () => {
       try {
         const accessToken = Cookies.get('accessToken')
 
@@ -16,7 +16,10 @@ function useFetchPostsData() {
           return
         }
 
-        const response = await fetch(`${apiUrl}/posts/search`, {
+        const url = new URL(`${apiUrl}/posts/search`)
+        url.searchParams.append('user_id', userId)
+
+        const response = await fetch(url, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -28,17 +31,17 @@ function useFetchPostsData() {
           const data = await response.json()
           setPostData(data?.data?.posts || [])
         } else {
-          console.error('獲取貼文數據時出錯')
+          console.error('獲取用戶貼文時出錯')
         }
       } catch (error) {
         console.error('網絡請求錯誤', error)
       }
     }
 
-    fetchPostsData()
-  }, [])
+    fetchUserPosts()
+  }, [userId])
 
   return postData
 }
 
-export default useFetchPostsData
+export default useUserPost
