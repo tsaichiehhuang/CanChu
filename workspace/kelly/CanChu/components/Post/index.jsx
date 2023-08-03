@@ -1,5 +1,5 @@
 import styles from './Post.module.scss'
-import React from 'react'
+import React, { useState } from 'react'
 import getTimeDiff from '../getTimeDiff'
 import Cookies from 'js-cookie'
 import useLike from '@/hook/Post/useLike'
@@ -16,7 +16,8 @@ export default function Post({
   enableClick = true,
   showFullArticle = false
 }) {
-  const { liked, likeCount, handleHeartClick } = useLike(data)
+  const { liked, likeCount, handleHeartClick, heartAnimation } = useLike(data)
+
   const {
     content: editedContent,
     setContent: setEditedContent,
@@ -98,7 +99,7 @@ export default function Post({
           <div className={`${styles.thirdRow} ${styles.row}`}>
             {/* 愛心按讚 */}
             <img
-              className={liked ? styles.likedHeart : ''}
+              className={heartAnimation ? styles.likedHeart : ''}
               src={liked ? '/heart.png' : '/notHeart.png'}
               onClick={handleHeartClick}
               style={{ cursor: 'pointer' }}
