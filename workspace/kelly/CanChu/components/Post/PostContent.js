@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styles from './Post.module.scss'
-// import ReactHtmlParser from 'react-html-parser'
 import parse from 'html-react-parser'
 import dynamic from 'next/dynamic'
 import 'react-quill/dist/quill.snow.css'
@@ -63,6 +62,7 @@ export default function PostContent({
             onChange={(e) => setEditedContent(e.target.value)}
           /> */}
           <ReactQuill
+            theme='snow'
             className={styles.editTextarea}
             value={editedContent}
             onChange={setEditedContent}

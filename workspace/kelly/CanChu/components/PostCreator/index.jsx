@@ -6,6 +6,7 @@ import IsPictureUrlOk from '../IsPictureUrlOk'
 import Swal from 'sweetalert2'
 import dynamic from 'next/dynamic'
 import 'react-quill/dist/quill.snow.css'
+
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 const apiUrl = process.env.API_DOMAIN
 
@@ -103,7 +104,8 @@ export default function PostCreator() {
           <div className={styles.overlay}>
             <div className={styles.quillWrapper}>
               <ReactQuill
-                // ref={quillRef}
+                theme='snow'
+                ref={quillRef}
                 modules={modules}
                 placeholder='說點什麼嗎？'
                 className={styles.postingEditText}
