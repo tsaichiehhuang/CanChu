@@ -58,7 +58,7 @@ export default function PostCreator() {
         }, 1000)
         setPostContent('')
       } else {
-        throw new Error('發布貼文失敗')
+        Swal.fire('更新貼文內容失敗', '', 'error')
       }
     } catch (error) {
       console.error('網絡請求錯誤', error)
@@ -106,6 +106,7 @@ export default function PostCreator() {
       [{ size: [] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ image: true }],
       ['clean']
     ],
     clipboard: {
