@@ -31,7 +31,10 @@ const useUpdateUserPicture = () => {
         const data = await response.json()
         const pictureUrl = data?.data?.picture
         Cookies.set('uploadedPicture', pictureUrl)
-        window.location.reload()
+        Swal.fire('圖片上傳成功', '', 'success')
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
         // eslint-disable-next-line consistent-return
         return pictureUrl
       } else {
