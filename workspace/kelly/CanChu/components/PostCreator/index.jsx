@@ -14,17 +14,12 @@ export default function PostCreator() {
   const [postContent, setPostContent] = useState('')
   const [isQuillEditing, setIsQuillEditing] = useState(false)
   const [isTextareaEditing, setIsTextareaEditing] = useState(false)
-  const [selection, setSelection] = useState(null)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const userId = Cookies.get('userId')
   const userState = useFetchUserProfile(userId)
   const quillRef = useRef(null)
   const textareaRef = useRef(null)
 
-  useEffect(() => {
-    if (isQuillEditing && quillRef.current && quillRef.current.editor) {
-      quillRef.current.editor.focus()
-    }
-  }, [isQuillEditing])
   const handlePostSubmit = async () => {
     if (!postContent) {
       Swal.fire('請輸入內容', '', 'warning')
@@ -73,9 +68,41 @@ export default function PostCreator() {
     setIsTextareaEditing(false)
   }
 
+  useEffect(() => {
+    setIsButtonDisabled(
+      postContent.trim() === '' || postContent.trim() === '<p><br></p>'
+    )
+  }, [postContent])
+  const handleClickOutside = (event) => {
+    const quillEditor = document.querySelector('.ql-editor')
+    const quillWrapper = document.querySelector(`.${styles.quillWrapper}`)
+
+    if (
+      isQuillEditing &&
+      quillWrapper &&
+      !quillWrapper.contains(event.target) &&
+      quillEditor &&
+      !quillEditor.contains(event.target)
+    ) {
+      setIsQuillEditing(false)
+    }
+  }
+
+  const handleTextareaClick = (event) => {
+    event.stopPropagation()
+    setIsQuillEditing(true)
+  }
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [isQuillEditing])
   const modules = {
     toolbar: [
-      [{ header: '1' }, { header: '2' }],
+      [{ header: '1' }],
       [{ size: [] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ list: 'ordered' }, { list: 'bullet' }],
@@ -101,7 +128,7 @@ export default function PostCreator() {
         />
 
         {isQuillEditing && (
-          <div className={styles.overlay}>
+          <div className={styles.overlay} ref={quillRef}>
             <div className={styles.quillWrapper}>
               <ReactQuill
                 theme='snow'
@@ -122,6 +149,7 @@ export default function PostCreator() {
               <button
                 className={styles.postingButton}
                 onClick={handlePostSubmit}
+                disabled={isButtonDisabled}
               >
                 發布貼文
               </button>
@@ -134,9 +162,7 @@ export default function PostCreator() {
             className={styles.postingText}
             placeholder='說點什麼嗎？'
             style={{ resize: 'none' }}
-            onClick={() => {
-              setIsQuillEditing(true)
-            }}
+            onClick={(event) => handleTextareaClick(event)}
           />
         )}
       </div>

@@ -52,22 +52,30 @@ export default function PostContent({
     setShowMore(!showMore)
     setShowFullContent(!showMore)
   }
+  const modules = {
+    toolbar: [
+      [{ header: '1' }],
+      [{ size: [] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['clean']
+    ],
+    clipboard: {
+      matchVisual: false
+    }
+  }
   return (
     <React.Fragment>
       {editing ? (
         <div className={styles.editContainer}>
-          {/* <textarea
-            className={styles.editTextarea}
-            value={editedContent}
-            onChange={(e) => setEditedContent(e.target.value)}
-          /> */}
           <ReactQuill
             theme='snow'
             className={styles.editTextarea}
             value={editedContent}
             onChange={setEditedContent}
+            modules={modules}
           />
-          <div className={styles.editButtonGroup} style={{}}>
+          <div className={styles.editButtonGroup}>
             <button
               className={styles.editButton}
               onClick={handleConfirmEdit}
