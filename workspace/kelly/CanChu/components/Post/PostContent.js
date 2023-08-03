@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import styles from './Post.module.scss'
-import ReactHtmlParser from 'react-html-parser'
-
+// import ReactHtmlParser from 'react-html-parser'
+import parse from 'html-react-parser'
+import dynamic from 'next/dynamic'
+import 'react-quill/dist/quill.snow.css'
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 export default function PostContent({
   data,
   editing,
@@ -15,15 +18,26 @@ export default function PostContent({
   const maxLinesToShow = 3
   const [showMore, setShowMore] = useState(false)
   const [showFullContent, setShowFullContent] = useState(false)
-  const parsedContent = ReactHtmlParser(data.context)
+  const parsedContent = parse(data.context)
   let contentToShow = parsedContent
   let shouldShowReadMoreButton = false
+  const flattenContent = (content) => {
+    if (typeof content === 'string') {
+      return content
+    } else if (React.isValidElement(content)) {
+      if (Array.isArray(content.props.children)) {
+        return content.props.children
+          .map((child) => flattenContent(child))
+          .join('')
+      } else if (content.props.children) {
+        return flattenContent(content.props.children)
+      }
+    }
+    return ''
+  }
 
   if (!showFullContent && !showMore && !showFullArticle) {
-    const textContent = parsedContent
-      .map((item) => (typeof item === 'string' ? item : item.props.children))
-      .join('') // 將處理後的元素陣列轉為字串
-
+    const textContent = flattenContent(parsedContent)
     const lines = textContent.split('\n')
 
     if (lines.length > maxLinesToShow) {
@@ -43,10 +57,15 @@ export default function PostContent({
     <React.Fragment>
       {editing ? (
         <div className={styles.editContainer}>
-          <textarea
+          {/* <textarea
             className={styles.editTextarea}
             value={editedContent}
             onChange={(e) => setEditedContent(e.target.value)}
+          /> */}
+          <ReactQuill
+            className={styles.editTextarea}
+            value={editedContent}
+            onChange={setEditedContent}
           />
           <div className={styles.editButtonGroup} style={{}}>
             <button
