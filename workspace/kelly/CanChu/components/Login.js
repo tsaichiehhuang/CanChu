@@ -1,10 +1,10 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import styles from './login.module.scss'
 import Link from 'next/link'
 import Copyright from './Copyright'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
-import * as Yup from 'yup'
+import { Field, ErrorMessage } from 'formik'
+
 const Login = ({
   statusLogin = true,
   nameRef,
@@ -13,7 +13,6 @@ const Login = ({
   confirmPasswordRef
 }) => {
   const router = useRouter()
-  const [error, setError] = useState(null)
   const handleLogin = () => {
     router.push('/login')
   }
@@ -133,7 +132,6 @@ const Login = ({
               </Link>
             </div>
           )}
-          {error && <div style={{ color: 'red' }}>{error}</div>}
         </div>
         <div
           className={

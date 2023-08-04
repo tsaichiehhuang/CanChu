@@ -1,9 +1,10 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef } from 'react'
 import { useRouter } from 'next/router'
 import Login from '@/components/Login'
 import Cookies from 'js-cookie'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
+import Swal from 'sweetalert2'
 
 const apiUrl = process.env.API_DOMAIN
 
@@ -16,7 +17,6 @@ const LoginPage = () => {
     email: '',
     password: ''
   }
-
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .email('請輸入有效的電子郵件地址')
@@ -31,13 +31,11 @@ const LoginPage = () => {
 
   const handleSubmit = async (values) => {
     const { email, password } = values
-
     const requestBody = {
       provider: 'native',
-      email,
-      password
+      email: email.trim(),
+      password: password.trim()
     }
-
     try {
       const response = await fetch(`${apiUrl}/users/signin`, {
         method: 'POST',
@@ -46,19 +44,19 @@ const LoginPage = () => {
         },
         body: JSON.stringify(requestBody)
       })
-
       const responseData = await response.json()
-
       if (response.ok) {
         Cookies.set('accessToken', responseData.data.access_token)
         Cookies.set('userId', responseData.data.user.id)
         router.push('/')
         window.location.reload()
-      } else {
-        alert(responseData.error)
       }
     } catch {
-      alert('網路請求錯誤')
+      Swal.fire({
+        icon: 'error',
+        title: '網路請求錯誤',
+        text: '請稍後再試或通知我們的工程團隊。'
+      })
     }
   }
 

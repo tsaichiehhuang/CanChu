@@ -1,16 +1,16 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Login from '@/components/Login'
 import Cookies from 'js-cookie'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
+import Swal from 'sweetalert2'
 
 const SignupPage = () => {
   const router = useRouter()
   const nameRef = useRef(null)
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
-  const confirmPasswordRef = useRef(null)
 
   const initialValues = {
     name: '',
@@ -40,13 +40,11 @@ const SignupPage = () => {
 
   const handleSubmit = async (values) => {
     const { name, email, password } = values
-
     const requestBody = {
-      name,
-      email,
-      password
+      name: name.trim(),
+      email: email.trim(),
+      password: password.trim()
     }
-
     try {
       const response = await fetch(`${apiUrl}/users/signup`, {
         method: 'POST',
@@ -56,17 +54,15 @@ const SignupPage = () => {
         body: JSON.stringify(requestBody)
       })
 
-      const responseData = await response.json()
-
       if (response.ok) {
         router.push('/login')
-      } else if (response.status === 403) {
-        alert(responseData.error)
-      } else {
-        alert(responseData.error)
       }
     } catch {
-      alert('網路請求錯誤')
+      Swal.fire({
+        icon: 'error',
+        title: '網路請求錯誤',
+        text: '請稍後再試或通知我們的工程團隊。'
+      })
     }
   }
 
