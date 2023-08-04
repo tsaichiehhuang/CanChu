@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import styles from './login.module.scss'
 import Link from 'next/link'
 import Copyright from './Copyright'
-
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
 const Login = ({
   statusLogin = true,
   nameRef,
@@ -12,28 +13,31 @@ const Login = ({
   confirmPasswordRef
 }) => {
   const router = useRouter()
-
+  const [error, setError] = useState(null)
   const handleLogin = () => {
     router.push('/login')
   }
-
   const handleSignup = () => {
     router.push('/signup')
   }
 
-  const inputInfo = (title, placeholder, name, ref) => (
+  const InputField = ({ title, placeholder, name, type, innerRef }) => (
     <div className={styles.inputGroup}>
       <div className={styles.inputTitle}>{title}</div>
-      <input
+      <Field
         className={styles.inputText}
-        type={name === 'password' ? 'password' : 'text'}
-        placeholder={placeholder}
+        type={type}
         name={name}
-        ref={ref}
+        placeholder={placeholder}
+        innerRef={innerRef}
+      />
+      <ErrorMessage
+        name={name}
+        component='div'
+        className={styles.errorMessage}
       />
     </div>
   )
-
   return (
     <div className={styles.body}>
       <style global jsx>{`
@@ -52,30 +56,56 @@ const Login = ({
           <div className={styles.title}>
             {statusLogin ? '會員登入' : '會員註冊'}
           </div>
+
           {statusLogin ? (
             <div className={styles.inputSquare}>
-              {inputInfo(
-                '電子郵件',
-                '例: shirney@appworks.tw',
-                'email',
-                emailRef
-              )}
-              {inputInfo('密碼', '', 'password', passwordRef)}
+              <InputField
+                title='電子郵件'
+                placeholder='例: shirney@appworks.tw'
+                name='email'
+                type='email'
+                innerRef={emailRef}
+              />
+              <InputField
+                title='密碼'
+                placeholder=''
+                name='password'
+                type='password'
+                innerRef={passwordRef}
+              />
             </div>
           ) : (
             <div className={styles.inputSquare}>
-              {inputInfo('使用者名稱', '例: Chou Chou Hu', 'name', nameRef)}
-              {inputInfo(
-                '電子郵件',
-                '例: shirney@appworks.tw',
-                'email',
-                emailRef
-              )}
-              {inputInfo('密碼', '', 'password', passwordRef)}
-              {inputInfo('再次輸入密碼', '', 'password', confirmPasswordRef)}
+              <InputField
+                title='使用者名稱'
+                placeholder='例: Chou Chou Hu'
+                name='name'
+                type='text'
+                innerRef={nameRef}
+              />
+              <InputField
+                title='電子郵件'
+                placeholder='例: shirney@appworks.tw'
+                name='email'
+                type='email'
+                innerRef={emailRef}
+              />
+              <InputField
+                title='密碼'
+                placeholder=''
+                name='password'
+                type='password'
+                innerRef={passwordRef}
+              />
+              <InputField
+                title='再次輸入密碼'
+                placeholder=''
+                name='confirmPassword'
+                type='password'
+                innerRef={confirmPasswordRef}
+              />
             </div>
           )}
-
           <button
             className={styles.loginButton}
             onClick={statusLogin ? handleLogin : handleSignup}
@@ -103,6 +133,7 @@ const Login = ({
               </Link>
             </div>
           )}
+          {error && <div style={{ color: 'red' }}>{error}</div>}
         </div>
         <div
           className={
