@@ -17,9 +17,25 @@ export default function PostContent({
   const maxLinesToShow = 3
   const [showMore, setShowMore] = useState(false)
   const [showFullContent, setShowFullContent] = useState(false)
-  const parsedContent = parse(data.context)
+
+  const processContext = (context) => {
+    const images = context.match(/<img[^>]*>/g)
+    if (images) {
+      const processedImages = images.map((image) =>
+        image.replace('<img', `<img className=${styles.imageWrapper}`)
+      )
+      return processedImages.reduce(
+        (acc, image, index) => acc.replace(images[index], image),
+        context
+      )
+    }
+    return context
+  }
+
+  const parsedContent = parse(processContext(data.context))
   let contentToShow = parsedContent
   let shouldShowReadMoreButton = false
+
   const flattenContent = (content) => {
     if (typeof content === 'string') {
       return content
@@ -65,6 +81,7 @@ export default function PostContent({
       matchVisual: false
     }
   }
+
   return (
     <React.Fragment>
       {editing ? (
@@ -95,7 +112,9 @@ export default function PostContent({
         </div>
       ) : (
         <article className={`${styles.secondRow} ${styles['multiline-text']}`}>
-          {contentToShow}
+          {showMore || showFullContent || !shouldShowReadMoreButton
+            ? parsedContent
+            : contentToShow}
           {shouldShowReadMoreButton && (
             <span
               className={styles.readMoreButton}
