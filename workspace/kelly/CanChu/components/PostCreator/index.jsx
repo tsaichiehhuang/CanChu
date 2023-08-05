@@ -19,6 +19,7 @@ export default function PostCreator() {
   const userState = useFetchUserProfile(userId)
   const quillRef = useRef(null)
   const textareaRef = useRef(null)
+  const [selectedFile, setSelectedFile] = useState(null)
 
   const handlePostSubmit = async () => {
     if (!postContent) {
@@ -37,6 +38,35 @@ export default function PostCreator() {
     }
 
     try {
+      if (selectedFile) {
+        const formData = new FormData()
+        formData.append('image', selectedFile)
+
+        const response = await fetch('https://api.imgur.com/3/upload', {
+          method: 'POST',
+          headers: {
+            //client id:8e8be06910748ff
+            Authorization: 'Client-ID 8e8be06910748ff'
+            //clientSecret:3e5ff0b6bf2748ce731e238c46ea844622bf0836
+            //GET
+            //Access Token:e92837501ccfe1343bad365a37816a64ef1dd522
+            //refresh_token:5a42b4a1b99ad795e088d9ce919a52b4eb142717
+            //POST
+            //Access Token:75f3d66afa4895acd8ba7212dfae4a5886ff26c9
+            //refresh_token:fb5e0a4e29cda5dde90915af7ee57e9ff9c6ba4a
+          },
+          body: formData
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          const imageUrl = data.data.link
+          requestBody.context += `<img src="${imageUrl}" alt="Uploaded Image" />`
+        } else {
+          Swal.fire('圖片上傳失敗', '', 'error')
+          return
+        }
+      }
       const response = await fetch(`${apiUrl}/posts`, {
         method: 'POST',
         headers: {
@@ -100,13 +130,24 @@ export default function PostCreator() {
       document.removeEventListener('click', handleClickOutside)
     }
   }, [isQuillEditing])
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      if (file.size > 1024 * 1024) {
+        Swal.fire('圖片大小超過1MB', '', 'warning')
+        return
+      }
+      setSelectedFile(file)
+    }
+  }
+
   const modules = {
     toolbar: [
       [{ header: '1' }],
       [{ size: [] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ list: 'ordered' }, { list: 'bullet' }],
-      [{ image: true }],
       ['clean']
     ],
     clipboard: {
@@ -140,7 +181,19 @@ export default function PostCreator() {
                 value={postContent}
                 onChange={setPostContent}
               />
-
+              <label className={styles.uploadImageButton}>
+                <input
+                  type='file'
+                  accept='image/*'
+                  onChange={handleImageUpload}
+                  style={{ display: 'none' }}
+                />
+                <img
+                  src='/上傳圖片.png'
+                  alt='Upload Image'
+                  style={{ cursor: 'pointer' }}
+                />
+              </label>
               <button
                 className={styles.cancelButton}
                 onClick={() => setIsQuillEditing(false)}
