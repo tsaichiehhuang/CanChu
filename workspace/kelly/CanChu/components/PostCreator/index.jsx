@@ -41,8 +41,8 @@ export default function PostCreator() {
     try {
       if (selectedFiles.length > 0) {
         const formData = new FormData()
-        selectedFiles.forEach((file) => {
-          formData.append('image', file)
+        selectedFiles.forEach((file, index) => {
+          formData.append(`image_${index}`, file)
         })
 
         const response = await fetch('https://api.imgur.com/3/upload', {
