@@ -39,6 +39,7 @@ export default function PostCreator() {
     }
 
     try {
+      // eslint-disable-next-line consistent-return
       const uploadPromises = selectedFiles.map(async (file) => {
         const formData = new FormData()
 
