@@ -19,7 +19,8 @@ export default function PostCreator() {
   const userState = useFetchUserProfile(userId)
   const quillRef = useRef(null)
   const textareaRef = useRef(null)
-  const [selectedFile, setSelectedFile] = useState(null)
+  const [thumbnailUrls, setThumbnailUrls] = useState([])
+  const [selectedFiles, setSelectedFiles] = useState([])
 
   const handlePostSubmit = async () => {
     if (!postContent) {
@@ -38,22 +39,16 @@ export default function PostCreator() {
     }
 
     try {
-      if (selectedFile) {
+      if (selectedFiles.length > 0) {
         const formData = new FormData()
-        formData.append('image', selectedFile)
+        selectedFiles.forEach((file) => {
+          formData.append('image', file)
+        })
 
         const response = await fetch('https://api.imgur.com/3/upload', {
           method: 'POST',
           headers: {
-            //client id:8e8be06910748ff
             Authorization: 'Client-ID 8e8be06910748ff'
-            //clientSecret:3e5ff0b6bf2748ce731e238c46ea844622bf0836
-            //GET
-            //Access Token:e92837501ccfe1343bad365a37816a64ef1dd522
-            //refresh_token:5a42b4a1b99ad795e088d9ce919a52b4eb142717
-            //POST
-            //Access Token:75f3d66afa4895acd8ba7212dfae4a5886ff26c9
-            //refresh_token:fb5e0a4e29cda5dde90915af7ee57e9ff9c6ba4a
           },
           body: formData
         })
@@ -99,10 +94,12 @@ export default function PostCreator() {
   }
 
   useEffect(() => {
-    setIsButtonDisabled(
+    const isContentEmpty =
       postContent.trim() === '' || postContent.trim() === '<p><br></p>'
-    )
-  }, [postContent])
+    const isImageSelected = selectedFiles.length > 0
+    setIsButtonDisabled(isContentEmpty && !isImageSelected)
+  }, [postContent, selectedFiles])
+
   const handleClickOutside = (event) => {
     const quillEditor = document.querySelector('.ql-editor')
     const quillWrapper = document.querySelector(`.${styles.quillWrapper}`)
@@ -132,14 +129,46 @@ export default function PostCreator() {
   }, [isQuillEditing])
 
   const handleImageUpload = (e) => {
-    const file = e.target.files[0]
-    if (file) {
-      if (file.size > 1024 * 1024) {
-        Swal.fire('圖片大小超過1MB', '', 'warning')
-        return
-      }
-      setSelectedFile(file)
+    const files = e.target.files
+
+    if (!files || files.length === 0) {
+      return
     }
+
+    const newSelectedFiles = Array.from(files).filter(
+      (file) => file.size <= 1024 * 1024
+    )
+
+    if (newSelectedFiles.length === 0) {
+      Swal.fire('所有圖片大小超過1MB', '', 'warning')
+      return
+    }
+
+    setSelectedFiles((prevSelectedFiles) => [
+      ...prevSelectedFiles,
+      ...newSelectedFiles
+    ])
+
+    const newThumbnailUrls = newSelectedFiles.map((file) =>
+      URL.createObjectURL(file)
+    )
+
+    setThumbnailUrls((prevThumbnailUrls) => [
+      ...prevThumbnailUrls,
+      ...newThumbnailUrls
+    ])
+  }
+
+  const handleRemoveImage = (indexToRemove) => {
+    const newSelectedFiles = selectedFiles.filter(
+      (file, index) => index !== indexToRemove
+    )
+    setSelectedFiles(newSelectedFiles)
+
+    const newThumbnailUrls = thumbnailUrls.filter(
+      (url, index) => index !== indexToRemove
+    )
+    setThumbnailUrls(newThumbnailUrls)
   }
 
   const modules = {
@@ -181,19 +210,44 @@ export default function PostCreator() {
                 value={postContent}
                 onChange={setPostContent}
               />
+              {thumbnailUrls && thumbnailUrls.length > 0 && (
+                <div className={styles.thumbnailContainer}>
+                  {thumbnailUrls.map((url, index) => (
+                    <div key={index} className={styles.thumbnailImageWrapper}>
+                      <img
+                        src={url}
+                        alt={`Thumbnail ${index}`}
+                        className={styles.thumbnailImage}
+                      />
+                      <button
+                        className={styles.deleteButton}
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          handleRemoveImage(index)
+                        }}
+                      >
+                        X
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
               <label className={styles.uploadImageButton}>
                 <input
                   type='file'
                   accept='image/*'
                   onChange={handleImageUpload}
                   style={{ display: 'none' }}
+                  multiple
                 />
                 <img
                   src='/上傳圖片.png'
                   alt='Upload Image'
                   style={{ cursor: 'pointer' }}
                 />
+                <div>新增圖片至貼文</div>
               </label>
+
               <button
                 className={styles.cancelButton}
                 onClick={() => setIsQuillEditing(false)}
