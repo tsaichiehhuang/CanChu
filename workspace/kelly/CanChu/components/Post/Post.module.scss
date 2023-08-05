@@ -320,6 +320,11 @@
   max-width: 200px;
   height: auto;
 }
+.imageWrapperHorizontal {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2%;
+}
 .uploadImageButton {
   margin-bottom: 1%;
   border: 1px solid #f0f2f5;

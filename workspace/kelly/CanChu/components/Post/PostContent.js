@@ -25,18 +25,26 @@ export default function PostContent({
   const processContext = (context) => {
     const images = context.match(/<img[^>]*>/g)
     if (images) {
+      const imageWrapper = `<div class=${styles.imageWrapper}></div>`
       const processedImages = images.map((image) =>
-        image.replace('<img', `<img className=${styles.imageWrapper}`)
+        image.replace('<img', `<img class=${styles.imageWrapper} `)
       )
-      return processedImages.reduce(
-        (acc, image, index) => acc.replace(images[index], image),
-        context
-      )
+      const imageContainer = `<div class=${
+        styles.imageWrapperHorizontal
+      }>${processedImages.join('')}</div>`
+      const cleanedContext = context.replace(/<img[^>]*>/g, imageWrapper)
+      return cleanedContext + imageContainer
     }
     return context
   }
+  const imgArrHorizonContext = processContext(data.context)
+  const removeEmptyDivsAndBRs = (content) => {
+    const cleanedContent = content.replace(/<div[^>]*><\/div>|<br\s*\/?>/g, '')
+    return cleanedContent
+  }
 
-  const parsedContent = parse(processContext(data.context))
+  const parsedContent = parse(removeEmptyDivsAndBRs(imgArrHorizonContext))
+
   let contentToShow = parsedContent
   let shouldShowReadMoreButton = false
 
@@ -127,6 +135,7 @@ export default function PostContent({
     )
     setThumbnailUrls(newThumbnailUrls)
   }
+
   return (
     <React.Fragment>
       {editing ? (
