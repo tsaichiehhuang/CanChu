@@ -24,7 +24,9 @@ export default function Post({
     editing,
     handleEditClick,
     handleCancelEdit,
-    handleConfirmEdit
+    handleConfirmEdit,
+    selectedFiles,
+    setSelectedFiles
   } = useEditPost(data)
 
   const userId = Cookies.get('userId')
@@ -94,6 +96,8 @@ export default function Post({
             setEditedContent={setEditedContent}
             handleConfirmEdit={handleConfirmEdit}
             handleCancelEdit={handleCancelEdit}
+            selectedFiles={selectedFiles}
+            setSelectedFiles={setSelectedFiles}
           />
 
           <div className={`${styles.thirdRow} ${styles.row}`}>

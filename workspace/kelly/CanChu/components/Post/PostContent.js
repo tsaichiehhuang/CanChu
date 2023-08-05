@@ -3,6 +3,7 @@ import styles from './Post.module.scss'
 import parse from 'html-react-parser'
 import dynamic from 'next/dynamic'
 import 'react-quill/dist/quill.snow.css'
+import Swal from 'sweetalert2'
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 export default function PostContent({
   data,
@@ -11,12 +12,15 @@ export default function PostContent({
   setEditedContent,
   handleConfirmEdit,
   handleCancelEdit,
-  showFullArticle
+  showFullArticle,
+  selectedFiles,
+  setSelectedFiles
 }) {
   const maxCharsToShow = 200
   const maxLinesToShow = 3
   const [showMore, setShowMore] = useState(false)
   const [showFullContent, setShowFullContent] = useState(false)
+  const [thumbnailUrls, setThumbnailUrls] = useState([])
 
   const processContext = (context) => {
     const images = context.match(/<img[^>]*>/g)
@@ -81,7 +85,48 @@ export default function PostContent({
       matchVisual: false
     }
   }
+  const handleImageUpload = (e) => {
+    const files = e.target.files
 
+    if (!files || files.length === 0) {
+      return
+    }
+
+    const newSelectedFiles = Array.from(files).filter(
+      (file) => file.size <= 1024 * 1024
+    )
+
+    if (newSelectedFiles.length === 0) {
+      Swal.fire('所有圖片大小超過1MB', '', 'warning')
+      return
+    }
+
+    setSelectedFiles((prevSelectedFiles) => [
+      ...prevSelectedFiles,
+      ...newSelectedFiles
+    ])
+
+    const newThumbnailUrls = newSelectedFiles.map((file) =>
+      URL.createObjectURL(file)
+    )
+
+    setThumbnailUrls((prevThumbnailUrls) => [
+      ...prevThumbnailUrls,
+      ...newThumbnailUrls
+    ])
+  }
+
+  const handleRemoveImage = (indexToRemove) => {
+    const newSelectedFiles = selectedFiles.filter(
+      (file, index) => index !== indexToRemove
+    )
+    setSelectedFiles(newSelectedFiles)
+
+    const newThumbnailUrls = thumbnailUrls.filter(
+      (url, index) => index !== indexToRemove
+    )
+    setThumbnailUrls(newThumbnailUrls)
+  }
   return (
     <React.Fragment>
       {editing ? (
@@ -92,7 +137,44 @@ export default function PostContent({
             value={editedContent}
             onChange={setEditedContent}
             modules={modules}
-          />
+          />{' '}
+          {thumbnailUrls && thumbnailUrls.length > 0 && (
+            <div className={styles.thumbnailContainer}>
+              {thumbnailUrls.map((url, index) => (
+                <div key={index} className={styles.thumbnailImageWrapper}>
+                  <img
+                    src={url}
+                    alt={`Thumbnail ${index}`}
+                    className={styles.thumbnailImage}
+                  />
+                  <button
+                    className={styles.deleteButton}
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      handleRemoveImage(index)
+                    }}
+                  >
+                    X
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+          <label className={styles.uploadImageButton}>
+            <input
+              type='file'
+              accept='image/*'
+              onChange={handleImageUpload}
+              style={{ display: 'none' }}
+              multiple
+            />
+            <img
+              src='/上傳圖片.png'
+              alt='Upload Image'
+              style={{ cursor: 'pointer' }}
+            />
+            <div>新增圖片至貼文</div>
+          </label>
           <div className={styles.editButtonGroup}>
             <button
               className={styles.editButton}
