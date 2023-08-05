@@ -4,7 +4,9 @@ import parse from 'html-react-parser'
 import dynamic from 'next/dynamic'
 import 'react-quill/dist/quill.snow.css'
 import Swal from 'sweetalert2'
+
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
+
 export default function PostContent({
   data,
   editing,
@@ -20,33 +22,25 @@ export default function PostContent({
   const maxLinesToShow = 3
   const [showMore, setShowMore] = useState(false)
   const [showFullContent, setShowFullContent] = useState(false)
+
   const [thumbnailUrls, setThumbnailUrls] = useState([])
 
   const processContext = (context) => {
     const images = context.match(/<img[^>]*>/g)
     if (images) {
-      const imageWrapper = `<div class=${styles.imageWrapper}></div>`
       const processedImages = images.map((image) =>
-        image.replace('<img', `<img class=${styles.imageWrapper} `)
+        image.replace('<img', `<img class=${styles.imageWrapper}  `)
       )
       const imageContainer = `<div class=${
         styles.imageWrapperHorizontal
       }>${processedImages.join('')}</div>`
-      const cleanedContext = context.replace(/<img[^>]*>/g, imageWrapper)
+      const cleanedContext = context.replace(/<img[^>]*>|<br\s*\/?>/g, '')
       return cleanedContext + imageContainer
     }
     return context
   }
-  const imgArrHorizonContext = processContext(data.context)
-  const removeEmptyDivsAndBRs = (content) => {
-    const cleanedContent = content.replace(/<div[^>]*><\/div>|<br\s*\/?>/g, '')
-    return cleanedContent
-  }
 
-  const parsedContent = parse(removeEmptyDivsAndBRs(imgArrHorizonContext))
-
-  let contentToShow = parsedContent
-  let shouldShowReadMoreButton = false
+  const parsedContent = parse(processContext(data.context))
 
   const flattenContent = (content) => {
     if (typeof content === 'string') {
@@ -61,19 +55,6 @@ export default function PostContent({
       }
     }
     return ''
-  }
-
-  if (!showFullContent && !showMore && !showFullArticle) {
-    const textContent = flattenContent(parsedContent)
-    const lines = textContent.split('\n')
-
-    if (lines.length > maxLinesToShow) {
-      contentToShow = lines.slice(0, maxLinesToShow).join('\n')
-      shouldShowReadMoreButton = true
-    } else if (textContent.length > maxCharsToShow) {
-      contentToShow = textContent.slice(0, maxCharsToShow)
-      shouldShowReadMoreButton = true
-    }
   }
 
   const handleReadMoreClick = () => {
@@ -136,6 +117,20 @@ export default function PostContent({
     setThumbnailUrls(newThumbnailUrls)
   }
 
+  let contentToShow = parsedContent
+  let shouldShowReadMoreButton = false
+  if (!showFullContent && !showMore && !showFullArticle) {
+    const textContent = flattenContent(parsedContent)
+    const lines = textContent.split('\n')
+
+    if (lines.length > maxLinesToShow) {
+      contentToShow = lines.slice(0, maxLinesToShow).join('\n')
+      shouldShowReadMoreButton = true
+    } else if (textContent.length > maxCharsToShow) {
+      contentToShow = textContent.slice(0, maxCharsToShow)
+      shouldShowReadMoreButton = true
+    }
+  }
   return (
     <React.Fragment>
       {editing ? (
@@ -146,7 +141,7 @@ export default function PostContent({
             value={editedContent}
             onChange={setEditedContent}
             modules={modules}
-          />{' '}
+          />
           {thumbnailUrls && thumbnailUrls.length > 0 && (
             <div className={styles.thumbnailContainer}>
               {thumbnailUrls.map((url, index) => (
@@ -203,9 +198,7 @@ export default function PostContent({
         </div>
       ) : (
         <article className={`${styles.secondRow} ${styles['multiline-text']}`}>
-          {showMore || showFullContent || !shouldShowReadMoreButton
-            ? parsedContent
-            : contentToShow}
+          {showMore || showFullArticle ? null : contentToShow}
           {shouldShowReadMoreButton && (
             <span
               className={styles.readMoreButton}
