@@ -39,11 +39,10 @@ export default function PostCreator() {
     }
 
     try {
-      if (selectedFiles.length > 0) {
+      const uploadPromises = selectedFiles.map(async (file) => {
         const formData = new FormData()
-        selectedFiles.forEach((file, index) => {
-          formData.append(`image_${index}`, file)
-        })
+
+        formData.append('image', file)
 
         const response = await fetch('https://api.imgur.com/3/upload', {
           method: 'POST',
@@ -55,12 +54,18 @@ export default function PostCreator() {
 
         if (response.ok) {
           const data = await response.json()
-          const imageUrl = data.data.link
-          requestBody.context += `<img src="${imageUrl}" alt="Uploaded Image" />`
+          return data.data.link
+          // requestBody.context += `<img src="${imageUrl}" alt="Uploaded Image" />`
         } else {
           Swal.fire('圖片上傳失敗', '', 'error')
-          return
         }
+      })
+      const imageUrls = await Promise.all(uploadPromises)
+      if (imageUrls.length > 0) {
+        requestBody.context += '<br>'
+        imageUrls.forEach((imageUrl) => {
+          requestBody.context += `<img src="${imageUrl}" alt="Uploaded Image" /><br>`
+        })
       }
       const response = await fetch(`${apiUrl}/posts`, {
         method: 'POST',
