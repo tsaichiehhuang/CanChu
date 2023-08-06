@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Login from '@/components/Login'
 import Cookies from 'js-cookie' // 導入 js-cookie
-
+import Swal from 'sweetalert2'
 const SignupPage = () => {
   const router = useRouter()
   const nameRef = useRef(null)
@@ -47,6 +47,13 @@ const SignupPage = () => {
       const responseData = await response.json()
 
       if (response.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: '註冊成功',
+          showConfirmButton: false,
+          timer: 1500
+        })
+
         router.push('/login')
       } else if (response.status === 403) {
         console.error(responseData.error)
