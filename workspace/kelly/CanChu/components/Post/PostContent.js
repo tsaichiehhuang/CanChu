@@ -67,7 +67,6 @@ export default function PostContent({
       [{ size: [] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ list: 'ordered' }, { list: 'bullet' }],
-      [{ image: true }],
       ['clean']
     ],
     clipboard: {
