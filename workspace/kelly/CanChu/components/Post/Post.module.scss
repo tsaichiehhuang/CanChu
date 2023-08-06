@@ -316,3 +316,82 @@
 .likedHeart {
   animation: heartBeat 0.6s ease;
 }
+.imageWrapper {
+  max-width: 30%;
+  height: auto;
+  cursor: pointer;
+  transition: all 0.6s;
+  &:hover {
+    transform: scale(1.6);
+  }
+}
+.imageWrapperHorizontal {
+  margin-top: 1.5%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2%;
+}
+
+.uploadImageButton {
+  margin-bottom: 1%;
+  border: 1px solid #f0f2f5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  width: 100%;
+  padding: 2%;
+  display: flex;
+  gap: 1%;
+  align-self: center;
+  cursor: pointer;
+  &:hover {
+    background: rgb(221, 228, 234);
+  }
+}
+.thumbnailImage {
+  max-width: 100px;
+  margin-top: 10px;
+}
+.thumbnailContainer {
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+  border: 1px solid #f0f2f5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  gap: 2%;
+}
+
+.thumbnailImage {
+  max-width: 100px;
+  max-height: 100px;
+}
+.thumbnailImageWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.deleteButton {
+  position: absolute;
+  top: 10px;
+  right: 0px;
+  background-color: #fff;
+  color: #333;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 8px;
+  width: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background: #e3e4e5;
+  }
+}

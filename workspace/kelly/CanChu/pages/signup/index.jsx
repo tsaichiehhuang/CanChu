@@ -55,6 +55,13 @@ const SignupPage = () => {
       })
 
       if (response.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: '註冊成功',
+          showConfirmButton: false,
+          timer: 1500
+        })
+
         router.push('/login')
       }
     } catch {

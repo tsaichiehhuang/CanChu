@@ -9,7 +9,7 @@ export default function useEditPost(data) {
 
   const [content, setContent] = useState(initialContent)
   const [editing, setEditing] = useState(false)
-
+  const [selectedFiles, setSelectedFiles] = useState([])
   // 編輯模式下的事件處理函式
   const handleEditClick = () => {
     setContent(initialContent) // 將原始貼文內容設置到編輯框
@@ -21,15 +21,48 @@ export default function useEditPost(data) {
   }
 
   const handleConfirmEdit = async () => {
+    const requestBody = {
+      context: content
+    }
+    const accessToken = Cookies.get('accessToken')
     try {
-      const accessToken = Cookies.get('accessToken')
+      // eslint-disable-next-line consistent-return
+      const uploadPromises = selectedFiles.map(async (file) => {
+        const formData = new FormData()
+
+        formData.append('image', file)
+
+        const response = await fetch('https://api.imgur.com/3/upload', {
+          method: 'POST',
+          headers: {
+            Authorization: 'Client-ID 8e8be06910748ff'
+          },
+          body: formData
+        })
+
+        if (response.ok) {
+          const imageData = await response.json()
+          return imageData.data.link
+          // requestBody.context += `<img src="${imageUrl}" alt="Uploaded Image" />`
+        } else {
+          Swal.fire('圖片上傳失敗', '', 'error')
+        }
+      })
+      const imageUrls = await Promise.all(uploadPromises)
+      if (imageUrls.length > 0) {
+        requestBody.context += '<br>'
+        imageUrls.forEach((imageUrl) => {
+          requestBody.context += `<img src="${imageUrl}" alt="Uploaded Image" /><br>`
+        })
+      }
+
       const response = await fetch(`${apiUrl}/posts/${data.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`
         },
-        body: JSON.stringify({ context: content })
+        body: JSON.stringify(requestBody)
       })
 
       if (response.ok) {
@@ -51,6 +84,8 @@ export default function useEditPost(data) {
     editing,
     handleEditClick,
     handleCancelEdit,
-    handleConfirmEdit
+    handleConfirmEdit,
+    selectedFiles,
+    setSelectedFiles
   }
 }
