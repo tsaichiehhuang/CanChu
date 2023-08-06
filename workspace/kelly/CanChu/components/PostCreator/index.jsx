@@ -19,6 +19,8 @@ export default function PostCreator() {
   const userState = useFetchUserProfile(userId)
   const quillRef = useRef(null)
   const textareaRef = useRef(null)
+  const [thumbnailUrls, setThumbnailUrls] = useState([])
+  const [selectedFiles, setSelectedFiles] = useState([])
 
   const handlePostSubmit = async () => {
     if (!postContent) {
@@ -37,6 +39,35 @@ export default function PostCreator() {
     }
 
     try {
+      // eslint-disable-next-line consistent-return
+      const uploadPromises = selectedFiles.map(async (file) => {
+        const formData = new FormData()
+
+        formData.append('image', file)
+
+        const response = await fetch('https://api.imgur.com/3/upload', {
+          method: 'POST',
+          headers: {
+            Authorization: 'Client-ID 8e8be06910748ff'
+          },
+          body: formData
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          return data.data.link
+          // requestBody.context += `<img src="${imageUrl}" alt="Uploaded Image" />`
+        } else {
+          Swal.fire('圖片上傳失敗', '', 'error')
+        }
+      })
+      const imageUrls = await Promise.all(uploadPromises)
+      if (imageUrls.length > 0) {
+        requestBody.context += '<br>'
+        imageUrls.forEach((imageUrl) => {
+          requestBody.context += `<img src="${imageUrl}" alt="Uploaded Image" /><br>`
+        })
+      }
       const response = await fetch(`${apiUrl}/posts`, {
         method: 'POST',
         headers: {
@@ -69,10 +100,12 @@ export default function PostCreator() {
   }
 
   useEffect(() => {
-    setIsButtonDisabled(
+    const isContentEmpty =
       postContent.trim() === '' || postContent.trim() === '<p><br></p>'
-    )
-  }, [postContent])
+    const isImageSelected = selectedFiles.length > 0
+    setIsButtonDisabled(isContentEmpty && !isImageSelected)
+  }, [postContent, selectedFiles])
+
   const handleClickOutside = (event) => {
     const quillEditor = document.querySelector('.ql-editor')
     const quillWrapper = document.querySelector(`.${styles.quillWrapper}`)
@@ -100,13 +133,56 @@ export default function PostCreator() {
       document.removeEventListener('click', handleClickOutside)
     }
   }, [isQuillEditing])
+
+  const handleImageUpload = (e) => {
+    const files = e.target.files
+
+    if (!files || files.length === 0) {
+      return
+    }
+
+    const newSelectedFiles = Array.from(files).filter(
+      (file) => file.size <= 1024 * 1024
+    )
+
+    if (newSelectedFiles.length === 0) {
+      Swal.fire('所有圖片大小超過1MB', '', 'warning')
+      return
+    }
+
+    setSelectedFiles((prevSelectedFiles) => [
+      ...prevSelectedFiles,
+      ...newSelectedFiles
+    ])
+
+    const newThumbnailUrls = newSelectedFiles.map((file) =>
+      URL.createObjectURL(file)
+    )
+
+    setThumbnailUrls((prevThumbnailUrls) => [
+      ...prevThumbnailUrls,
+      ...newThumbnailUrls
+    ])
+  }
+
+  const handleRemoveImage = (indexToRemove) => {
+    const newSelectedFiles = selectedFiles.filter(
+      (file, index) => index !== indexToRemove
+    )
+    setSelectedFiles(newSelectedFiles)
+
+    const newThumbnailUrls = thumbnailUrls.filter(
+      (url, index) => index !== indexToRemove
+    )
+    setThumbnailUrls(newThumbnailUrls)
+  }
+
   const modules = {
     toolbar: [
       [{ header: '1' }],
       [{ size: [] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ list: 'ordered' }, { list: 'bullet' }],
-      [{ image: true }],
       ['clean']
     ],
     clipboard: {
@@ -140,6 +216,43 @@ export default function PostCreator() {
                 value={postContent}
                 onChange={setPostContent}
               />
+              {thumbnailUrls && thumbnailUrls.length > 0 && (
+                <div className={styles.thumbnailContainer}>
+                  {thumbnailUrls.map((url, index) => (
+                    <div key={index} className={styles.thumbnailImageWrapper}>
+                      <img
+                        src={url}
+                        alt={`Thumbnail ${index}`}
+                        className={styles.thumbnailImage}
+                      />
+                      <button
+                        className={styles.deleteButton}
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          handleRemoveImage(index)
+                        }}
+                      >
+                        X
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <label className={styles.uploadImageButton}>
+                <input
+                  type='file'
+                  accept='image/*'
+                  onChange={handleImageUpload}
+                  style={{ display: 'none' }}
+                  multiple
+                />
+                <img
+                  src='/上傳圖片.png'
+                  alt='Upload Image'
+                  style={{ cursor: 'pointer' }}
+                />
+                <div>新增圖片至貼文</div>
+              </label>
 
               <button
                 className={styles.cancelButton}
