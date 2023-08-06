@@ -71,6 +71,7 @@ export default function Notification() {
             className={`${showAllNotifications ? styles.notifyContainer : ''}`}
           >
             {Array.isArray(displayedNotifications) &&
+            displayedNotifications.length > 0 ? (
               displayedNotifications.map((notification) => (
                 <>
                   <div
@@ -115,23 +116,34 @@ export default function Notification() {
                     )}
                   </div>
                 </>
-              ))}
+              ))
+            ) : (
+              <div className={styles.noNotifications}>
+                目前沒有通知...你的世界很安靜
+              </div>
+            )}
           </div>
-          <div
-            style={{
-              width: '90%',
-              height: '1px',
-              background: '#D1CACE',
-              margin: '0px 10px'
-            }}
-          ></div>
-          <div
-            className={styles.notifyLast}
-            onClick={handleShowAllNotifications}
-            style={{ textDecoration: 'underline' }}
-          >
-            {showAllNotifications ? '收起通知' : '查看全部通知'}
-          </div>
+          {displayedNotifications.length > 0 ? (
+            <>
+              <div
+                style={{
+                  width: '90%',
+                  height: '1px',
+                  background: '#D1CACE',
+                  margin: '0px 10px'
+                }}
+              ></div>
+              <div
+                className={styles.notifyLast}
+                onClick={handleShowAllNotifications}
+                style={{ textDecoration: 'underline' }}
+              >
+                {showAllNotifications ? '收起通知' : '查看全部通知'}
+              </div>
+            </>
+          ) : (
+            ''
+          )}
         </div>
       )}
     </div>
