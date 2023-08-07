@@ -55,7 +55,10 @@ export default function PostContent({
                 ${buttonHtml}
                 ${processedImages.slice(0, totalImages).join('')}
               </div>`
-            const cleanedContext = context.replace(/<img[^>]*>|<br\s*\/?>/g, '')
+            const cleanedContext = context
+              .replace(/<p>\s*<\/p>/g, '')
+              .replace(/<img[^>]*>|<br\s*\/?>/g, '')
+            console.log(cleanedContext)
             return cleanedContext + imageContainer
           }
           return context
@@ -99,7 +102,6 @@ export default function PostContent({
   }, [parsedContent])
 
   const flattenContent = (content) => {
-    console.log(content)
     if (typeof content === 'string') {
       return content
     } else if (React.isValidElement(content)) {
@@ -128,20 +130,16 @@ export default function PostContent({
   }
   const handleImageUpload = (e) => {
     const files = e.target.files
-
     if (!files || files.length === 0) {
       return
     }
-
     const newSelectedFiles = Array.from(files).filter(
       (file) => file.size <= 1024 * 1024
     )
-
     if (newSelectedFiles.length === 0) {
       Swal.fire('所有圖片大小超過1MB', '', 'warning')
       return
     }
-
     setSelectedFiles((prevSelectedFiles) => [
       ...prevSelectedFiles,
       ...newSelectedFiles
@@ -249,7 +247,7 @@ export default function PostContent({
           </div>
         </div>
       ) : (
-        <article className={`${styles.secondRow} ${styles['multiline-text']}`}>
+        <article className={styles.secondRow}>
           {contentToShow}
           {shouldShowReadMoreButton && (
             <span

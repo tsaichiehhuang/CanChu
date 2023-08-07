@@ -122,14 +122,15 @@
   }
 }
 .secondRow {
-  margin-top: 17.19px;
-  margin-bottom: 17.19px;
-  width: 700px;
+  margin-top: 1.5%;
+  margin-bottom: 2%;
+  width: 90%;
   min-height: 100px;
   font-family: 'Outfit';
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 24px;
   color: #000000;
+  // white-space: pre-line;
 }
 .editContainer {
   width: 90%;
@@ -152,11 +153,6 @@
   border: 0px;
   border-radius: 6px;
 }
-
-.multiline-text {
-  white-space: pre-line;
-}
-
 .readMoreButton {
   color: #000;
   font-weight: 700;
@@ -326,6 +322,7 @@
   }
 }
 .imageWrapperHorizontal {
+  margin-top: 1%;
   position: relative;
   display: flex;
   flex-wrap: wrap;
