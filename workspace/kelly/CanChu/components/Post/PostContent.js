@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styles from './Post.module.scss'
 import parse from 'html-react-parser'
 import dynamic from 'next/dynamic'
@@ -24,19 +24,41 @@ export default function PostContent({
   const [showFullContent, setShowFullContent] = useState(false)
   const [thumbnailUrls, setThumbnailUrls] = useState([])
   const [parsedContent, setParsedContent] = useState(null)
+  const [showAllImages, setShowAllImages] = useState(false)
   useEffect(() => {
     if (data.context !== undefined) {
       const processContext = (context) => {
         if (context) {
           const images = context.match(/<img[^>]*>/g)
           if (images) {
-            const processedImages = images.map((image) =>
-              image.replace('<img', `<img class=${styles.imageWrapper}  `)
-            )
-            const imageContainer = `<div class=${
-              styles.imageWrapperHorizontal
-            }>${processedImages.join('')}</div>`
-            const cleanedContext = context.replace(/<img[^>]*>|<br\s*\/?>/g, '')
+            const totalImages = showAllImages
+              ? images.length
+              : Math.min(images.length, 3)
+            const processedImages = images.map((image, imageIndex) => {
+              const imageClass =
+                imageIndex === 2 && !showAllImages
+                  ? `${styles.imageWrapper} ${styles.fadeBlack}`
+                  : styles.imageWrapper
+              return image.replace(
+                '<img',
+                `<img class="${imageClass}" data-index="${imageIndex}" `
+              )
+            })
+            const buttonHtml =
+              totalImages === 3 && !showAllImages
+                ? `
+                <button class="${styles.photoReadMoreButton}">+更多照片</button>
+              `
+                : ''
+            const imageContainer = `
+              <div class="${styles.imageWrapperHorizontal}">
+                ${buttonHtml}
+                ${processedImages.slice(0, totalImages).join('')}
+              </div>`
+            const cleanedContext = context
+              .replace(/<p>\s*<\/p>/g, '')
+              .replace(/<img[^>]*>|<br\s*\/?>/g, '')
+            console.log(cleanedContext)
             return cleanedContext + imageContainer
           }
           return context
@@ -48,7 +70,36 @@ export default function PostContent({
       const parsedContent = parse(processContext(data.context))
       setParsedContent(parsedContent)
     }
-  }, [data.context])
+  }, [data.context, showAllImages])
+  const handlePhotoReadMoreClick = (event) => {
+    const thirdImage = event.target
+      .closest('div')
+      .querySelector('img[data-index="2"]')
+    if (thirdImage) {
+      setShowAllImages(!showAllImages)
+      if (!showAllImages) {
+        thirdImage.classList.add(styles.fadeBlack)
+      } else {
+        thirdImage.classList.remove(styles.fadeBlack)
+      }
+    }
+  }
+  const handleReadMoreClick = () => {
+    setShowMore(!showMore)
+    setShowFullContent(!showMore)
+  }
+  useEffect(() => {
+    const button = document.querySelector(`.${styles.photoReadMoreButton}`)
+    if (button) {
+      button.addEventListener('click', handlePhotoReadMoreClick)
+    }
+
+    return () => {
+      if (button) {
+        button.removeEventListener('click', handlePhotoReadMoreClick)
+      }
+    }
+  }, [parsedContent])
 
   const flattenContent = (content) => {
     if (typeof content === 'string') {
@@ -65,10 +116,6 @@ export default function PostContent({
     return ''
   }
 
-  const handleReadMoreClick = () => {
-    setShowMore(!showMore)
-    setShowFullContent(!showMore)
-  }
   const modules = {
     toolbar: [
       [{ header: '1' }],
@@ -83,20 +130,16 @@ export default function PostContent({
   }
   const handleImageUpload = (e) => {
     const files = e.target.files
-
     if (!files || files.length === 0) {
       return
     }
-
     const newSelectedFiles = Array.from(files).filter(
       (file) => file.size <= 1024 * 1024
     )
-
     if (newSelectedFiles.length === 0) {
       Swal.fire('所有圖片大小超過1MB', '', 'warning')
       return
     }
-
     setSelectedFiles((prevSelectedFiles) => [
       ...prevSelectedFiles,
       ...newSelectedFiles
@@ -138,7 +181,6 @@ export default function PostContent({
       shouldShowReadMoreButton = true
     }
   }
-
   return (
     <React.Fragment>
       {editing ? (
@@ -205,7 +247,7 @@ export default function PostContent({
           </div>
         </div>
       ) : (
-        <article className={`${styles.secondRow} ${styles['multiline-text']}`}>
+        <article className={styles.secondRow}>
           {contentToShow}
           {shouldShowReadMoreButton && (
             <span

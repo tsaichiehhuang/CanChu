@@ -23,7 +23,11 @@ export default function PostCreator() {
   const [selectedFiles, setSelectedFiles] = useState([])
 
   const handlePostSubmit = async () => {
-    if (!postContent) {
+    const hasPostContent =
+      postContent.trim() !== '' ||
+      postContent.trim() === '<p><br></p>' ||
+      selectedFiles.length > 0
+    if (!hasPostContent) {
       Swal.fire('請輸入內容', '', 'warning')
       return
     }
