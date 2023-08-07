@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styles from './Post.module.scss'
 import parse from 'html-react-parser'
 import dynamic from 'next/dynamic'
@@ -24,18 +24,37 @@ export default function PostContent({
   const [showFullContent, setShowFullContent] = useState(false)
   const [thumbnailUrls, setThumbnailUrls] = useState([])
   const [parsedContent, setParsedContent] = useState(null)
+  const [showAllImages, setShowAllImages] = useState(false)
   useEffect(() => {
     if (data.context !== undefined) {
       const processContext = (context) => {
         if (context) {
           const images = context.match(/<img[^>]*>/g)
           if (images) {
-            const processedImages = images.map((image) =>
-              image.replace('<img', `<img class=${styles.imageWrapper}  `)
-            )
-            const imageContainer = `<div class=${
-              styles.imageWrapperHorizontal
-            }>${processedImages.join('')}</div>`
+            const totalImages = showAllImages
+              ? images.length
+              : Math.min(images.length, 3)
+            const processedImages = images.map((image, imageIndex) => {
+              const imageClass =
+                imageIndex === 2 && !showAllImages
+                  ? `${styles.imageWrapper} ${styles.fadeBlack}`
+                  : styles.imageWrapper
+              return image.replace(
+                '<img',
+                `<img class="${imageClass}" data-index="${imageIndex}" `
+              )
+            })
+            const buttonHtml =
+              totalImages === 3 && !showAllImages
+                ? `
+                <button class="${styles.photoReadMoreButton}">+更多照片</button>
+              `
+                : ''
+            const imageContainer = `
+              <div class="${styles.imageWrapperHorizontal}">
+                ${buttonHtml}
+                ${processedImages.slice(0, totalImages).join('')}
+              </div>`
             const cleanedContext = context.replace(/<img[^>]*>|<br\s*\/?>/g, '')
             return cleanedContext + imageContainer
           }
@@ -48,7 +67,35 @@ export default function PostContent({
       const parsedContent = parse(processContext(data.context))
       setParsedContent(parsedContent)
     }
-  }, [data.context])
+  }, [data.context, showAllImages])
+  const handleReadMoreClick = (event) => {
+    const thirdImage = event.target
+      .closest('div')
+      .querySelector('img[data-index="2"]')
+    if (thirdImage) {
+      setShowMore(!showMore)
+      setShowFullContent(!showMore)
+      setShowAllImages(!showAllImages)
+      if (!showAllImages) {
+        thirdImage.classList.add(styles.fadeBlack)
+      } else {
+        thirdImage.classList.remove(styles.fadeBlack)
+      }
+    }
+  }
+
+  useEffect(() => {
+    const button = document.querySelector(`.${styles.photoReadMoreButton}`)
+    if (button) {
+      button.addEventListener('click', handleReadMoreClick)
+    }
+
+    return () => {
+      if (button) {
+        button.removeEventListener('click', handleReadMoreClick)
+      }
+    }
+  }, [parsedContent])
 
   const flattenContent = (content) => {
     if (typeof content === 'string') {
@@ -65,10 +112,6 @@ export default function PostContent({
     return ''
   }
 
-  const handleReadMoreClick = () => {
-    setShowMore(!showMore)
-    setShowFullContent(!showMore)
-  }
   const modules = {
     toolbar: [
       [{ header: '1' }],
@@ -138,7 +181,6 @@ export default function PostContent({
       shouldShowReadMoreButton = true
     }
   }
-
   return (
     <React.Fragment>
       {editing ? (

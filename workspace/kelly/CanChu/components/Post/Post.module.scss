@@ -326,10 +326,12 @@
   }
 }
 .imageWrapperHorizontal {
-  margin-top: 1.5%;
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   gap: 2%;
+  // align-items: flex-start;
+  // justify-content: flex-start;
 }
 
 .uploadImageButton {
@@ -394,4 +396,22 @@
   &:hover {
     background: #e3e4e5;
   }
+}
+.fadeBlack {
+  filter: brightness(0.7);
+}
+
+.photoReadMoreButton {
+  border: 0px;
+  background-color: transparent;
+  border-radius: 10px;
+  z-index: 3;
+  color: #fff;
+  font-weight: 700;
+  font-size: 2rem;
+  cursor: pointer;
+  position: absolute;
+  bottom: 25%;
+  right: 8%;
+  width: 30%;
 }
