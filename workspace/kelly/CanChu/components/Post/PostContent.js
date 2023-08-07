@@ -68,13 +68,11 @@ export default function PostContent({
       setParsedContent(parsedContent)
     }
   }, [data.context, showAllImages])
-  const handleReadMoreClick = (event) => {
+  const handlePhotoReadMoreClick = (event) => {
     const thirdImage = event.target
       .closest('div')
       .querySelector('img[data-index="2"]')
     if (thirdImage) {
-      setShowMore(!showMore)
-      setShowFullContent(!showMore)
       setShowAllImages(!showAllImages)
       if (!showAllImages) {
         thirdImage.classList.add(styles.fadeBlack)
@@ -83,21 +81,25 @@ export default function PostContent({
       }
     }
   }
-
+  const handleReadMoreClick = () => {
+    setShowMore(!showMore)
+    setShowFullContent(!showMore)
+  }
   useEffect(() => {
     const button = document.querySelector(`.${styles.photoReadMoreButton}`)
     if (button) {
-      button.addEventListener('click', handleReadMoreClick)
+      button.addEventListener('click', handlePhotoReadMoreClick)
     }
 
     return () => {
       if (button) {
-        button.removeEventListener('click', handleReadMoreClick)
+        button.removeEventListener('click', handlePhotoReadMoreClick)
       }
     }
   }, [parsedContent])
 
   const flattenContent = (content) => {
+    console.log(content)
     if (typeof content === 'string') {
       return content
     } else if (React.isValidElement(content)) {
