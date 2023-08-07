@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './Post.module.scss'
 import parse from 'html-react-parser'
 import dynamic from 'next/dynamic'
@@ -22,25 +22,33 @@ export default function PostContent({
   const maxLinesToShow = 3
   const [showMore, setShowMore] = useState(false)
   const [showFullContent, setShowFullContent] = useState(false)
-
   const [thumbnailUrls, setThumbnailUrls] = useState([])
+  const [parsedContent, setParsedContent] = useState(null)
+  useEffect(() => {
+    if (data.context !== undefined) {
+      const processContext = (context) => {
+        if (context) {
+          const images = context.match(/<img[^>]*>/g)
+          if (images) {
+            const processedImages = images.map((image) =>
+              image.replace('<img', `<img class=${styles.imageWrapper}  `)
+            )
+            const imageContainer = `<div class=${
+              styles.imageWrapperHorizontal
+            }>${processedImages.join('')}</div>`
+            const cleanedContext = context.replace(/<img[^>]*>|<br\s*\/?>/g, '')
+            return cleanedContext + imageContainer
+          }
+          return context
+        }
+        return ''
+      }
 
-  const processContext = (context) => {
-    const images = context.match(/<img[^>]*>/g)
-    if (images) {
-      const processedImages = images.map((image) =>
-        image.replace('<img', `<img class=${styles.imageWrapper}  `)
-      )
-      const imageContainer = `<div class=${
-        styles.imageWrapperHorizontal
-      }>${processedImages.join('')}</div>`
-      const cleanedContext = context.replace(/<img[^>]*>|<br\s*\/?>/g, '')
-      return cleanedContext + imageContainer
+      // eslint-disable-next-line no-shadow
+      const parsedContent = parse(processContext(data.context))
+      setParsedContent(parsedContent)
     }
-    return context
-  }
-
-  const parsedContent = parse(processContext(data.context))
+  }, [data.context])
 
   const flattenContent = (content) => {
     if (typeof content === 'string') {
@@ -130,6 +138,7 @@ export default function PostContent({
       shouldShowReadMoreButton = true
     }
   }
+
   return (
     <React.Fragment>
       {editing ? (
@@ -197,7 +206,7 @@ export default function PostContent({
         </div>
       ) : (
         <article className={`${styles.secondRow} ${styles['multiline-text']}`}>
-          {showMore || showFullArticle ? null : contentToShow}
+          {contentToShow}
           {shouldShowReadMoreButton && (
             <span
               className={styles.readMoreButton}
