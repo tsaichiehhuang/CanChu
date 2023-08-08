@@ -7,42 +7,23 @@ import Copyright from '@/components/Copyright'
 import PostCreator from '@/components/PostCreator'
 import Profile from '@/components/Profile'
 import useFetchUserProfile from '@/hook/useFetchUserProfile'
-import IsPictureUrlOk from '@/components/IsPictureUrlOk'
 import { useRouter } from 'next/router'
-import useUpdateUserPicture from '@/hook/User/useUpdateUserPicture'
-import useUserPost from '@/hook/User/useUserPost'
+import useInfiniteScroll from '@/hook/useInfiniteScroll'
+import PictureUpload from './PictureUpload'
+import usePosts from '@/hook/usePosts'
 
 const userId = Cookies.get('userId')
 
 export default function User() {
   const router = useRouter()
   const { id } = router.query
-  // 獲取當前用戶是否為自己的個人頁面
   const isSelf = userId === id
-
+  const isUserPage = !!id
   const { userState, updateUserState } = useFetchUserProfile(id)
   const { userState: user } = useFetchUserProfile(userId) //登入者本人
-  const { setSelectedPicture, uploadPicture } = useUpdateUserPicture()
-  const postData = useUserPost(id)
+  const { postData, fetchNextPosts } = usePosts(isUserPage ? id : null)
 
-  //上傳圖片
-  const handlePictureUpload = async (event) => {
-    const file = event.target.files[0]
-    setSelectedPicture(file)
-    const pictureUrl = await uploadPicture(file)
-    if (pictureUrl) {
-      // 更新用戶的圖片
-      const updatedUser = { ...userState, picture: pictureUrl }
-      updateUserState(updatedUser)
-      // 更新頭像的 src 屬性
-      const headshotImage = document.querySelector(`.${styles.userHeadshot}`)
-      if (headshotImage) {
-        headshotImage.src = pictureUrl
-      }
-      alert('圖片上傳成功')
-    }
-  }
-
+  useInfiniteScroll(fetchNextPosts, 100)
   return (
     <div className={styles.body}>
       <style global jsx>{`
@@ -55,23 +36,10 @@ export default function User() {
       <div className={styles.allContainer}>
         <div className={styles.cover}>
           <div className={styles.coverTop}>
-            <div className={styles.userHeadshotWrapper}>
-              <IsPictureUrlOk
-                className={styles.userHeadshot}
-                userState={userState}
-              />
-
-              <div className={styles.userHeadshotText}>
-                編輯大頭貼
-                <input
-                  style={{ cursor: 'pointer', fontSize: '0' }}
-                  type='file'
-                  accept='.png, .jpg, .jpeg'
-                  className={styles.userHeadshotInput}
-                  onChange={handlePictureUpload}
-                />
-              </div>
-            </div>
+            <PictureUpload
+              userState={userState}
+              updateUserState={updateUserState}
+            />
             <div className={styles.coverTopRight}>
               <div className={styles.userName}>{userState.name}</div>
 
@@ -91,7 +59,7 @@ export default function User() {
           <div className={styles.containerLeft}>
             <Profile
               updateUserState={updateUserState}
-              userState={userState} // 將獲取到的 userState 傳遞給 Profile 元件
+              userState={userState}
               isSelf={isSelf}
             />
             <div style={{ width: '274px', marginLeft: '10%' }}>

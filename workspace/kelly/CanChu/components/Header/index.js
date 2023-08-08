@@ -3,6 +3,7 @@ import styles from './Header.module.scss'
 import Link from 'next/link'
 import SearchUser from './SearchUser'
 import Menu from './Menu'
+import Notification from './Notification'
 
 export default function Header() {
   return (
@@ -28,6 +29,7 @@ export default function Header() {
         <div className={styles.logo}>CanChu</div>
       </Link>
       <SearchUser />
+      <Notification />
       <Menu />
     </div>
   )
