@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Login from '@/components/Login'
-import Cookies from 'js-cookie' // 導入 js-cookie
-
+import Cookies from 'js-cookie'
+import Swal from 'sweetalert2'
 const apiUrl = process.env.API_DOMAIN
 
 const LoginPage = () => {
@@ -43,13 +43,21 @@ const LoginPage = () => {
       const responseData = await response.json()
 
       if (response.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: '成功登入',
+          showConfirmButton: false,
+          timer: 1000
+        })
         Cookies.set('accessToken', responseData.data.access_token)
         Cookies.set('userId', responseData.data.user.id) // 將使用者 ID 儲存在 Cookie 中
 
-        router.push('/')
-        window.location.reload() // 自動重新整理頁面
+        setTimeout(() => {
+          router.push('/')
+          window.location.reload()
+        }, 1000)
       } else {
-        console.error(responseData.error)
+        Swal.fire('電子郵件或是密碼錯誤', '', 'warning')
       }
     } catch (error) {
       console.error('網路請求錯誤', error)

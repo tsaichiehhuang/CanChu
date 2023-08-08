@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-
+import Swal from 'sweetalert2'
 const apiUrl = process.env.API_DOMAIN
 
 function useAddFriend() {
@@ -22,7 +22,15 @@ function useAddFriend() {
 
       if (response.ok) {
         const data = await response.json()
-        window.location.reload()
+        Swal.fire({
+          icon: 'success',
+          title: '已送出好友邀請',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
       } else {
         console.error('重複寄出邀請')
       }

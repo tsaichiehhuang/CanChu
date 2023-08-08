@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Cookies from 'js-cookie'
+import Swal from 'sweetalert2'
 
 const apiUrl = process.env.API_DOMAIN
 
@@ -47,10 +48,10 @@ const useEditProfile = (userState, updateUserState) => {
         }
         updateUserState(updatedUser)
         setEditing(false)
-        alert('個人檔案更新完成')
+        Swal.fire('個人檔案更新完成', '', 'success')
         window.location.reload()
       } else {
-        alert('更新個人檔案失敗')
+        Swal.fire('更新個人檔案失敗', '', 'error')
       }
     } catch (error) {
       console.error('網絡請求錯誤', error)

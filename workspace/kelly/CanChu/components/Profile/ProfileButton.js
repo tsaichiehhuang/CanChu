@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styles from './Profile.module.scss'
 import Cookies from 'js-cookie'
+import Swal from 'sweetalert2'
+
 export default function ProfileButton({
   userState,
   isSelf,
@@ -33,15 +35,44 @@ export default function ProfileButton({
     try {
       if (isFriend) {
         // 如果是好友，則按鈕文字變成「刪除好友」，功能變成「刪除好友」
-        await deleteFriendRequest(userState.friendship.id)
-        setIsFriend(false)
+        const result = await Swal.fire({
+          title: '確定要刪除好友嗎？',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: '確定',
+          cancelButtonText: '取消'
+        })
+        if (result.isConfirmed) {
+          await deleteFriendRequest(userState.friendship.id)
+          setIsFriend(false)
+          Swal.fire({
+            icon: 'success',
+            title: '已刪除好友',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
       } else if (!isFriendSent) {
         // 如果不是好友、還沒有發送好友邀請，則按鈕文字變成「邀請成為好友」，功能變成「邀請成為好友」
         await addFriend(otherUserId)
         setIsFriendSent(false)
+        Swal.fire({
+          icon: 'success',
+          title: '已送出好友邀請',
+          showConfirmButton: false,
+          timer: 1500
+        })
       } else {
         // 如果不是好友、已經發送好友邀請，則按鈕文字變成「刪除好友邀請」，功能變成「刪除好友邀請」
         await deleteFriendRequest(userState.friendship.id)
+        Swal.fire({
+          icon: 'success',
+          title: '已刪除好友邀請',
+          showConfirmButton: false,
+          timer: 1500
+        })
       }
     } catch (error) {
       console.error('發生錯誤', error)

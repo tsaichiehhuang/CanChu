@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styles from './PostCreator.module.scss'
 import Cookies from 'js-cookie'
 import useFetchUserProfile from '@/hook/useFetchUserProfile'
 import IsPictureUrlOk from '../IsPictureUrlOk'
+import Swal from 'sweetalert2'
 const apiUrl = process.env.API_DOMAIN
 
 export default function PostCreator() {
@@ -12,7 +13,7 @@ export default function PostCreator() {
 
   const handlePostSubmit = async () => {
     if (!postContent) {
-      alert('請輸入內容')
+      Swal.fire('請輸入內容', '', 'warning')
       return
     }
     const requestBody = {
@@ -37,8 +38,15 @@ export default function PostCreator() {
       })
 
       if (response.ok) {
-        window.location.reload()
-        alert('貼文發布成功')
+        Swal.fire({
+          icon: 'success',
+          title: '貼文發布成功',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
         setPostContent('')
       } else {
         throw new Error('發布貼文失敗')

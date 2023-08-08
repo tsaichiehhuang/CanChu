@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Cookies from 'js-cookie'
+import Swal from 'sweetalert2'
 
 const apiUrl = process.env.API_DOMAIN
 
@@ -33,10 +34,10 @@ export default function useEditPost(data) {
 
       if (response.ok) {
         setEditing(false)
-        alert('貼文更新完成')
+        Swal.fire('貼文更新完成', '', 'success')
         window.location.reload()
       } else {
-        alert('更新貼文內容失敗')
+        Swal.fire('更新貼文內容失敗', '', 'error')
       }
       setEditing(false)
     } catch (error) {

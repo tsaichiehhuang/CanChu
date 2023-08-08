@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-
+import Swal from 'sweetalert2'
 const apiUrl = process.env.API_DOMAIN
 
 function useDeleteAddFriend() {
@@ -21,7 +21,9 @@ function useDeleteAddFriend() {
       })
 
       if (response.ok) {
-        window.location.reload()
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
       } else {
         console.error('刪除好友邀請失敗')
       }
