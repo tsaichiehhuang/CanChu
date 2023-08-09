@@ -15,7 +15,7 @@ export default function FriendList({
   const { deleteFriendRequest } = useDeleteAddFriend()
   const { agreeFriendRequest } = useAgreeFriend()
   const friendsPending = useFriendsPending()
-  const friends = useFriends()
+  const { friends, isLoading } = useFriends()
   const [showAllFriends, setShowAllFriends] = useState(false)
 
   const renderFriendRequest = (friend) => (
@@ -129,10 +129,29 @@ export default function FriendList({
             我的好友
           </div>
         </div>
+
         <div className={styles.friendListMyFriend}>
-          {totalFriendsCount === 0 && (
-            <div className={styles.noFriends}>你没有好友TT</div>
+          {isLoading ? (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                width: '100%'
+              }}
+            >
+              <div
+                className={styles.loadingSpinner}
+                style={{ borderTop: '4px solid #000' }}
+              ></div>
+            </div>
+          ) : (
+            <>
+              {totalFriendsCount === 0 && (
+                <div className={styles.noFriends}>你没有好友TT</div>
+              )}
+            </>
           )}
+
           {(!showAllFriends
             ? friendsPending.slice(
                 0,

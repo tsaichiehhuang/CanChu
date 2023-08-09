@@ -27,10 +27,10 @@ export default function Home() {
   useInfiniteScroll(fetchNextPosts, 100)
   useEffect(() => {
     const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 768) // 調整此閾值以符合你的設計
+      setIsMobileView(window.innerWidth <= 768)
     }
 
-    handleResize() // 初始化
+    handleResize()
     window.addEventListener('resize', handleResize)
 
     return () => {

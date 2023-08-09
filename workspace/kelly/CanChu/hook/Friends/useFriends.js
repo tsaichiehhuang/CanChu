@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react'
 const apiUrl = process.env.API_DOMAIN
 const useFriends = () => {
   const [friends, setFriends] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const Friend = async () => {
       try {
+        setIsLoading(true)
         const accessToken = Cookies.get('accessToken')
 
         if (!accessToken) {
@@ -31,13 +33,18 @@ const useFriends = () => {
         }
       } catch (error) {
         console.error('網絡請求錯誤', error)
+      } finally {
+        setIsLoading(false)
       }
     }
 
     Friend()
   }, [])
 
-  return Array.isArray(friends) ? friends : []
+  return {
+    friends: Array.isArray(friends) ? friends : [],
+    isLoading
+  }
 }
 
 export default useFriends
