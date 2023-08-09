@@ -63,20 +63,35 @@ export default function Demo() {
   const { data, liked, likeCount } = postData
   const formattedLikeCount = likeCount === 0 ? 0 : likeCount
   return (
-    <div>
+    <>
+      <style global jsx>{`
+        body {
+          background: #f9f9f9;
+          margin: 0;
+        }
+      `}</style>
       <Header />
-      <Post
-        showFullArticle={true}
-        data={data}
-        userState={userState}
-        showComments={true}
-        showImage={true}
-        showEditIcon={true}
-        enableClick={false}
-        liked={liked}
-        likeCount={likeCount}
-        formattedLikeCount={formattedLikeCount}
-      />
-    </div>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <Post
+          showFullArticle={true}
+          data={data}
+          userState={userState}
+          showComments={true}
+          showImage={true}
+          showEditIcon={true}
+          enableClick={false}
+          liked={liked}
+          likeCount={likeCount}
+          formattedLikeCount={formattedLikeCount}
+        />
+      </div>
+    </>
   )
 }

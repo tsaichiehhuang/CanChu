@@ -65,6 +65,12 @@ const SignupPage = () => {
         })
 
         router.push('/login')
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: '註冊失敗',
+          text: '請再嘗試一次'
+        })
       }
     } catch {
       Swal.fire({

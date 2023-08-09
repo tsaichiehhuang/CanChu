@@ -1,9 +1,4 @@
 @import url(https://fonts.googleapis.com/css?family=Pattaya&display=swap);
-.body {
-  background: #f9f9f9;
-  width: 100%;
-  height: 100%;
-}
 
 .row {
   display: flex;
@@ -13,31 +8,27 @@
 .person {
   width: 36px;
   height: 36px;
-  flex-shrink: 0;
   border-radius: 50%;
 }
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 .post {
   position: relative;
-  padding: 10px 0px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
-  width: 769px;
+  width: 85%;
   flex-shrink: 0;
   border-radius: 20px;
   border: 1px solid rgba(211, 211, 211, 0.56);
   background: #fff;
-  // margin-top: 56px;
   margin-bottom: 3%;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
   .editIcon {
     position: absolute;
-    top: 1;
+    top: 3%;
     right: 0;
     margin-right: 2%;
     display: none;
@@ -51,22 +42,23 @@
 
 .singlePost {
   position: relative;
-  padding: 10px 0px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
-  width: 769px;
+  width: 60%;
   flex-shrink: 0;
   border-radius: 20px;
   border: 1px solid rgba(211, 211, 211, 0.56);
   background: #fff;
-  // margin-top: 56px;
   margin-bottom: 3%;
   margin-top: 3%;
+  @media (max-width: 768px) {
+    width: 90%;
+  }
   .singleEditIcon {
     position: absolute;
-    top: 1;
+    top: 3%;
     right: 0;
     margin-right: 2%;
     display: none;
@@ -77,24 +69,15 @@
   }
 }
 .firstRow {
-  margin-top: 20px;
-  width: 700px;
-  height: 75px;
+  padding: 1% 4%;
+  margin-top: 3%;
+  width: 100%;
+  height: 10%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: row;
-
-  .firstRowLeft {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
-  }
-
-  .text {
-    margin-left: 12.03px;
-  }
+  gap: 2%;
 
   > div {
     font-family: 'Outfit';
@@ -104,27 +87,26 @@
 
   .textOne {
     font-weight: 700;
-    font-size: 16px;
+    font-size: 1rem;
   }
 
   .textTwo {
-    font-weight: 400;
-    font-size: 13px;
+    font-size: 0.8rem;
     color: #919191;
   }
 
   .circle {
-    width: 76.444px;
-    height: 74px;
-    flex-shrink: 0;
+    object-fit: cover;
+    width: 10%;
+    height: auto;
     box-sizing: border-box;
     border-radius: 50%;
   }
 }
 .secondRow {
-  margin-top: 1.5%;
+  width: 100%;
+  padding: 1% 5%;
   margin-bottom: 2%;
-  width: 90%;
   min-height: 100px;
   font-family: 'Outfit';
   font-size: 1rem;
@@ -160,7 +142,8 @@
 }
 
 .thirdRow {
-  width: 700px;
+  padding: 1% 5%;
+  width: 100%;
   height: 50px;
   border-top: 1px solid #bfbfbf;
   border-bottom: 1px solid #bfbfbf;
@@ -170,12 +153,13 @@
 }
 
 .fourRow {
+  padding: 1% 5%;
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  width: 700px;
+  width: 100%;
   height: 50px;
   text-align: right;
   color: #5c5c5c;
@@ -185,7 +169,8 @@
 }
 
 .fiveRow {
-  width: 700px;
+  width: 100%;
+  padding: 1% 5%;
   height: 90px;
   align-items: center;
   justify-content: center;
@@ -200,7 +185,7 @@
   .selfComment {
     padding: 0px 20px;
     box-sizing: border-box;
-    width: 640px;
+    width: 100%;
     height: 50px;
     background: #f0f2f5;
     border: 1px solid #d9d9d9;
@@ -218,15 +203,12 @@
   .inputComment {
     // padding: 0px 20px;
     box-sizing: border-box;
-    width: 640px;
+    width: 80%;
     height: 50px;
     background: transparent;
     border: 1px solid transparent;
     border-radius: 10px;
-
     font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
     font-size: 20px;
     line-height: 24px;
     color: #777777;
@@ -238,15 +220,17 @@
 
 // 網友留言
 .comments {
+  align-items: center;
   display: flex;
   flex-direction: column;
   gap: 5%;
   margin-top: 2%;
+  width: 100%;
 }
 .commentContainer {
   padding: 15px 0px;
   gap: 2%;
-  width: 700px;
+  width: 90%;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -258,18 +242,20 @@
     justify-content: flex-start;
     gap: 1%;
     .commentTime {
-      margin-top: 3%;
+      margin-top: 1px;
       color: #525252;
       font-family: Roboto;
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
+      font-size: 0.85rem;
       line-height: 24px;
     }
     .commentContentSquare {
+      max-width: 44vw;
       border-radius: 20px;
       background: rgba(217, 217, 217, 0.32);
       padding: 5px 15px;
+      @media (max-width: 768px) {
+        max-width: 70vw;
+      }
       .commentUserName {
         color: #525252;
         font-family: Roboto;
@@ -285,6 +271,7 @@
         font-style: normal;
         font-weight: 400;
         line-height: 24px;
+        word-wrap: break-word;
       }
     }
   }

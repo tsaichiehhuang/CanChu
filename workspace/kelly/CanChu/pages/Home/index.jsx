@@ -1,6 +1,8 @@
-import React from 'react'
+/* eslint-disable no-nested-ternary */
+import React, { useEffect, useState } from 'react'
 import styles from './Home.module.scss'
 import Header from '@/components/Header'
+import MobileNavbar from '@/components/MobileNavbar'
 import PostCreator from '@/components/PostCreator'
 import Post from '@/components/Post'
 import Copyright from '@/components/Copyright'
@@ -12,6 +14,8 @@ import usePosts from '@/hook/usePosts'
 
 export default function Home() {
   const { postData, fetchNextPosts, isLoading } = usePosts()
+  const [isMobileView, setIsMobileView] = useState(false)
+  const [showFriendList, setShowFriendList] = useState(false)
   const handlePostClick = (postId) => {
     window.location.href = `/posts/${postId}`
   }
@@ -21,9 +25,20 @@ export default function Home() {
   const userId = Cookies.get('userId')
   const userState = useFetchUserProfile(userId)
   useInfiniteScroll(fetchNextPosts, 100)
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth <= 768) // 調整此閾值以符合你的設計
+    }
 
+    handleResize() // 初始化
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
   return (
-    <div className={styles.body}>
+    <>
       <style global jsx>{`
         body {
           background: #f9f9f9;
@@ -36,13 +51,30 @@ export default function Home() {
         </div>
       )}
       <Header />
+      {isMobileView && (
+        <MobileNavbar
+          setShowFriendList={setShowFriendList}
+          showFriendList={showFriendList}
+        />
+      )}
+
       <div className={styles.container}>
-        <div className={styles.containerLeft}>
-          <FriendList userState={userState} />
-          <div style={{ width: '274px', marginLeft: '10%' }}>
-            <Copyright />
+        {isMobileView ? (
+          showFriendList ? (
+            <FriendList
+              userState={userState}
+              showFriendList={showFriendList}
+              setShowFriendList={setShowFriendList}
+            />
+          ) : null
+        ) : (
+          <div className={styles.containerLeft}>
+            <FriendList userState={userState} />
+            <div style={{ width: '274px', marginLeft: '10%' }}>
+              <Copyright />
+            </div>
           </div>
-        </div>
+        )}
         <div className={styles.containerRight}>
           <PostCreator />
           {postData.map((data) => (
@@ -62,6 +94,6 @@ export default function Home() {
           ))}
         </div>
       </div>
-    </div>
+    </>
   )
 }

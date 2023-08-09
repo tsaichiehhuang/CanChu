@@ -5,12 +5,15 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 3%;
-  width: 770px;
+  width: 85%;
   min-height: 100%;
   border-radius: 20px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: var(--white, #fff);
   position: relative;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
   .overlay {
     position: fixed;
     top: 0;
@@ -121,8 +124,9 @@
 
   .postingPhoto {
     border-radius: 50%;
-    width: 74px;
-    height: 74px;
+    width: 10%;
+    height: 10%;
+    object-fit: cover;
   }
   .postingText {
     cursor: pointer;
@@ -131,10 +135,10 @@
     padding: 10px;
     color: #767676;
     font-family: Outfit;
-    font-size: 18px;
+    font-size: 1.1rem;
     line-height: 24px;
     margin-bottom: 2%;
-    width: 600px;
+    width: 85%;
     height: 80%;
     border-radius: 10px;
     border: 1px solid #d9d9d9;

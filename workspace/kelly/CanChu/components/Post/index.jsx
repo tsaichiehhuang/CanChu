@@ -50,92 +50,82 @@ export default function Post({
   const formattedLikeCount = likeCount === 0 ? 0 : likeCount
 
   return (
-    <div className={styles.body}>
-      <style global jsx>{`
-        body {
-          background: #f9f9f9;
-          margin: 0;
-        }
-      `}</style>
-      <div className={styles.container}>
-        <div className={postClassName}>
-          {showEditIcon && !editing && isCurrentUserPostOwner && (
-            <img
-              className={editIconClassName}
-              src='/edit.png'
-              onClick={handleEditClick}
-            />
-          )}
-
-          <div className={`${styles.firstRow} ${styles.row}`}>
-            <div className={styles.firstRowLeft}>
-              <img
-                className={styles.circle}
-                src={formattedPicture}
-                onClick={handleUserClick}
-                style={{ cursor: 'pointer' }}
-              />
-              <div className={styles.text}>
-                <div className={styles.textOne}>{name}</div>
-
-                <div
-                  className={styles.textTwo}
-                  onClick={handlePostClick}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {getTimeDiff(new Date(created_at))}
-                </div>
-              </div>
-            </div>
-          </div>
-          <PostContent
-            showFullArticle={showFullArticle}
-            data={data}
-            editing={editing}
-            editedContent={editedContent}
-            setEditedContent={setEditedContent}
-            handleConfirmEdit={handleConfirmEdit}
-            handleCancelEdit={handleCancelEdit}
-            selectedFiles={selectedFiles}
-            setSelectedFiles={setSelectedFiles}
+    <>
+      <div className={postClassName}>
+        {showEditIcon && !editing && isCurrentUserPostOwner && (
+          <img
+            className={editIconClassName}
+            src='/edit.png'
+            onClick={handleEditClick}
           />
+        )}
 
-          <div className={`${styles.thirdRow} ${styles.row}`}>
-            {/* 愛心按讚 */}
-            <img
-              className={heartAnimation ? styles.likedHeart : ''}
-              src={liked ? '/heart.png' : '/notHeart.png'}
-              onClick={handleHeartClick}
-              style={{ cursor: 'pointer' }}
-            />
+        <div className={`${styles.firstRow} ${styles.row}`}>
+          <img
+            className={styles.circle}
+            src={formattedPicture}
+            onClick={handleUserClick}
+            style={{ cursor: 'pointer' }}
+          />
+          <div className={styles.text}>
+            <div className={styles.textOne}>{name}</div>
 
-            <img
-              className={styles.commentIcon}
-              src='/comment.png'
+            <div
+              className={styles.textTwo}
               onClick={handlePostClick}
               style={{ cursor: 'pointer' }}
-            />
-          </div>
-          <div className={`${styles.fourRow} ${styles.row}`}>
-            <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
-              {formattedLikeCount}人喜歡這則貼文
+            >
+              {getTimeDiff(new Date(created_at))}
             </div>
+          </div>
+        </div>
+        <PostContent
+          showFullArticle={showFullArticle}
+          data={data}
+          editing={editing}
+          editedContent={editedContent}
+          setEditedContent={setEditedContent}
+          handleConfirmEdit={handleConfirmEdit}
+          handleCancelEdit={handleCancelEdit}
+          selectedFiles={selectedFiles}
+          setSelectedFiles={setSelectedFiles}
+        />
 
-            <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
-              {formattedCommentCount}則留言
-            </div>
-          </div>
-          <div style={{ borderTop: '1px solid #bfbfbf', width: '100%' }}></div>
-          <LeaveComment
-            showComments={showComments}
-            data={data}
-            userState={userState}
-            enableClick={enableClick}
-            showImage={showImage}
-            handlePostClick={handlePostClick}
+        <div className={`${styles.thirdRow} ${styles.row}`}>
+          {/* 愛心按讚 */}
+          <img
+            className={heartAnimation ? styles.likedHeart : ''}
+            src={liked ? '/heart.png' : '/notHeart.png'}
+            onClick={handleHeartClick}
+            style={{ cursor: 'pointer' }}
+          />
+
+          <img
+            className={styles.commentIcon}
+            src='/comment.png'
+            onClick={handlePostClick}
+            style={{ cursor: 'pointer' }}
           />
         </div>
+        <div className={`${styles.fourRow} ${styles.row}`}>
+          <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
+            {formattedLikeCount}人喜歡這則貼文
+          </div>
+
+          <div onClick={handlePostClick} style={{ cursor: 'pointer' }}>
+            {formattedCommentCount}則留言
+          </div>
+        </div>
+        <div style={{ borderTop: '1px solid #bfbfbf', width: '100%' }}></div>
+        <LeaveComment
+          showComments={showComments}
+          data={data}
+          userState={userState}
+          enableClick={enableClick}
+          showImage={showImage}
+          handlePostClick={handlePostClick}
+        />
       </div>
-    </div>
+    </>
   )
 }

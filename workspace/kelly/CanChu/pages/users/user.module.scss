@@ -1,11 +1,7 @@
-.body {
-  margin: 0;
-  background: #f9f9f9;
-}
 .cover {
   border-top: 1px #d9d9d9 solid;
   width: 100%;
-  height: 55vh;
+  height: 28vw;
   background: #fff;
   display: flex;
   align-items: center;
@@ -13,6 +9,9 @@
   flex-direction: column;
   gap: 2%;
   margin: 0;
+  @media (max-width: 768px) {
+    height: 50vw;
+  }
 
   .coverTop {
     height: 70%;
@@ -25,26 +24,31 @@
 
     .coverTopRight {
       margin-left: 3%;
-
+      max-width: 70%;
       .userName {
         color: #000;
         font-family: Outfit;
-        font-size: 40px;
+        font-size: 2.5rem;
         font-style: normal;
         font-weight: 700;
-        line-height: 24px;
+        word-wrap: break-word;
+        flex-wrap: wrap;
+        @media (max-width: 768px) {
+          font-size: 1.5rem;
+        }
       }
       .userFriendCount {
-        margin-top: 20%;
+        margin-top: 5px;
         color: #484848;
         font-family: Outfit;
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: 24px;
+        font-size: 1.3rem;
+        @media (max-width: 768px) {
+          font-size: 1rem;
+        }
       }
     }
     .userHeadshotWrapper {
+      width: 18%;
       cursor: pointer;
       position: relative;
       &.dragging .userHeadshot {
@@ -65,17 +69,16 @@
 
       &::after {
         cursor: pointer;
-        // content: '編輯大頭貼';
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         color: #fff;
         font-family: Outfit;
-        font-size: 18px;
+        font-size: 1.1rem;
         font-style: normal;
         font-weight: 700;
-        line-height: 24px;
+        // line-height: 24px;
         text-decoration-line: underline;
         opacity: 0;
         transition: opacity 0.3s ease;
@@ -99,8 +102,9 @@
     .userHeadshot {
       cursor: pointer;
       display: flex;
-      width: 180px;
-      height: 180px;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
       border-radius: 50%;
       z-index: 1;
       &:hover {
@@ -130,20 +134,42 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    gap: 5%;
     .coverFunctionText {
       display: flex;
       justify-content: center; /* 水平居中 */
       align-items: center; /* 垂直居中 */
       height: 8vh;
-      width: 10%;
+      border-bottom: 4px solid transparent;
+      color: #000;
+      text-align: center;
+      font-family: Outfit;
+      font-size: 1.2rem;
+      box-sizing: border-box;
+      font-weight: 700;
+      line-height: 24px;
+      @media (max-width: 768px) {
+        font-size: 1rem;
+      }
+    }
+    .coverFunctionTextShow {
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center; /* 水平居中 */
+      align-items: center; /* 垂直居中 */
+      height: 8vh;
+      // width: 100%;
       border-bottom: 4px solid #5458f7;
       color: #5458f7;
       text-align: center;
       font-family: Outfit;
-      font-size: 20px;
+      font-size: 1.2rem;
       font-style: normal;
       font-weight: 700;
       line-height: 24px;
+      @media (max-width: 768px) {
+        font-size: 1rem;
+      }
     }
   }
 }
@@ -221,28 +247,28 @@
   gap: 5%;
 }
 .containerRight {
+  width: 70%;
   min-height: 100%;
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 5%;
+  }
 }
 .containerLeft {
+  width: 30%;
   display: grid;
   grid-gap: 3%;
-  justify-content: space-around;
+  justify-content: flex-end;
   align-items: center;
   flex-direction: column;
-}
-.copyright {
-  color: #525252;
-  font-family: Helvetica Neue;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
-  display: flex;
-  width: 274px;
-  margin-left: 10%;
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 5%;
+    display: flex;
+  }
 }
 
 .posting {

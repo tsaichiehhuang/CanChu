@@ -86,34 +86,13 @@
       transform: translateX(-50%);
       color: #fff;
       font-family: Outfit;
-      font-size: 18px;
+      font-size: 1.1rem;
       font-style: normal;
       font-weight: 700;
       line-height: 24px;
       text-decoration-line: underline;
       z-index: 2;
       display: none; /* 預設隱藏文字 */
-    }
-  }
-  .coverFunction {
-    width: 80%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    .coverFunctionText {
-      display: flex;
-      justify-content: center; /* 水平居中 */
-      align-items: center; /* 垂直居中 */
-      height: 8vh;
-      width: 10%;
-      border-bottom: 4px solid #5458f7;
-      color: #5458f7;
-      text-align: center;
-      font-family: Outfit;
-      font-size: 20px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 24px;
     }
   }
 }

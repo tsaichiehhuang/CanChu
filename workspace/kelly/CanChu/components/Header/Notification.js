@@ -4,23 +4,30 @@ import useNotify from '@/hook/Header/useNotify'
 import useRead from '@/hook/Header/useRead'
 import getTimeDiff from '../getTimeDiff'
 
-export default function Notification() {
+export default function Notification({ isMobileView }) {
   const { notifyData, setNotifyData } = useNotify()
   const [showAllNotifications, setShowAllNotifications] = useState(false)
-  const [showProfileOptions, setShowProfileOptions] = useState(false)
+  const [showNotifyOptions, setShowNotifyOptions] = useState(false)
   const [displayedNotifications, setDisplayedNotifications] = useState([])
   const { markAsRead } = useRead()
-  const handleProfileMouseEnter = () => {
-    setShowProfileOptions(true)
+
+  const handleMobileNotifyShow = () => {
+    setShowNotifyOptions(!showNotifyOptions)
   }
 
-  const handleProfileMouseLeave = (event) => {
+  const handleNotifyMouseEnter = () => {
+    setShowNotifyOptions(true)
+  }
+
+  const handleNotifyMouseLeave = (event) => {
     if (
       event.relatedTarget &&
       !event.currentTarget.contains(event.relatedTarget)
     ) {
-      setShowProfileOptions(false)
-      setShowAllNotifications(false)
+      setTimeout(() => {
+        setShowNotifyOptions(false)
+        setShowAllNotifications(false)
+      }, 2000)
     }
   }
   const handleShowAllNotifications = () => {
@@ -54,98 +61,126 @@ export default function Notification() {
   return (
     <div
       className={styles.notification}
-      onMouseEnter={handleProfileMouseEnter}
-      onMouseLeave={handleProfileMouseLeave}
+      {...(!isMobileView && {
+        onMouseEnter: handleNotifyMouseEnter,
+        onMouseLeave: handleNotifyMouseLeave
+      })}
     >
-      <img src='/通知.png' />
+      <img src='/通知.png' onClick={handleMobileNotifyShow} />
+
       {newNotificationCount > 0 && (
         <div className={styles.notificationCount}>{newNotificationCount}</div>
       )}
-      {showProfileOptions && (
-        <div className={styles.notifyOptions}>
-          <div className={styles.notifyFirst}>
-            <img src='/通知反白.png' />
-            我的通知
-          </div>
+      <div
+        className={`${isMobileView && showNotifyOptions ? styles.overlay : ''}`}
+      >
+        {showNotifyOptions && (
           <div
-            className={`${showAllNotifications ? styles.notifyContainer : ''}`}
+            className={`${
+              isMobileView ? styles.notifyOptionsPopUp : styles.notifyOptions
+            }`}
           >
-            {Array.isArray(displayedNotifications) &&
-            displayedNotifications.length > 0 ? (
-              displayedNotifications.map((notification) => (
-                <>
-                  <div
-                    style={{
-                      width: '90%',
-                      height: '1px',
-                      background: '#D1CACE',
-                      margin: '0px 10px'
-                    }}
-                  ></div>
-                  <div key={notification.id} className={styles.notifyOption}>
+            {isMobileView && (
+              <button
+                className={styles.cancelButton}
+                onClick={handleMobileNotifyShow}
+              >
+                X
+              </button>
+            )}
+
+            <div className={styles.notifyFirst}>
+              <img src='/通知反白.png' />
+              我的通知
+            </div>
+            <div
+              className={`${
+                showAllNotifications ? styles.notifyContainer : ''
+              }`}
+            >
+              {Array.isArray(displayedNotifications) &&
+              displayedNotifications.length > 0 ? (
+                displayedNotifications.map((notification) => (
+                  <>
                     <div
                       style={{
-                        display: 'flex',
-                        flexDirection: 'column'
+                        width: '90%',
+                        height: '1px',
+                        background: '#D1CACE',
+                        margin: '0px 10px'
                       }}
-                    >
+                    ></div>
+                    <div key={notification.id} className={styles.notifyOption}>
                       <div
                         style={{
-                          color:
-                            notification.is_read === 1 ? 'lightgray' : 'inherit'
+                          display: 'flex',
+                          flexDirection: 'column'
                         }}
                       >
-                        {notification.summary}
+                        <div
+                          style={{
+                            color:
+                              notification.is_read === 1
+                                ? 'lightgray'
+                                : 'inherit'
+                          }}
+                        >
+                          {notification.summary}
+                        </div>
+                        <div
+                          className={styles.notifyTime}
+                          style={{
+                            color:
+                              notification.is_read === 1
+                                ? 'lightgray'
+                                : '#5458f7'
+                          }}
+                        >
+                          {getTimeDiff(new Date(notification.created_at))}
+                        </div>
                       </div>
-                      <div
-                        className={styles.notifyTime}
-                        style={{
-                          color:
-                            notification.is_read === 1 ? 'lightgray' : '#5458f7'
-                        }}
-                      >
-                        {getTimeDiff(new Date(notification.created_at))}
-                      </div>
+                      {notification.is_read === 0 && (
+                        <img
+                          src='/checkCircle.png'
+                          style={{ width: '16px', height: '16px' }}
+                          onClick={() =>
+                            handleNotificationClick(notification.id)
+                          }
+                        />
+                      )}
                     </div>
-                    {notification.is_read === 0 && (
-                      <img
-                        src='/checkCircle.png'
-                        style={{ width: '16px', height: '16px' }}
-                        onClick={() => handleNotificationClick(notification.id)}
-                      />
-                    )}
-                  </div>
-                </>
-              ))
+                  </>
+                ))
+              ) : (
+                <div className={styles.noNotifications}>
+                  目前沒有通知...你的世界很安靜
+                </div>
+              )}
+            </div>
+            {displayedNotifications.length > 0 ? (
+              <>
+                <div
+                  style={{
+                    width: '90%',
+                    height: '1px',
+                    background: '#D1CACE',
+                    margin: '0px 10px'
+                  }}
+                ></div>
+                <div
+                  className={styles.notifyLast}
+                  onClick={handleShowAllNotifications}
+                  style={{ textDecoration: 'underline' }}
+                >
+                  {showAllNotifications ? '收起通知' : '查看全部通知'}
+                </div>
+              </>
             ) : (
-              <div className={styles.noNotifications}>
-                目前沒有通知...你的世界很安靜
-              </div>
+              ''
             )}
           </div>
-          {displayedNotifications.length > 0 ? (
-            <>
-              <div
-                style={{
-                  width: '90%',
-                  height: '1px',
-                  background: '#D1CACE',
-                  margin: '0px 10px'
-                }}
-              ></div>
-              <div
-                className={styles.notifyLast}
-                onClick={handleShowAllNotifications}
-                style={{ textDecoration: 'underline' }}
-              >
-                {showAllNotifications ? '收起通知' : '查看全部通知'}
-              </div>
-            </>
-          ) : (
-            ''
-          )}
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }

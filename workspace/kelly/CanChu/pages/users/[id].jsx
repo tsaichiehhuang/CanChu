@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import styles from './user.module.scss'
 import Header from '@/components/Header'
@@ -24,10 +24,23 @@ export default function User() {
   const { postData, fetchNextPosts, isLoading } = usePosts(
     isUserPage ? id : null
   )
-
+  const [isMobileView, setIsMobileView] = useState(false)
+  const [isShowProfile, setIsShowProfile] = useState(false)
   useInfiniteScroll(fetchNextPosts, 100)
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth <= 768) // 調整此閾值以符合你的設計
+    }
+
+    handleResize() // 初始化
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
   return (
-    <div className={styles.body}>
+    <>
       <style global jsx>{`
         body {
           background: #f9f9f9;
@@ -40,7 +53,7 @@ export default function User() {
         </div>
       )}
       <Header />
-      <div className={styles.allContainer}>
+      <>
         <div className={styles.cover}>
           <div className={styles.coverTop}>
             <PictureUpload
@@ -59,38 +72,74 @@ export default function User() {
             style={{ width: '80%', height: '1px', background: '#C8C8C8' }}
           ></div>
           <div className={styles.coverFunction}>
-            <div className={styles.coverFunctionText}>貼文</div>
+            <div
+              className={`${
+                isShowProfile
+                  ? styles.coverFunctionText
+                  : styles.coverFunctionTextShow
+              }`}
+              onClick={() => setIsShowProfile(false)}
+            >
+              貼文
+            </div>
+            {isMobileView && (
+              <div
+                className={`${
+                  isShowProfile
+                    ? styles.coverFunctionTextShow
+                    : styles.coverFunctionText
+                }`}
+                onClick={() => setIsShowProfile(true)}
+              >
+                個人檔案
+              </div>
+            )}
           </div>
         </div>
         <div className={styles.container}>
-          <div className={styles.containerLeft}>
-            <Profile
-              updateUserState={updateUserState}
-              userState={userState}
-              isSelf={isSelf}
-            />
-            <div style={{ width: '274px', marginLeft: '10%' }}>
-              <Copyright />
-            </div>
-          </div>
-          <div className={styles.containerRight}>
-            {isSelf && <PostCreator />}
-
-            {postData.map((data) => (
-              <Post
-                showFullArticle={false}
-                userState={user}
-                showComments={false}
-                showImage={false}
-                showEditIcon={true}
-                key={data.id}
-                data={data}
+          {!isMobileView && (
+            <div className={styles.containerLeft}>
+              <Profile
+                updateUserState={updateUserState}
+                userState={userState}
+                isSelf={isSelf}
               />
-            ))}
-          </div>
+              <div style={{ width: '274px', marginLeft: '10%' }}>
+                <Copyright />
+              </div>
+            </div>
+          )}
+          {isMobileView && isShowProfile ? (
+            <div className={styles.containerLeft}>
+              <Profile
+                updateUserState={updateUserState}
+                userState={userState}
+                isSelf={isSelf}
+              />
+              <div style={{ width: '274px', marginLeft: '10%' }}>
+                <Copyright />
+              </div>
+            </div>
+          ) : (
+            <div className={styles.containerRight}>
+              {isSelf && <PostCreator />}
+
+              {postData.map((data) => (
+                <Post
+                  showFullArticle={false}
+                  userState={user}
+                  showComments={false}
+                  showImage={false}
+                  showEditIcon={true}
+                  key={data.id}
+                  data={data}
+                />
+              ))}
+            </div>
+          )}
         </div>
-      </div>
-    </div>
+      </>
+    </>
   )
 }
 export async function getServerSideProps(context) {

@@ -7,7 +7,11 @@ import useAgreeFriend from '@/hook/Friends/useAgreeFriend'
 import IsPictureUrlOk from '@/components/IsPictureUrlOk'
 import Link from 'next/link'
 
-export default function FriendList({ userState }) {
+export default function FriendList({
+  userState,
+  showFriendList,
+  setShowFriendList
+}) {
   const { deleteFriendRequest } = useDeleteAddFriend()
   const { agreeFriendRequest } = useAgreeFriend()
   const friendsPending = useFriendsPending()
@@ -86,61 +90,81 @@ export default function FriendList({ userState }) {
   const shouldShowViewAllButton = totalFriendsCount > 8
   const availableSlots = maxItemsToShow - friendsPending.length
   return (
-    <div className={styles.friendList}>
-      {renderFriendSection(
-        userState.userState.picture || '/個人照片.png',
-        userState.userState.name
-      )}
-
+    <div className={`${showFriendList ? styles.overlay : ''}`}>
       <div
-        style={{
-          width: '90%',
-          background: '#D9D9D9',
-          height: '1px',
-          margin: '3% 0'
-        }}
-      ></div>
-
-      <div className={styles.friendListSection}>
-        <div style={{ margin: '0% 3.5%', width: '10%' }}>
-          <img style={{ width: '100%' }} src='/friends.png' />
-        </div>
-        <div style={{ color: '#767676' }} className={styles.friendRequestText}>
-          我的好友
-        </div>
-      </div>
-      <div className={styles.friendListMyFriend}>
-        {totalFriendsCount === 0 && (
-          <div className={styles.noFriends}>你没有好友TT</div>
-        )}
-        {(!showAllFriends
-          ? friendsPending.slice(
-              0,
-              Math.min(availableSlots, friendsPending.length)
-            )
-          : friendsPending
-        ).map((friend) => renderFriendRequest(friend))}
-        {(!showAllFriends
-          ? friends.slice(0, Math.min(availableSlots, friends.length))
-          : friends
-        ).map((friend, index) => renderFriendList(friend, index))}
-      </div>
-      {shouldShowViewAllButton && (
-        <div className={styles.friendListSection}>
-          <img style={{ margin: '0% 1.5%', width: '15%' }} src='/options.png' />
-          <div
-            style={{
-              color: '#767676',
-              cursor: 'pointer',
-              textDecoration: 'underline'
-            }}
-            className={styles.friendRequestText}
-            onClick={() => setShowAllFriends(!showAllFriends)}
+        className={`${
+          showFriendList ? styles.friendListPopUp : styles.friendList
+        }`}
+      >
+        {showFriendList && (
+          <button
+            className={styles.cancelButton}
+            onClick={() => setShowFriendList(false)}
           >
-            {showAllFriends ? '收起' : '查看全部'}
+            X
+          </button>
+        )}
+        {renderFriendSection(
+          userState.userState.picture || '/個人照片.png',
+          userState.userState.name
+        )}
+
+        <div
+          style={{
+            width: '90%',
+            background: '#D9D9D9',
+            height: '1px',
+            margin: '3% 0'
+          }}
+        ></div>
+
+        <div className={styles.friendListSection}>
+          <div style={{ margin: '0% 3.5%', width: '10%' }}>
+            <img style={{ width: '100%' }} src='/friends.png' />
+          </div>
+          <div
+            style={{ color: '#767676' }}
+            className={styles.friendRequestText}
+          >
+            我的好友
           </div>
         </div>
-      )}
+        <div className={styles.friendListMyFriend}>
+          {totalFriendsCount === 0 && (
+            <div className={styles.noFriends}>你没有好友TT</div>
+          )}
+          {(!showAllFriends
+            ? friendsPending.slice(
+                0,
+                Math.min(availableSlots, friendsPending.length)
+              )
+            : friendsPending
+          ).map((friend) => renderFriendRequest(friend))}
+          {(!showAllFriends
+            ? friends.slice(0, Math.min(availableSlots, friends.length))
+            : friends
+          ).map((friend, index) => renderFriendList(friend, index))}
+        </div>
+        {shouldShowViewAllButton && (
+          <div className={styles.friendListSection}>
+            <img
+              style={{ margin: '0% 1.5%', width: '15%' }}
+              src='/options.png'
+            />
+            <div
+              style={{
+                color: '#767676',
+                cursor: 'pointer',
+                textDecoration: 'underline'
+              }}
+              className={styles.friendRequestText}
+              onClick={() => setShowAllFriends(!showAllFriends)}
+            >
+              {showAllFriends ? '收起' : '查看全部'}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
