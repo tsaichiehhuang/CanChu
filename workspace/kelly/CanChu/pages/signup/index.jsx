@@ -78,6 +78,7 @@ const SignupPage = () => {
       )}
       <form onSubmit={handleSubmit}>
         <Login
+          isLoading={isLoading}
           statusLogin={false}
           nameRef={nameRef}
           emailRef={emailRef}

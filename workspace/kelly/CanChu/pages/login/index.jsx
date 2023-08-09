@@ -72,6 +72,7 @@ const LoginPage = () => {
       )}
       <form onSubmit={handleSubmit}>
         <Login
+          isLoading={isLoading}
           statusLogin={true}
           emailRef={emailRef}
           passwordRef={passwordRef}
