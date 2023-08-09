@@ -66,7 +66,6 @@ export default function Demo() {
     <div>
       <Header />
       <Post
-        showFullArticle={true}
         data={data}
         userState={userState}
         showComments={true}

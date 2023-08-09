@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from './Home.module.scss'
 import useFriends from '@/hook/Friends/useFriends'
 import useFriendsPending from '@/hook/Friends/useFriendsPending'
@@ -12,7 +12,6 @@ export default function FriendList({ userState }) {
   const { agreeFriendRequest } = useAgreeFriend()
   const friendsPending = useFriendsPending()
   const friends = useFriends()
-  const [showAllFriends, setShowAllFriends] = useState(false)
 
   const renderFriendRequest = (friend) => (
     <div key={friend.id} className={styles.friendRequest}>
@@ -65,26 +64,7 @@ export default function FriendList({ userState }) {
       <div className={styles.friendRequestText}>{text}</div>
     </div>
   )
-  const renderFriendList = (friend, index) => (
-    <div key={index}>
-      <Link
-        href='/users/[user.id]'
-        as={`/users/${friend.id}`}
-        className={styles.friendListSection}
-        prefetch
-      >
-        <IsPictureUrlOk
-          className={styles.friendRequestImg}
-          userState={friend}
-        />
-        <div className={styles.friendRequestText}>{friend.name}</div>
-      </Link>
-    </div>
-  )
-  const totalFriendsCount = friendsPending.length + friends.length
-  const maxItemsToShow = 8
-  const shouldShowViewAllButton = totalFriendsCount > 8
-  const availableSlots = maxItemsToShow - friendsPending.length
+
   return (
     <div className={styles.friendList}>
       {renderFriendSection(
@@ -110,37 +90,31 @@ export default function FriendList({ userState }) {
         </div>
       </div>
       <div className={styles.friendListMyFriend}>
-        {totalFriendsCount === 0 && (
-          <div className={styles.noFriends}>你没有好友TT</div>
-        )}
-        {(!showAllFriends
-          ? friendsPending.slice(
-              0,
-              Math.min(availableSlots, friendsPending.length)
-            )
-          : friendsPending
-        ).map((friend) => renderFriendRequest(friend))}
-        {(!showAllFriends
-          ? friends.slice(0, Math.min(availableSlots, friends.length))
-          : friends
-        ).map((friend, index) => renderFriendList(friend, index))}
-      </div>
-      {shouldShowViewAllButton && (
-        <div className={styles.friendListSection}>
-          <img style={{ margin: '0% 1.5%', width: '15%' }} src='/options.png' />
-          <div
-            style={{
-              color: '#767676',
-              cursor: 'pointer',
-              textDecoration: 'underline'
-            }}
-            className={styles.friendRequestText}
-            onClick={() => setShowAllFriends(!showAllFriends)}
-          >
-            {showAllFriends ? '收起' : '查看全部'}
+        {friendsPending.map((friend) => renderFriendRequest(friend))}
+        {friends.map((friend, index) => (
+          <div key={index}>
+            <Link
+              href='/users/[user.id]'
+              as={`/users/${friend.id}`}
+              className={styles.friendListSection}
+              prefetch
+            >
+              <IsPictureUrlOk
+                className={styles.friendRequestImg}
+                userState={friend}
+              />
+              <div className={styles.friendRequestText}>{friend.name}</div>
+            </Link>
           </div>
+        ))}
+      </div>
+      <div className={styles.friendListSection}>
+        <img style={{ margin: '0% 1.5%', width: '15%' }} src='/options.png' />
+
+        <div style={{ color: '#767676' }} className={styles.friendRequestText}>
+          查看全部
         </div>
-      )}
+      </div>
     </div>
   )
 }

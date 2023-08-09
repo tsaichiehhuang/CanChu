@@ -1,20 +1,18 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Login from '@/components/Login'
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie' // 導入 js-cookie
 import Swal from 'sweetalert2'
-import styles from '@/components/login.module.scss'
 const SignupPage = () => {
-  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const nameRef = useRef(null)
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const confirmPasswordRef = useRef(null)
   useEffect(() => {
-    const accessToken = Cookies.get('accessToken')
+    const accessToken = Cookies.get('accessToken') // 從 cookies 中取得 accessToken
     if (accessToken) {
-      router.replace('/')
+      router.replace('/') // 已登入，重定向到其他頁面
     }
   }, [])
   const apiUrl = process.env.API_DOMAIN
@@ -25,6 +23,7 @@ const SignupPage = () => {
     const email = emailRef.current?.value
     const password = passwordRef.current?.value
 
+    // 检查字段值是否存在且不为空
     if (!name || !email || !password) {
       console.error('姓名、電子郵件和密碼為必填字段')
       return
@@ -37,7 +36,6 @@ const SignupPage = () => {
     }
 
     try {
-      setIsLoading(true)
       const response = await fetch(`${apiUrl}/users/signup`, {
         method: 'POST',
         headers: {
@@ -64,21 +62,13 @@ const SignupPage = () => {
       }
     } catch (error) {
       console.error('網路請求錯誤', error)
-    } finally {
-      setIsLoading(false)
     }
   }
 
   return (
     <div>
-      {isLoading && (
-        <div className={styles.loadingOverlay}>
-          <div className={styles.loadingSpinner}></div>
-        </div>
-      )}
       <form onSubmit={handleSubmit}>
         <Login
-          isLoading={isLoading}
           statusLogin={false}
           nameRef={nameRef}
           emailRef={emailRef}

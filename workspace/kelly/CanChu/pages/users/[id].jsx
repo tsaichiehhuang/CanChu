@@ -21,9 +21,7 @@ export default function User() {
   const isUserPage = !!id
   const { userState, updateUserState } = useFetchUserProfile(id)
   const { userState: user } = useFetchUserProfile(userId) //登入者本人
-  const { postData, fetchNextPosts, isLoading } = usePosts(
-    isUserPage ? id : null
-  )
+  const { postData, fetchNextPosts } = usePosts(isUserPage ? id : null)
 
   useInfiniteScroll(fetchNextPosts, 100)
   return (
@@ -34,11 +32,6 @@ export default function User() {
           margin: 0;
         }
       `}</style>
-      {isLoading && (
-        <div className={styles.loadingOverlay}>
-          <div className={styles.loadingSpinner}></div>
-        </div>
-      )}
       <Header />
       <div className={styles.allContainer}>
         <div className={styles.cover}>
@@ -78,7 +71,6 @@ export default function User() {
 
             {postData.map((data) => (
               <Post
-                showFullArticle={false}
                 userState={user}
                 showComments={false}
                 showImage={false}
