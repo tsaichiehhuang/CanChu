@@ -5,6 +5,7 @@ export default function useLike(data) {
   const [liked, setLiked] = useState(data?.is_liked || data?.is_like || false)
   const [likeCount, setLikeCount] = useState(data?.like_count || 0)
   const [clickTime, setClickTime] = useState(0)
+  const [heartAnimation, setHeartAnimation] = useState(false)
 
   // 新增 useEffect 用於更新愛心相關狀態
   useEffect(() => {
@@ -23,6 +24,13 @@ export default function useLike(data) {
     // 在點擊愛心後立即更新前端狀態，不需等待後端 API 回應
     setLiked((prevLiked) => !prevLiked)
     setLikeCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1))
+    if (!liked) {
+      setHeartAnimation(true)
+    }
+
+    setTimeout(() => {
+      setHeartAnimation(false)
+    }, 600)
     try {
       const accessToken = Cookies.get('accessToken')
       const method = liked ? 'DELETE' : 'POST'
@@ -42,5 +50,5 @@ export default function useLike(data) {
       console.error('網絡請求錯誤', error)
     }
   }
-  return { liked, likeCount, handleHeartClick }
+  return { liked, likeCount, handleHeartClick, heartAnimation }
 }

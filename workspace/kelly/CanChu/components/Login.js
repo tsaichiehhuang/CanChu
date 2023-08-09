@@ -9,7 +9,8 @@ const Login = ({
   nameRef,
   emailRef,
   passwordRef,
-  confirmPasswordRef
+  confirmPasswordRef,
+  isLoading
 }) => {
   const router = useRouter()
 
@@ -79,6 +80,7 @@ const Login = ({
           <button
             className={styles.loginButton}
             onClick={statusLogin ? handleLogin : handleSignup}
+            disabled={isLoading}
           >
             {statusLogin ? '登入' : '註冊'}
           </button>
