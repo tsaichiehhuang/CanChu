@@ -53,6 +53,7 @@ export default function Home() {
       <Header />
       {isMobileView && (
         <MobileNavbar
+          isHome={true}
           setShowFriendList={setShowFriendList}
           showFriendList={showFriendList}
         />

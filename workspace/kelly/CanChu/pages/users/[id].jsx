@@ -11,6 +11,7 @@ import { useRouter } from 'next/router'
 import useInfiniteScroll from '@/hook/useInfiniteScroll'
 import PictureUpload from './PictureUpload'
 import usePosts from '@/hook/usePosts'
+import MobileNavbar from '@/components/MobileNavbar'
 
 const userId = Cookies.get('userId')
 
@@ -20,19 +21,21 @@ export default function User() {
   const isSelf = userId === id
   const isUserPage = !!id
   const { userState, updateUserState } = useFetchUserProfile(id)
-  const { userState: user } = useFetchUserProfile(userId) //登入者本人
+  const { userState: user } = useFetchUserProfile(userId)
   const { postData, fetchNextPosts, isLoading } = usePosts(
     isUserPage ? id : null
   )
   const [isMobileView, setIsMobileView] = useState(false)
   const [isShowProfile, setIsShowProfile] = useState(false)
+  const [showFriendList, setShowFriendList] = useState(false)
+
   useInfiniteScroll(fetchNextPosts, 100)
   useEffect(() => {
     const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 768) // 調整此閾值以符合你的設計
+      setIsMobileView(window.innerWidth <= 768)
     }
 
-    handleResize() // 初始化
+    handleResize()
     window.addEventListener('resize', handleResize)
 
     return () => {
@@ -53,6 +56,7 @@ export default function User() {
         </div>
       )}
       <Header />
+      {isMobileView && <MobileNavbar isHome={false} />}
       <>
         <div className={styles.cover}>
           <div className={styles.coverTop}>

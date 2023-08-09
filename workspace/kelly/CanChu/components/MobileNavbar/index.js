@@ -2,8 +2,13 @@ import React, { useState, useEffect } from 'react'
 import styles from './MobileNavbar.module.scss'
 import Menu from '@/components/Header/Menu'
 import Notification from '@/components/Header/Notification'
+import Link from 'next/link'
 
-export default function MobileNavbar({ setShowFriendList, showFriendList }) {
+export default function MobileNavbar({
+  isHome,
+  setShowFriendList,
+  showFriendList
+}) {
   const [isMobileView, setIsMobileView] = useState(false)
 
   useEffect(() => {
@@ -21,12 +26,19 @@ export default function MobileNavbar({ setShowFriendList, showFriendList }) {
   return (
     <>
       <div className={styles.mobileNavbar}>
-        <div
-          onClick={() => setShowFriendList(!showFriendList)}
-          className={styles.mobileFriendListButton}
-        >
-          <img src='/friendsPopUp.png' />
-        </div>
+        {isHome ? (
+          <div
+            onClick={() => setShowFriendList(!showFriendList)}
+            className={styles.mobileFriendListButton}
+          >
+            <img src='/friendsPopUp.png' />
+          </div>
+        ) : (
+          <Link href='/' style={{ color: '#5458F7', textDecoration: 'none' }}>
+            <img src='/home.png' />
+          </Link>
+        )}
+
         <Notification isMobileView={isMobileView} />
         <Menu isMobileView={isMobileView} />
       </div>

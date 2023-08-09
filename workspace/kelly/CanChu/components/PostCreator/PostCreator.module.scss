@@ -42,6 +42,9 @@
     max-width: 550px;
     max-height: 550px;
     gap: 1%;
+    @media (max-width: 768px) {
+      width: 90%;
+    }
   }
   .uploadImageButton {
     margin-bottom: 1%;
