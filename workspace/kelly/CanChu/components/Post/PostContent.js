@@ -31,12 +31,13 @@ export default function PostContent({
         if (context) {
           const images = context.match(/<img[^>]*>/g)
           if (images) {
-            const totalImages = showAllImages
-              ? images.length
-              : Math.min(images.length, 3)
+            const totalImages =
+              showAllImages || showFullArticle
+                ? images.length
+                : Math.min(images.length, 3)
             const processedImages = images.map((image, imageIndex) => {
               const imageClass =
-                imageIndex === 2 && !showAllImages
+                imageIndex === 2 && !showAllImages && !showFullArticle
                   ? `${styles.imageWrapper} ${styles.fadeBlack}`
                   : styles.imageWrapper
               return image.replace(
@@ -45,7 +46,7 @@ export default function PostContent({
               )
             })
             const buttonHtml =
-              totalImages === 3 && !showAllImages
+              totalImages === 3 && !showAllImages && !showFullArticle
                 ? `
                 <button class="${styles.photoReadMoreButton}">+更多照片</button>
               `
@@ -58,7 +59,6 @@ export default function PostContent({
             const cleanedContext = context
               .replace(/<p>\s*<\/p>/g, '')
               .replace(/<img[^>]*>|<br\s*\/?>/g, '')
-            console.log(cleanedContext)
             return cleanedContext + imageContainer
           }
           return context
@@ -101,20 +101,20 @@ export default function PostContent({
     }
   }, [parsedContent])
 
-  const flattenContent = (content) => {
-    if (typeof content === 'string') {
-      return content
-    } else if (React.isValidElement(content)) {
-      if (Array.isArray(content.props.children)) {
-        return content.props.children
-          .map((child) => flattenContent(child))
-          .join('')
-      } else if (content.props.children) {
-        return flattenContent(content.props.children)
-      }
-    }
-    return ''
-  }
+  // const flattenContent = (content) => {
+  //   if (typeof content === 'string') {
+  //     return content
+  //   } else if (React.isValidElement(content)) {
+  //     if (Array.isArray(content.props.children)) {
+  //       return content.props.children
+  //         .map((child) => flattenContent(child))
+  //         .join('')
+  //     } else if (content.props.children) {
+  //       return flattenContent(content.props.children)
+  //     }
+  //   }
+  //   return ''
+  // }
 
   const modules = {
     toolbar: [
@@ -166,21 +166,75 @@ export default function PostContent({
     )
     setThumbnailUrls(newThumbnailUrls)
   }
+  // let totalTextLength = 0
+  // const measureTextLength = (content) => {
+  //   if (typeof content === 'string') {
+  //     totalTextLength += content.length
+  //   } else if (React.isValidElement(content)) {
+  //     if (Array.isArray(content.props.children)) {
+  //       content.props.children.forEach((child) => measureTextLength(child))
+  //     } else if (content.props.children) {
+  //       measureTextLength(content.props.children)
+  //     }
+  //   }
+  // }
+
+  // measureTextLength(parsedContent)
 
   let contentToShow = parsedContent
   let shouldShowReadMoreButton = false
-  if (!showFullContent && !showMore && !showFullArticle) {
-    const textContent = flattenContent(parsedContent)
-    const lines = textContent.split('\n')
 
-    if (lines.length > maxLinesToShow) {
-      contentToShow = lines.slice(0, maxLinesToShow).join('\n')
-      shouldShowReadMoreButton = true
-    } else if (textContent.length > maxCharsToShow) {
-      contentToShow = textContent.slice(0, maxCharsToShow)
-      shouldShowReadMoreButton = true
+  useEffect(() => {
+    let totalTextLength = 0
+    let totalLines = 0
+    console.log(contentToShow)
+    if (contentToShow) {
+      const contentWithStats = contentToShow.map((context, index) => {
+        let textContent = ''
+        let lines = 0
+
+        if (React.isValidElement(context)) {
+          textContent = context.props?.children
+          if (typeof textContent === 'string') {
+            lines = textContent.split('\n').length
+          }
+        } else if (typeof context === 'string') {
+          textContent = context
+          lines = textContent.split('\n').length
+        }
+
+        // eslint-disable-next-line no-unsafe-optional-chaining
+        totalTextLength += textContent?.length
+        totalLines += lines
+
+        return {
+          context,
+          textContent,
+          lines
+        }
+      })
+      if (!showFullContent && !showMore && !showFullArticle) {
+        if (totalLines > maxLinesToShow) {
+          contentToShow = contentWithStats
+            .slice(0, maxLinesToShow)
+            .map((item) => item.context)
+          shouldShowReadMoreButton = true
+        } else if (totalTextLength > maxCharsToShow) {
+          contentToShow = contentWithStats
+            .map((item) => item.context)
+            .join('')
+            .slice(0, maxCharsToShow)
+          shouldShowReadMoreButton = true
+        }
+      }
+      console.log('Total Text Length:', totalTextLength)
+      console.log('Total Lines:', totalLines)
+      // contentWithStats.map((text) =>
+      //   console.log('Content with Stats:', text.textContent)
+      // )
     }
-  }
+  }, [parsedContent])
+
   return (
     <React.Fragment>
       {editing ? (
