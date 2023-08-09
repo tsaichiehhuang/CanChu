@@ -181,59 +181,58 @@ export default function PostContent({
 
   // measureTextLength(parsedContent)
 
-  let contentToShow = parsedContent
-  let shouldShowReadMoreButton = false
+  const contentToShow = parsedContent
+  const shouldShowReadMoreButton = false
 
-  useEffect(() => {
-    let totalTextLength = 0
-    let totalLines = 0
-    console.log(contentToShow)
-    if (contentToShow) {
-      const contentWithStats = contentToShow.map((context, index) => {
-        let textContent = ''
-        let lines = 0
+  // useEffect(() => {
+  //   let totalTextLength = 0
+  //   let totalLines = 0
+  //   if (contentToShow) {
+  //     const contentWithStats = contentToShow.map((context, index) => {
+  //       let textContent = ''
+  //       let lines = 0
 
-        if (React.isValidElement(context)) {
-          textContent = context.props?.children
-          if (typeof textContent === 'string') {
-            lines = textContent.split('\n').length
-          }
-        } else if (typeof context === 'string') {
-          textContent = context
-          lines = textContent.split('\n').length
-        }
+  //       if (React.isValidElement(context)) {
+  //         textContent = context.props?.children
+  //         if (typeof textContent === 'string') {
+  //           lines = textContent.split('\n').length
+  //         }
+  //       } else if (typeof context === 'string') {
+  //         textContent = context
+  //         lines = textContent.split('\n').length
+  //       }
 
-        // eslint-disable-next-line no-unsafe-optional-chaining
-        totalTextLength += textContent?.length
-        totalLines += lines
+  //       // eslint-disable-next-line no-unsafe-optional-chaining
+  //       totalTextLength += textContent?.length
+  //       totalLines += lines
 
-        return {
-          context,
-          textContent,
-          lines
-        }
-      })
-      if (!showFullContent && !showMore && !showFullArticle) {
-        if (totalLines > maxLinesToShow) {
-          contentToShow = contentWithStats
-            .slice(0, maxLinesToShow)
-            .map((item) => item.context)
-          shouldShowReadMoreButton = true
-        } else if (totalTextLength > maxCharsToShow) {
-          contentToShow = contentWithStats
-            .map((item) => item.context)
-            .join('')
-            .slice(0, maxCharsToShow)
-          shouldShowReadMoreButton = true
-        }
-      }
-      console.log('Total Text Length:', totalTextLength)
-      console.log('Total Lines:', totalLines)
-      // contentWithStats.map((text) =>
-      //   console.log('Content with Stats:', text.textContent)
-      // )
-    }
-  }, [parsedContent])
+  //       return {
+  //         context,
+  //         textContent,
+  //         lines
+  //       }
+  //     })
+  //     if (!showFullContent && !showMore && !showFullArticle) {
+  //       if (totalLines > maxLinesToShow) {
+  //         contentToShow = contentWithStats
+  //           .slice(0, maxLinesToShow)
+  //           .map((item) => item.context)
+  //         shouldShowReadMoreButton = true
+  //       } else if (totalTextLength > maxCharsToShow) {
+  //         contentToShow = contentWithStats
+  //           .map((item) => item.context)
+  //           .join('')
+  //           .slice(0, maxCharsToShow)
+  //         shouldShowReadMoreButton = true
+  //       }
+  //     }
+  //     console.log('Total Text Length:', totalTextLength)
+  //     console.log('Total Lines:', totalLines)
+  //     // contentWithStats.map((text) =>
+  //     //   console.log('Content with Stats:', text.textContent)
+  //     // )
+  //   }
+  // }, [parsedContent])
 
   return (
     <React.Fragment>
