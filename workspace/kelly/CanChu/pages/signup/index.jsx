@@ -1,12 +1,13 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Login from '@/components/Login'
 import Cookies from 'js-cookie'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import Swal from 'sweetalert2'
-
+import styles from '@/components/login.module.scss'
 const SignupPage = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const nameRef = useRef(null)
   const emailRef = useRef(null)
@@ -46,6 +47,7 @@ const SignupPage = () => {
       password: password.trim()
     }
     try {
+      setIsLoading(true)
       const response = await fetch(`${apiUrl}/users/signup`, {
         method: 'POST',
         headers: {
@@ -70,11 +72,18 @@ const SignupPage = () => {
         title: '網路請求錯誤',
         text: '請稍後再試或通知我們的工程團隊。'
       })
+    } finally {
+      setIsLoading(false)
     }
   }
 
   return (
     <div>
+      {isLoading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loadingSpinner}></div>
+        </div>
+      )}
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -82,6 +91,7 @@ const SignupPage = () => {
       >
         <Form>
           <Login
+            isLoading={isLoading}
             statusLogin={false}
             nameRef={nameRef}
             emailRef={emailRef}

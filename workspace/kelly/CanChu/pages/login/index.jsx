@@ -1,14 +1,15 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import Login from '@/components/Login'
 import Cookies from 'js-cookie'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import Swal from 'sweetalert2'
-
+import styles from '@/components/login.module.scss'
 const apiUrl = process.env.API_DOMAIN
 
 const LoginPage = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
@@ -21,12 +22,7 @@ const LoginPage = () => {
     email: Yup.string()
       .email('請輸入有效的電子郵件地址')
       .required('電子郵件為必填字段'),
-    password: Yup.string()
-      // .matches(
-      //   /(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}/,
-      //   '密碼必須包含大小寫字母和數字，且長度必須超過8個字符'
-      // )
-      .required('密碼為必填字段')
+    password: Yup.string().required('密碼為必填字段')
   })
 
   const handleSubmit = async (values) => {
@@ -37,6 +33,7 @@ const LoginPage = () => {
       password: password.trim()
     }
     try {
+      setIsLoading(true)
       const response = await fetch(`${apiUrl}/users/signin`, {
         method: 'POST',
         headers: {
@@ -53,7 +50,7 @@ const LoginPage = () => {
           timer: 1000
         })
         Cookies.set('accessToken', responseData.data.access_token)
-        Cookies.set('userId', responseData.data.user.id) // 將使用者 ID 儲存在 Cookie 中
+        Cookies.set('userId', responseData.data.user.id)
 
         setTimeout(() => {
           router.push('/')
@@ -68,11 +65,18 @@ const LoginPage = () => {
         title: '網路請求錯誤',
         text: '請稍後再試或通知我們的工程團隊。'
       })
+    } finally {
+      setIsLoading(false)
     }
   }
 
   return (
     <div>
+      {isLoading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loadingSpinner}></div>
+        </div>
+      )}
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -80,6 +84,7 @@ const LoginPage = () => {
       >
         <Form>
           <Login
+            isLoading={isLoading}
             statusLogin={true}
             emailRef={emailRef}
             passwordRef={passwordRef}
