@@ -11,7 +11,7 @@ import FriendList from './FriendList'
 import usePosts from '@/hook/usePosts'
 
 export default function Home() {
-  const { postData, fetchNextPosts } = usePosts()
+  const { postData, fetchNextPosts, isLoading } = usePosts()
   const handlePostClick = (postId) => {
     window.location.href = `/posts/${postId}`
   }
@@ -30,6 +30,11 @@ export default function Home() {
           margin: 0;
         }
       `}</style>
+      {isLoading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loadingSpinner}></div>
+        </div>
+      )}
       <Header />
       <div className={styles.container}>
         <div className={styles.containerLeft}>
