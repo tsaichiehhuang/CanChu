@@ -5,7 +5,6 @@ const usePosts = (userId) => {
   const [postData, setPostData] = useState([])
   const [nextCursor, setNextCursor] = useState(null)
   const [isFetching, setIsFetching] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
 
   const fetchPosts = async (cursor = null) => {
     if (isFetching) {
@@ -13,7 +12,6 @@ const usePosts = (userId) => {
     }
     try {
       setIsFetching(true)
-      setIsLoading(true)
       const accessToken = Cookies.get('accessToken')
 
       if (!accessToken) {
@@ -56,7 +54,6 @@ const usePosts = (userId) => {
       console.error('網絡請求錯誤', error)
     } finally {
       setIsFetching(false)
-      setIsLoading(false)
     }
   }
 
@@ -70,7 +67,7 @@ const usePosts = (userId) => {
     }
   }
 
-  return { postData, fetchNextPosts, nextCursor, isLoading }
+  return { postData, fetchNextPosts, nextCursor }
 }
 
 export default usePosts

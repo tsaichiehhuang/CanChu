@@ -2,7 +2,6 @@ import React from 'react'
 import App from 'next/app'
 
 import '../styles/globals.css'
-import '../styles/quill-custom-style.css'
 
 class MyApp extends App {
   static async getInitialProps(appContext) {

@@ -1,22 +1,23 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Login from '@/components/Login'
 import Cookies from 'js-cookie'
 import Swal from 'sweetalert2'
-import styles from '@/components/login.module.scss'
 const apiUrl = process.env.API_DOMAIN
 
 const LoginPage = () => {
-  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
+    event.preventDefault() //阻止表單的預設提交行為，避免頁面重新載入。
+
+    // 從 emailRef 和 passwordRef 取得輸入欄位的值，並將其存儲在 email 和 password 變數中。
     const email = emailRef.current?.value
     const password = passwordRef.current?.value
 
+    // 檢查是否不為空
     if (!email || !password) {
       console.error('電子郵件和密碼為必填字段')
       return
@@ -29,7 +30,7 @@ const LoginPage = () => {
     }
 
     try {
-      setIsLoading(true)
+      // 使用 fetch 函式發送 POST 請求到指定的 API 端點，並傳遞 requestBody 作為請求體。
       const response = await fetch(`${apiUrl}/users/signin`, {
         method: 'POST',
         headers: {
@@ -37,6 +38,8 @@ const LoginPage = () => {
         },
         body: JSON.stringify(requestBody)
       })
+
+      // 使用 await 等待網路請求的回應，並將回應轉換為 JSON 格式的數據
       const responseData = await response.json()
 
       if (response.ok) {
@@ -47,7 +50,7 @@ const LoginPage = () => {
           timer: 1000
         })
         Cookies.set('accessToken', responseData.data.access_token)
-        Cookies.set('userId', responseData.data.user.id)
+        Cookies.set('userId', responseData.data.user.id) // 將使用者 ID 儲存在 Cookie 中
 
         setTimeout(() => {
           router.push('/')
@@ -58,21 +61,13 @@ const LoginPage = () => {
       }
     } catch (error) {
       console.error('網路請求錯誤', error)
-    } finally {
-      setIsLoading(false)
     }
   }
 
   return (
     <div>
-      {isLoading && (
-        <div className={styles.loadingOverlay}>
-          <div className={styles.loadingSpinner}></div>
-        </div>
-      )}
       <form onSubmit={handleSubmit}>
         <Login
-          isLoading={isLoading}
           statusLogin={true}
           emailRef={emailRef}
           passwordRef={passwordRef}
@@ -88,11 +83,13 @@ export async function getServerSideProps(context) {
   const { req, res } = context
   const accessToken = req.cookies.accessToken
 
+  // 如果已登入，重回首頁
   if (accessToken) {
     res.writeHead(302, { Location: '/' })
     res.end()
     return { props: {} }
   }
 
+  // 如果未登入，允許訪問登入和註冊頁面
   return { props: {} }
 }
