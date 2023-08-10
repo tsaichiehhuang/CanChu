@@ -23,18 +23,20 @@ const Login = ({
 
   const InputField = ({ title, placeholder, name, type, innerRef }) => (
     <div className={styles.inputGroup}>
-      <div className={styles.inputTitle}>{title}</div>
+      <div style={{ flexDirection: 'row', display: 'flex' }}>
+        <div className={styles.inputTitle}>{title}</div>
+        <ErrorMessage
+          name={name}
+          component='div'
+          className={styles.errorMessage}
+        />
+      </div>
       <Field
         className={styles.inputText}
         type={type}
         name={name}
         placeholder={placeholder}
         innerRef={innerRef}
-      />
-      <ErrorMessage
-        name={name}
-        component='div'
-        className={styles.errorMessage}
       />
     </div>
   )
