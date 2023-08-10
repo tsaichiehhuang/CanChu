@@ -94,6 +94,8 @@ export default function Post({
         <div className={`${styles.thirdRow} ${styles.row}`}>
           {/* 愛心按讚 */}
           <img
+            width='25'
+            height='20'
             className={`${styles.img}${
               heartAnimation ? styles.likedHeart : ''
             }`}
@@ -103,6 +105,8 @@ export default function Post({
           />
 
           <img
+            width='20'
+            height='20'
             className={`${styles.img}${styles.commentIcon}`}
             src='/comment.png'
             onClick={handlePostClick}

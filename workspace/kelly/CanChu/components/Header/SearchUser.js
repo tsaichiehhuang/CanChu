@@ -81,6 +81,8 @@ export default function SearchUser({ isMobileView }) {
           >
             <div className={styles.search}>
               <img
+                width='20'
+                height='20'
                 style={{ marginRight: '8px' }}
                 styles={styles.img}
                 src='/search.png'

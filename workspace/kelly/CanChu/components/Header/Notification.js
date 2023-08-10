@@ -67,6 +67,8 @@ export default function Notification({ isMobileView }) {
       })}
     >
       <img
+        width='20'
+        height='20'
         src='/通知.png'
         className={styles.img}
         onClick={handleMobileNotifyShow}
