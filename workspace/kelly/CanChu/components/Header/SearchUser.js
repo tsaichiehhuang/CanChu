@@ -67,7 +67,7 @@ export default function SearchUser({ isMobileView }) {
     <>
       {isMobileView && !isSearchPopUp && (
         <div>
-          <img src='/searchRwd.png' onClick={handleSearchPopUp} />
+          <img src='/SearchRwd.png' onClick={handleSearchPopUp} />
         </div>
       )}
       {(!isMobileView || isSearchPopUp) && (
