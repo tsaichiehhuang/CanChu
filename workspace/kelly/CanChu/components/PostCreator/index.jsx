@@ -222,24 +222,26 @@ export default function PostCreator() {
               />
               {thumbnailUrls && thumbnailUrls.length > 0 && (
                 <div className={styles.thumbnailContainer}>
-                  {thumbnailUrls.map((url, index) => (
-                    <div key={index} className={styles.thumbnailImageWrapper}>
-                      <img
-                        src={url}
-                        alt={`Thumbnail ${index}`}
-                        className={styles.thumbnailImage}
-                      />
-                      <button
-                        className={styles.deleteButton}
-                        onClick={(event) => {
-                          event.stopPropagation()
-                          handleRemoveImage(index)
-                        }}
-                      >
-                        X
-                      </button>
-                    </div>
-                  ))}
+                  <div className={styles.thumbnailContent}>
+                    {thumbnailUrls.map((url, index) => (
+                      <div key={index} className={styles.thumbnailImageWrapper}>
+                        <img
+                          src={url}
+                          alt={`Thumbnail ${index}`}
+                          className={styles.thumbnailImage}
+                        />
+                        <button
+                          className={styles.deleteButton}
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            handleRemoveImage(index)
+                          }}
+                        >
+                          X
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
               <label className={styles.uploadImageButton}>
