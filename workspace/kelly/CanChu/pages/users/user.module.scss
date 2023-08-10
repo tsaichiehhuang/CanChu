@@ -48,13 +48,11 @@
       }
     }
     .userHeadshotWrapper {
-      width: 18%;
       cursor: pointer;
       position: relative;
       &.dragging .userHeadshot {
         filter: brightness(70%);
       }
-
       &.dragging .userHeadshotText {
         display: block;
         cursor: pointer;
@@ -66,7 +64,6 @@
         display: block; /* 滑鼠移入時顯示文字 */
         cursor: pointer;
       }
-
       &::after {
         cursor: pointer;
         position: absolute;
@@ -76,7 +73,6 @@
         color: #fff;
         font-family: Outfit;
         font-size: 1.1rem;
-        font-style: normal;
         font-weight: 700;
         // line-height: 24px;
         text-decoration-line: underline;
@@ -100,15 +96,24 @@
     }
 
     .userHeadshot {
+      object-fit: cover;
       cursor: pointer;
       display: flex;
-      width: 100%;
-      height: auto;
+      width: 200px;
+      height: 200px;
       object-fit: cover;
       border-radius: 50%;
       z-index: 1;
       &:hover {
         filter: brightness(70%);
+      }
+      @media (max-width: 1024px) {
+        width: 100px;
+        height: 100px;
+      }
+      @media (max-width: 768px) {
+        width: 80px;
+        height: 80px;
       }
     }
 

@@ -121,7 +121,7 @@
   &:hover .profileOptions {
     display: flex;
   }
-  @media (max-width: 768px) {
+  @media (max-width: 960px) {
     position: relative;
     right: 0%;
   }
@@ -194,6 +194,7 @@
 }
 
 .person {
+  object-fit: cover;
   width: 36px;
   height: 36px;
   flex-shrink: 0;
@@ -215,6 +216,7 @@
 }
 
 .notifyOption {
+  cursor: pointer;
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -242,7 +244,6 @@
 .notifyFirst {
   background: #5458f7;
   color: white;
-  cursor: pointer;
   gap: 5%;
   padding: 14px;
   border-radius: 20px 20px 0px 0px;
@@ -259,7 +260,6 @@
   border-radius: 0px 0px 20px 20px;
 }
 .notifyOptions {
-  cursor: pointer;
   border-radius: 20px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   position: absolute;
