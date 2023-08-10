@@ -66,7 +66,11 @@ export default function Notification({ isMobileView }) {
         onMouseLeave: handleNotifyMouseLeave
       })}
     >
-      <img src='/通知.png' onClick={handleMobileNotifyShow} />
+      <img
+        src='/通知.png'
+        className={styles.img}
+        onClick={handleMobileNotifyShow}
+      />
 
       {newNotificationCount > 0 && (
         <div className={styles.notificationCount}>{newNotificationCount}</div>

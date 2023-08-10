@@ -94,14 +94,16 @@ export default function Post({
         <div className={`${styles.thirdRow} ${styles.row}`}>
           {/* 愛心按讚 */}
           <img
-            className={heartAnimation ? styles.likedHeart : ''}
+            className={`${styles.img}${
+              heartAnimation ? styles.likedHeart : ''
+            }`}
             src={liked ? '/heart.png' : '/notHeart.png'}
             onClick={handleHeartClick}
             style={{ cursor: 'pointer' }}
           />
 
           <img
-            className={styles.commentIcon}
+            className={`${styles.img}${styles.commentIcon}`}
             src='/comment.png'
             onClick={handlePostClick}
             style={{ cursor: 'pointer' }}

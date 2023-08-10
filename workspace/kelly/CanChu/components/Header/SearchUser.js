@@ -80,7 +80,11 @@ export default function SearchUser({ isMobileView }) {
             }`}
           >
             <div className={styles.search}>
-              <img style={{ marginRight: '8px' }} src='/search.png' />
+              <img
+                style={{ marginRight: '8px' }}
+                styles={styles.img}
+                src='/search.png'
+              />
               <input
                 ref={inputRef}
                 className={styles.inputSearch}
