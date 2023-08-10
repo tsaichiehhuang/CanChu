@@ -63,7 +63,13 @@ export default function FriendList({
   const renderFriendSection = (img, text) => (
     <div className={styles.friendListSection}>
       <img
-        style={{ marginLeft: '1%', width: '40px', borderRadius: '50%' }}
+        style={{
+          marginLeft: '1%',
+          width: '40px',
+          height: '40px',
+          objectFit: 'cover',
+          borderRadius: '50%'
+        }}
         src={img}
       />
       <div className={styles.friendRequestText}>{text}</div>
