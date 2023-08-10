@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './Post.module.scss'
 import useComment from '@/hook/Post/useComment'
 import Comment from './Comment'
@@ -14,7 +14,16 @@ export default function LeaveComment({
   const { leaveComment, setLeaveComment, handleLeaveComment } = useComment(
     data.id
   )
+  useEffect(() => {
+    const styleLink = document.createElement('link')
+    styleLink.rel = 'stylesheet'
+    styleLink.href = './Post.module.scss' // 請替換為實際的 CSS 路徑
+    document.head.appendChild(styleLink)
 
+    return () => {
+      document.head.removeChild(styleLink)
+    }
+  }, [])
   return (
     <>
       {showComments && (

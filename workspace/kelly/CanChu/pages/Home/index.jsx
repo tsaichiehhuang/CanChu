@@ -77,6 +77,18 @@ export default function Home() {
           </div>
         )}
         <div className={styles.containerRight}>
+          {isLoading && (
+            <div
+              style={{
+                height: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <div className={styles.loadingSpinner}></div>
+            </div>
+          )}
           <PostCreator />
           {postData.map((data) => (
             <Post

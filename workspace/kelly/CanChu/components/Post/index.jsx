@@ -1,5 +1,5 @@
 import styles from './Post.module.scss'
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import getTimeDiff from '../getTimeDiff'
 import Cookies from 'js-cookie'
 import useLike from '@/hook/Post/useLike'
@@ -48,7 +48,16 @@ export default function Post({
   const formattedPicture = picture !== '' ? picture : '/個人照片.png'
   const formattedCommentCount = comment_count || 0
   const formattedLikeCount = likeCount === 0 ? 0 : likeCount
+  useEffect(() => {
+    const styleLink = document.createElement('link')
+    styleLink.rel = 'stylesheet'
+    styleLink.href = './Post.module.scss'
+    document.head.appendChild(styleLink)
 
+    return () => {
+      document.head.removeChild(styleLink)
+    }
+  }, [])
   return (
     <>
       <div className={postClassName}>
@@ -96,9 +105,7 @@ export default function Post({
           <img
             width='25'
             height='20'
-            className={`${styles.img}${
-              heartAnimation ? styles.likedHeart : ''
-            }`}
+            className={heartAnimation ? styles.likedHeart : ''}
             src={liked ? '/heart.png' : '/notHeart.png'}
             onClick={handleHeartClick}
             style={{ cursor: 'pointer' }}
