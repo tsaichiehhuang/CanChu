@@ -157,10 +157,15 @@
   }
 
   .postingPhoto {
-    border-radius: 50%;
-    width: 10%;
-    height: 10%;
     object-fit: cover;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    @media (max-width: 600px) {
+      width: 45px;
+      height: 45px;
+    }
   }
   .postingText {
     cursor: pointer;
@@ -179,6 +184,9 @@
     background: #f0f2f5;
     &:hover {
       background: #e3e4e5;
+    }
+    @media (max-width: 300px) {
+      width: 75%;
     }
   }
 
