@@ -14,7 +14,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  @media (max-width: 768px) {
+  @media (max-width: 960px) {
     justify-content: flex-end;
     align-items: center;
     gap: 1.5%;
@@ -144,7 +144,7 @@
     color: #fff;
     background: #5458f7;
   }
-  @media (max-width: 768px) {
+  @media (max-width: 960px) {
     &:hover {
       color: #000;
       background: transparent;
@@ -186,6 +186,12 @@
   z-index: 999;
   justify-content: center;
   align-items: center;
+  @media (max-width: 960px) {
+    width: 40%;
+  }
+  @media (max-width: 600px) {
+    width: 70%;
+  }
 }
 
 .row {
@@ -206,10 +212,9 @@
   &:hover .notifyOptions {
     display: flex;
   }
-  @media (max-width: 768px) {
+  @media (max-width: 960px) {
     position: relative;
     right: 0%;
-
     display: flex;
     flex-direction: column;
   }
@@ -274,7 +279,6 @@
 }
 .notifyContainer {
   max-height: 400px;
-
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 8px;
@@ -295,6 +299,12 @@
   flex-direction: column;
   z-index: 999;
   width: 90%;
+  @media (max-width: 960px) {
+    width: 40%;
+  }
+  @media (max-width: 600px) {
+    width: 70%;
+  }
 }
 .cancelButton {
   position: absolute;

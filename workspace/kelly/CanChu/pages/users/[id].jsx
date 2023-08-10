@@ -32,7 +32,7 @@ export default function User() {
   useInfiniteScroll(fetchNextPosts, 100)
   useEffect(() => {
     const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 768)
+      setIsMobileView(window.innerWidth <= 960)
     }
 
     handleResize()

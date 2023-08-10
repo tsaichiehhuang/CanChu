@@ -11,7 +11,7 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: var(--white, #fff);
   position: relative;
-  @media (max-width: 768px) {
+  @media (max-width: 960px) {
     width: 100%;
   }
   .overlay {
@@ -29,7 +29,7 @@
 
   .quillWrapper {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
     flex-direction: column;
     background-color: #fff;
@@ -42,9 +42,21 @@
     // max-height: 90%;
     // overflow-y: auto;
     gap: 2%;
-    @media (max-width: 768px) {
-      width: 90%;
-      padding: 15% 1%;
+
+    @media (max-width: 960px) {
+      width: 50%;
+      padding: 5% 1%;
+      height: 50%;
+    }
+    @media (max-width: 600px) {
+      width: 80%;
+      padding: 10% 1%;
+      height: 70%;
+    }
+    @media (max-width: 300px) {
+      width: 80%;
+      padding: 1% 1%;
+      height: 80%;
     }
   }
   .uploadImageButton {
@@ -81,6 +93,9 @@
     border: 1px solid #f0f2f5;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border-radius: 0.5rem;
+    @media (max-width: 300px) {
+      margin-top: 15%;
+    }
   }
 
   .thumbnailContent {
@@ -96,6 +111,10 @@
   .thumbnailImage {
     max-width: 100px;
     max-height: 100px;
+    @media (max-width: 300px) {
+      max-width: 80px;
+      max-height: 80px;
+    }
   }
   .thumbnailImageWrapper {
     position: relative;
@@ -168,8 +187,14 @@
     // min-height: 80%;
     max-height: 80%;
     border-radius: 0.5rem !important;
-    @media (max-width: 768px) {
+    @media (max-width: 960px) {
       max-height: 70%;
+    }
+    @media (max-width: 600px) {
+      max-height: 50%;
+    }
+    @media (max-width: 300px) {
+      max-height: 40%;
     }
   }
 

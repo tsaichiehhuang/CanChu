@@ -13,7 +13,7 @@
   align-items: center;
   flex-direction: column;
   width: 70%;
-  @media (max-width: 768px) {
+  @media (max-width: 960px) {
     width: 100%;
     padding: 5%;
   }
@@ -46,7 +46,7 @@
   z-index: 5;
   position: relative;
   padding: 7% 7%;
-  width: 60%;
+  width: 70%;
   max-height: 80%;
   overflow-y: auto;
   border-radius: 20px;
@@ -58,6 +58,12 @@
   justify-content: space-between;
   gap: 5%;
   box-sizing: content-box;
+  @media (max-width: 960px) {
+    width: 40%;
+  }
+  @media (max-width: 600px) {
+    width: 70%;
+  }
 }
 .friendListSection {
   width: 100%;
@@ -91,11 +97,12 @@
   align-items: center;
 
   .friendRequestButton {
+    font-size: 0.8rem;
     cursor: pointer;
     color: white;
     border: 0px;
     border-radius: 6px;
-    width: 50px;
+    width: 40%;
     height: 30px;
     white-space: nowrap;
     display: flex;

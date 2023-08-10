@@ -10,7 +10,7 @@ export default function Header() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 768)
+      setIsMobileView(window.innerWidth <= 960)
     }
 
     handleResize() // 初始化

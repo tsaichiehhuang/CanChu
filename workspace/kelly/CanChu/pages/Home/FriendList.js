@@ -119,7 +119,7 @@ export default function FriendList({
         ></div>
 
         <div className={styles.friendListSection}>
-          <div style={{ margin: '0% 3.5%', width: '10%' }}>
+          <div style={{ margin: '0% 3.5%', width: '40px' }}>
             <img style={{ width: '100%' }} src='/friends.png' />
           </div>
           <div
@@ -167,7 +167,7 @@ export default function FriendList({
         {shouldShowViewAllButton && (
           <div className={styles.friendListSection}>
             <img
-              style={{ margin: '0% 1.5%', width: '15%' }}
+              style={{ margin: '0% 1.5%', width: '40px' }}
               src='/options.png'
             />
             <div

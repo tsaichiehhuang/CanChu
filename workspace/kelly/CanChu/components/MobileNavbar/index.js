@@ -13,10 +13,10 @@ export default function MobileNavbar({
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 768)
+      setIsMobileView(window.innerWidth <= 960)
     }
 
-    handleResize() // 初始化
+    handleResize()
     window.addEventListener('resize', handleResize)
 
     return () => {
