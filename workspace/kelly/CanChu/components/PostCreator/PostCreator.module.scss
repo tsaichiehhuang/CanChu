@@ -38,7 +38,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: relative;
     width: 40%;
-    height: 60%;
+    height: 90%;
     // max-height: 90%;
     // overflow-y: auto;
     gap: 2%;
@@ -184,8 +184,8 @@
 
   .postingEditText {
     width: 95%;
-    // min-height: 80%;
-    max-height: 80%;
+    min-height: 40%;
+    max-height: 70%;
     border-radius: 0.5rem !important;
     @media (max-width: 960px) {
       max-height: 70%;

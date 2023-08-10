@@ -6,31 +6,36 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 10% 0%;
+  padding: 1% 0%;
+  @media (max-width: 960px) {
+    padding: 10% 0%;
+  }
 }
 .loginSquare {
   width: 80%;
-  padding: 10% 0 0% 0;
+  padding: 1% 0 0% 0;
   flex-direction: row;
   display: flex;
   @media (max-width: 960px) {
     width: 90%;
+    padding: 10% 0 0% 0;
   }
 }
 .signupSquare {
   width: 80%;
-  padding: 10% 0 0% 0;
+  padding: 1% 0 0% 0;
   flex-direction: row;
   display: flex;
   @media (max-width: 960px) {
     width: 90%;
+    padding: 10% 0 0% 0;
   }
 }
 .loginSquareLeft {
   background: white;
   border-radius: 20px 0px 0px 20px;
   width: 70%;
-  padding: 10% 0%;
+  padding: 3% 0%;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -39,13 +44,14 @@
   @media (max-width: 960px) {
     width: 100%;
     border-radius: 20px;
+    padding: 10% 0%;
   }
 }
 .signupSquareLeft {
   background: white;
   border-radius: 20px 0px 0px 20px;
   width: 70%;
-  padding: 10% 0%;
+  padding: 3% 0%;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -54,13 +60,14 @@
   @media (max-width: 960px) {
     width: 100%;
     border-radius: 20px;
+    padding: 10% 0%;
   }
 }
 .loginSquareRight {
   border-radius: 0px 20px 20px 0px;
   width: 30%;
   background: #7763fb;
-  @media (max-width: 960px) {
+  @media (max-width: 600px) {
     display: none;
   }
 }
@@ -68,7 +75,7 @@
   border-radius: 0px 20px 20px 0px;
   width: 30%;
   background: #7763fb;
-  @media (max-width: 960px) {
+  @media (max-width: 600px) {
     display: none;
   }
 }

@@ -50,11 +50,6 @@ export default function User() {
           margin: 0;
         }
       `}</style>
-      {isLoading && (
-        <div className={styles.loadingOverlay}>
-          <div className={styles.loadingSpinner}></div>
-        </div>
-      )}
       <Header />
       {isMobileView && <MobileNavbar isHome={false} />}
       <>
