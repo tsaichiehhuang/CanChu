@@ -77,6 +77,7 @@ export default function Home() {
           </div>
         )}
         <div className={styles.containerRight}>
+          <PostCreator />
           {isLoading && (
             <div
               style={{
@@ -89,7 +90,6 @@ export default function Home() {
               <div className={styles.loadingSpinner}></div>
             </div>
           )}
-          <PostCreator />
           {postData.map((data) => (
             <Post
               showFullArticle={false}

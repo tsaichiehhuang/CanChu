@@ -48,6 +48,7 @@ export default function Post({
   const formattedPicture = picture !== '' ? picture : '/個人照片.png'
   const formattedCommentCount = comment_count || 0
   const formattedLikeCount = likeCount === 0 ? 0 : likeCount
+
   useEffect(() => {
     const styleLink = document.createElement('link')
     styleLink.rel = 'stylesheet'
@@ -58,6 +59,7 @@ export default function Post({
       document.head.removeChild(styleLink)
     }
   }, [])
+
   return (
     <>
       <div className={postClassName}>
