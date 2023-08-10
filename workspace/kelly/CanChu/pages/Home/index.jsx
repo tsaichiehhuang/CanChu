@@ -11,6 +11,8 @@ import useInfiniteScroll from '@/hook/useInfiniteScroll'
 import Cookies from 'js-cookie'
 import FriendList from './FriendList'
 import usePosts from '@/hook/usePosts'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function Home() {
   const { postData, fetchNextPosts, isLoading } = usePosts()
@@ -79,17 +81,9 @@ export default function Home() {
         <div className={styles.containerRight}>
           <PostCreator />
           {isLoading && (
-            <div
-              style={{
-                height: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <div className={styles.loadingSpinner}></div>
-            </div>
+            <Skeleton count={1} height={400} width='85% ' circle={false} />
           )}
+
           {postData.map((data) => (
             <Post
               showFullArticle={false}

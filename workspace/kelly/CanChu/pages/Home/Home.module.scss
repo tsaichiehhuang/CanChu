@@ -18,6 +18,22 @@
     padding: 5%;
   }
 }
+.postLoading {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 85%;
+  flex-shrink: 0;
+  border-radius: 20px;
+  border: 1px solid rgba(211, 211, 211, 0.56);
+  background: #fff;
+  margin-bottom: 3%;
+  @media (max-width: 960px) {
+    width: 100%;
+  }
+}
 .containerLeft {
   width: 30%;
   display: grid;
