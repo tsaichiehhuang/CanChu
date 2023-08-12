@@ -238,10 +238,12 @@ export default function PostContent({
     <React.Fragment>
       {editing ? (
         <div className={styles.editContainer}>
-          <textarea
+          <ReactQuill
+            theme='snow'
             className={styles.editTextarea}
             value={editedContent}
-            onChange={(e) => setEditedContent(e.target.value)}
+            onChange={setEditedContent}
+            modules={modules}
           />
           {thumbnailUrls && thumbnailUrls.length > 0 && (
             <div className={styles.thumbnailContainer}>

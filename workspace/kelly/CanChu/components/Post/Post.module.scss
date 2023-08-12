@@ -130,17 +130,20 @@
   margin: 2% 0;
 }
 .editTextarea {
-  border-radius: 10px;
-  border: 1px solid #bfbfbf;
-  background: #f0f2f5;
   width: 100%;
-  height: 15vh;
-  margin-bottom: 1%;
-  resize: none;
-  padding: 2%;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  min-height: 50vh;
+  // @media (max-width: 600px) {
+  //   min-height: 50vh;
+  // }
+  @media (max-width: 960px) {
+    max-height: 70%;
+  }
+  @media (max-width: 600px) {
+    max-height: 50%;
+  }
+  @media (max-width: 300px) {
+    max-height: 40%;
+  }
 }
 .editButtonGroup {
   gap: 2%;
@@ -152,6 +155,7 @@
   cursor: pointer;
   color: white;
   width: 15%;
+  min-width: 100px;
   border: 0px;
   border-radius: 6px;
 }

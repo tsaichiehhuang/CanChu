@@ -81,7 +81,13 @@ export default function Home() {
         <div className={styles.containerRight}>
           <PostCreator />
           {isLoading && (
-            <Skeleton count={1} height={400} width='85% ' circle={false} />
+            <Skeleton
+              count={1}
+              height={400}
+              width='85% '
+              circle={false}
+              style={{ borderRadius: '20px' }}
+            />
           )}
 
           {postData.map((data) => (

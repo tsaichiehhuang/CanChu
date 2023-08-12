@@ -12,6 +12,8 @@ import useInfiniteScroll from '@/hook/useInfiniteScroll'
 import PictureUpload from './PictureUpload'
 import usePosts from '@/hook/usePosts'
 import MobileNavbar from '@/components/MobileNavbar'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const userId = Cookies.get('userId')
 
@@ -65,11 +67,31 @@ export default function User() {
               updateUserState={updateUserState}
             />
             <div className={styles.coverTopRight}>
-              <div className={styles.userName}>{userState.name}</div>
-
-              <div className={styles.userFriendCount}>
-                {userState.friend_count}位朋友
-              </div>
+              {isLoading ? (
+                <>
+                  <Skeleton
+                    count={1}
+                    height={40}
+                    width={100}
+                    circle={false}
+                    style={{ borderRadius: '20px' }}
+                  />
+                  <Skeleton
+                    count={1}
+                    height={20}
+                    width={100}
+                    circle={false}
+                    style={{ borderRadius: '20px' }}
+                  />
+                </>
+              ) : (
+                <>
+                  <div className={styles.userName}>{userState.name}</div>
+                  <div className={styles.userFriendCount}>
+                    {userState.friend_count}位朋友
+                  </div>
+                </>
+              )}
             </div>
           </div>
           <div
@@ -127,7 +149,15 @@ export default function User() {
           ) : (
             <div className={styles.containerRight}>
               {isSelf && <PostCreator />}
-
+              {isLoading && (
+                <Skeleton
+                  count={1}
+                  height={400}
+                  width='85% '
+                  circle={false}
+                  style={{ borderRadius: '20px' }}
+                />
+              )}
               {postData.map((data) => (
                 <Post
                   showFullArticle={false}
