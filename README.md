@@ -1,3 +1,5 @@
 # CanChu
 
-A social media to post and make friend
+A social media website to post and make friend
+
+<img src="/public/loginpage.png">
