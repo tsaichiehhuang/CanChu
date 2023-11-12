@@ -2,4 +2,4 @@
 
 A social media website to post and make friend
 
-<img width={50} src="/public/loginpage.png">
+<img width="250" src="/public/loginpage.png">
